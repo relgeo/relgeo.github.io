@@ -19,11 +19,11 @@
   },
   "dependencies": {
     "astro": "^5.18.0",
-    "relgeo-core": "^0.4.0",
-    "relgeo-language-service": "^0.4.0",
-    "relgeo-renderer-svg": "^0.4.0",
-    "remark-relgeo": "^0.5.0",
-    "remark-relgeo-hl": "^0.5.0"
+    "@relgeo/core": "^0.5.0",
+    "@relgeo/language-service": "^0.5.0",
+    "@relgeo/renderer-svg": "^0.5.0",
+    "@relgeo/remark-relgeo": "^0.5.0",
+    "@relgeo/remark-relgeo-hl": "^0.5.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4"

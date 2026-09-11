@@ -1,7 +1,7 @@
-import { compileRelGeo } from 'relgeo-core';
-import { renderToSVG } from 'relgeo-renderer-svg';
-import { RelGeoLanguageService } from 'relgeo-language-service';
-import { buildHighlightedHtml } from 'remark-relgeo-hl';
+import { compileRelGeo } from '@relgeo/core';
+import { renderToSVG } from '@relgeo/renderer-svg';
+import { RelGeoLanguageService } from '@relgeo/language-service';
+import { buildHighlightedHtml } from '@relgeo/remark-relgeo-hl';
 
 export const landingFixtureSource = `version: 0.5
 metaPresets:

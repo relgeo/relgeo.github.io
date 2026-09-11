@@ -1,5 +1,5 @@
-import { compileRelGeo } from 'relgeo-core';
-import { renderToSVG } from 'relgeo-renderer-svg';
+import { compileRelGeo } from '@relgeo/core';
+import { renderToSVG } from '@relgeo/renderer-svg';
 
 import heroFixtureSource from './landing-hero.relgeo.yaml?raw';
 

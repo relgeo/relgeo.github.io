@@ -11,8 +11,8 @@ The package metadata version (`0.5.0`) and the active RelGeo DSL contract versio
 This package is prepared to become:
 
 1. the official docs site
-2. the first public consumer of `remark-relgeo-hl`
-3. the first public consumer of `remark-relgeo`
+2. the first public consumer of `@relgeo/remark-relgeo-hl`
+3. the first public consumer of `@relgeo/remark-relgeo`
 4. an early GitHub Pages deployment target
 
 ## Content Role

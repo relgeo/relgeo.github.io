@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
-import remarkRelgeo from 'remark-relgeo';
-import remarkRelgeoHl from 'remark-relgeo-hl';
+import remarkRelgeo from '@relgeo/remark-relgeo';
+import remarkRelgeoHl from '@relgeo/remark-relgeo-hl';
 
 const site = process.env.RELGEO_DOCS_SITE_URL ?? 'https://example.com';
 const base = process.env.RELGEO_DOCS_BASE ?? '/';

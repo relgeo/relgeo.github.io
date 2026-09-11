@@ -50,7 +50,7 @@ pnpm relgeo check path/to/design.yaml
 
 CLI bukan editor interaktif.
 
-CLI juga bukan pengganti `relgeo-core` bila Anda ingin integrasi runtime langsung ke kode.
+CLI juga bukan pengganti `@relgeo/core` bila Anda ingin integrasi runtime langsung ke kode.
 
 Gunakan CLI bila kebutuhan Anda adalah:
 
