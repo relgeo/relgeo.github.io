@@ -4,6 +4,8 @@ Status: draft untuk dibahas.
 
 Dokumen ini menetapkan aturan visual untuk website `relgeo.github.io`. Tujuannya adalah menjaga website tetap padat informasi, mudah dipindai, dan konsisten pada viewport desktop maupun mobile.
 
+Landing page memiliki arah editorial-teknis yang lebih tegas daripada halaman dokumentasi. Ia tidak memakai rounded sebagai default dan tidak menampilkan demo teknis yang belum cukup matang sebagai dekorasi.
+
 ## 1. Prinsip Utama
 
 1. Konten penting harus terlihat secepat mungkin tanpa scroll yang tidak perlu.
@@ -12,6 +14,8 @@ Dokumen ini menetapkan aturan visual untuk website `relgeo.github.io`. Tujuannya
 4. Hierarki informasi ditentukan oleh ukuran, posisi, dan kontras; bukan dengan memperbesar semua elemen.
 5. Desktop lebar tidak boleh membuat komponen tumbuh tanpa batas.
 6. Setiap keputusan visual harus tetap mendukung akses keyboard, fokus yang terlihat, dan keterbacaan.
+7. Bentuk mengikuti fungsi: rounded hanya dipakai jika membantu affordance atau pengelompokan informasi.
+8. Landing page menggunakan artwork statis; highlighter, viewer, source code, dan render interaktif berada di playground atau dokumentasi.
 
 ## 2. Anggaran Viewport
 
@@ -75,11 +79,14 @@ Aturan praktis:
 - panjang baris body target `60–80 karakter`;
 - heading tidak boleh mengambil sebagian besar viewport jika aksi utama belum terlihat.
 
-## 7. Card dan Panel
+## 7. Bentuk, Card, dan Panel
 
 - card dipakai untuk mengelompokkan informasi yang memang berhubungan;
 - target padding card desktop `20–28px`;
-- gunakan satu radius utama dan satu radius kecil;
+- jangan memakai radius sebagai default global;
+- code block, source panel, preview canvas, diagram, dan panel teknis memakai sudut kotak atau radius sangat kecil;
+- card informasional boleh memakai radius kecil hanya jika benar-benar membantu pengelompokan;
+- tombol dan navbar tidak otomatis berbentuk pill;
 - border, shadow, dan background harus ringan dan tidak bersaing dengan konten;
 - hindari card di dalam card jika tidak ada hierarki yang jelas;
 - panel samping tidak boleh membuat body utama terlalu sempit;
@@ -100,6 +107,14 @@ Aturan praktis:
 - gunakan grid dua kolom hanya ketika kolom kedua memberi informasi nyata;
 - hero illustration tidak boleh mendorong heading dan aksi utama keluar viewport;
 - nav tetap satu baris pada lebar sekitar 1280px.
+
+### Landing page
+
+- brand memakai treatment font yang sama dengan halaman lain;
+- hero memakai satu artwork statis tanpa UI chrome, source code, atau preview renderer;
+- artwork tidak boleh membawa teks atau label yang bersaing dengan headline;
+- hero cukup memuat headline, konteks singkat, aksi utama, dan artwork;
+- demo interaktif hanya muncul melalui tautan ke playground atau dokumentasi.
 
 ### Mobile dan viewport pendek
 
@@ -135,4 +150,4 @@ Sebelum perubahan visual dianggap selesai, periksa:
 
 ## 12. Batasan Perubahan
 
-Perubahan visual sebaiknya dimulai dari `src/layouts/DocsLayout.astro` sebagai shared layout. Halaman individual hanya boleh memiliki pengecualian jika kebutuhan informasinya benar-benar berbeda dan pengecualian tersebut dijelaskan dalam code review.
+Perubahan visual shared dimulai dari `src/layouts/DocsLayout.astro`. Landing page boleh memiliki pengecualian editorial di `src/pages/[lang]/index.astro`, tetapi pengecualian tersebut harus menjaga prinsip bentuk mengikuti fungsi. Halaman individual hanya boleh memiliki pengecualian jika kebutuhan informasinya benar-benar berbeda dan pengecualian tersebut dijelaskan dalam code review.

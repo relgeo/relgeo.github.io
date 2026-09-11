@@ -57,21 +57,52 @@ const defaultLanguageGateway =
   Astro.site instanceof URL ? new URL('/', Astro.site).toString() : '/';
 const shouldNoIndex = seoMode === 'gateway' || seoMode === 'legacy';
 const socialLocale = activeLang === 'id' ? 'id_ID' : 'en_US';
+const isIndonesian = activeLang === 'id';
+const navigationLabels = isIndonesian
+  ? {
+      primary: 'Navigasi utama',
+      language: 'Bahasa halaman',
+      skip: 'Lewati ke konten',
+      home: 'Beranda',
+      capabilities: 'Kapabilitas',
+      useCases: 'Contoh penggunaan',
+      docs: 'Dokumentasi',
+      languageSpec: 'Spesifikasi bahasa',
+      playground: 'Playground',
+    }
+  : {
+      primary: 'Primary navigation',
+      language: 'Page language',
+      skip: 'Skip to content',
+      home: 'Home',
+      capabilities: 'Capabilities',
+      useCases: 'Use Cases',
+      docs: 'Docs',
+      languageSpec: 'Language Spec',
+      playground: 'Playground',
+    };
 const navItems = variant === 'home'
   ? [
-      { href: activeLang ? `/${activeLang}/why-relgeo/` : '/why-relgeo/', label: 'Why RelGeo' },
-      { href: activeLang ? `/${activeLang}/use-cases/` : '/use-cases/', label: 'Use Cases' },
-      { href: activeLang ? `/${activeLang}/docs/` : '/docs/', label: 'Docs' },
-      { href: '/playground/', label: 'Playground' },
+      { href: activeLang ? `/${activeLang}/why-relgeo/` : '/why-relgeo/', label: isIndonesian ? 'Mengapa RelGeo' : 'Why RelGeo' },
+      { href: activeLang ? `/${activeLang}/use-cases/` : '/use-cases/', label: navigationLabels.useCases },
+      { href: activeLang ? `/${activeLang}/docs/` : '/docs/', label: navigationLabels.docs },
+      { href: '/playground/', label: navigationLabels.playground },
     ]
   : [
-      { href: activeLang ? `/${activeLang}/` : '/', label: 'Home' },
-      { href: activeLang ? `/${activeLang}/current-capabilities/` : '/current-capabilities/', label: 'Capabilities' },
-      { href: activeLang ? `/${activeLang}/use-cases/` : '/use-cases/', label: 'Use Cases' },
-      { href: activeLang ? `/${activeLang}/docs/` : '/docs/', label: 'Docs' },
-      { href: activeLang ? `/${activeLang}/docs/language-spec/` : '/docs/language-spec/', label: 'Language Spec' },
-      { href: '/playground/', label: 'Playground' },
+      { href: activeLang ? `/${activeLang}/` : '/', label: navigationLabels.home },
+      { href: activeLang ? `/${activeLang}/current-capabilities/` : '/current-capabilities/', label: navigationLabels.capabilities },
+      { href: activeLang ? `/${activeLang}/use-cases/` : '/use-cases/', label: navigationLabels.useCases },
+      { href: activeLang ? `/${activeLang}/docs/` : '/docs/', label: navigationLabels.docs },
+      { href: activeLang ? `/${activeLang}/docs/language-spec/` : '/docs/language-spec/', label: navigationLabels.languageSpec },
+      { href: '/playground/', label: navigationLabels.playground },
     ];
+
+const exactActiveNav = navItems.find((item) => pathname === item.href)?.href;
+const activeNavHref =
+  exactActiveNav ??
+  [...navItems]
+    .sort((a, b) => b.href.length - a.href.length)
+    .find((item) => item.href !== '/' && pathname.startsWith(item.href))?.href;
 
 const languageLinks = activeLang
   ? [
@@ -113,10 +144,20 @@ const contentClass = `content content--${variant}`;
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={resolvedDescription} />
+    <meta name="color-scheme" content="light" />
     {shouldNoIndex && <meta name="robots" content="noindex,follow" />}
     <style is:global>
       :root {
         color-scheme: light;
+        --space-1: 4px;
+        --space-2: 8px;
+        --space-3: 12px;
+        --space-4: 16px;
+        --space-5: 24px;
+        --space-6: 32px;
+        --space-7: 40px;
+        --font-sans: "Avenir Next", "IBM Plex Sans", "Segoe UI", sans-serif;
+        --font-mono: "IBM Plex Mono", monospace;
         --bg: #f3ecdd;
         --bg-deep: #ebe0c9;
         --panel: rgba(255, 251, 243, 0.9);
@@ -136,10 +177,10 @@ const contentClass = `content content--${variant}`;
         --preview-bg: #ebf6f7;
         --code-line: rgba(189, 164, 111, 0.58);
         --code-bg: #f4ebd4;
-        --radius-xl: 30px;
-        --radius-lg: 24px;
-        --radius-md: 18px;
-        --radius-sm: 14px;
+        --radius-xl: 20px;
+        --radius-lg: 16px;
+        --radius-md: 12px;
+        --radius-sm: 10px;
         --shadow-soft: 0 18px 48px rgba(20, 30, 48, 0.08);
         --shadow-strong: 0 28px 64px rgba(20, 30, 48, 0.12);
       }
@@ -150,7 +191,7 @@ const contentClass = `content content--${variant}`;
 
       body {
         margin: 0;
-        font-family: "Avenir Next", "IBM Plex Sans", "Segoe UI", sans-serif;
+        font-family: var(--font-sans);
         background:
           radial-gradient(circle at top left, rgba(15, 99, 112, 0.14), transparent 30rem),
           radial-gradient(circle at 85% 12%, rgba(180, 145, 71, 0.1), transparent 22rem),
@@ -197,16 +238,44 @@ const contentClass = `content content--${variant}`;
 
       a {
         color: var(--accent);
+        text-underline-offset: 3px;
+      }
+
+      a:focus-visible,
+      button:focus-visible,
+      [tabindex]:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+        box-shadow: 0 0 0 5px rgba(220, 237, 239, 0.92);
+      }
+
+      .skip-link {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 100;
+        transform: translateY(-180%);
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: var(--accent-deep);
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+        transition: transform 160ms ease;
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
       }
 
       .shell {
         width: min(1180px, calc(100vw - 32px));
         margin: 0 auto;
-        padding: 18px 0 72px;
+        padding: var(--space-2) 0 var(--space-7);
       }
 
       .shell--home {
-        width: min(1240px, calc(100vw - 32px));
+        width: min(1180px, calc(100vw - 32px));
       }
 
       .topbar {
@@ -214,14 +283,14 @@ const contentClass = `content content--${variant}`;
         flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
-        gap: 16px;
+        gap: var(--space-3);
         position: sticky;
-        top: 14px;
+        top: var(--space-2);
         z-index: 30;
-        margin-bottom: 24px;
-        padding: 14px 18px;
+        margin-bottom: var(--space-4);
+        padding: 8px 14px;
         border: 1px solid rgba(193, 176, 137, 0.44);
-        border-radius: 999px;
+        border-radius: var(--radius-lg);
         background: rgba(250, 245, 232, 0.98);
         backdrop-filter: blur(20px);
         box-shadow: 0 18px 38px rgba(23, 32, 51, 0.08);
@@ -230,9 +299,9 @@ const contentClass = `content content--${variant}`;
       .brand {
         display: inline-flex;
         align-items: center;
-        min-height: 42px;
+        min-height: 36px;
         padding: 0 2px;
-        font: 800 0.95rem/1 "IBM Plex Sans", sans-serif;
+        font: 800 0.88rem/1 "IBM Plex Sans", sans-serif;
         letter-spacing: 0.11em;
         text-transform: uppercase;
         text-decoration: none;
@@ -242,20 +311,20 @@ const contentClass = `content content--${variant}`;
       .nav {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: var(--space-2);
       }
 
       .topbar-meta {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: 12px;
+        gap: var(--space-3);
       }
 
       .nav a {
         padding: 8px 12px;
         border: 1px solid transparent;
-        border-radius: 999px;
+        border-radius: var(--radius-lg);
         text-decoration: none;
         color: var(--muted);
         font: 600 0.92rem/1.2 "IBM Plex Sans", sans-serif;
@@ -272,6 +341,14 @@ const contentClass = `content content--${variant}`;
         background: rgba(255, 255, 255, 0.7);
         color: var(--ink);
         transform: translateY(-1px);
+      }
+
+      .nav a:focus-visible,
+      .lang-switcher a:focus-visible,
+      .docs-sidebar-link:focus-visible,
+      .button:focus-visible {
+        transform: translateY(-1px);
+        border-color: var(--accent);
       }
 
       .nav a[aria-current="page"] {
@@ -295,8 +372,8 @@ const contentClass = `content content--${variant}`;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-width: 40px;
-        min-height: 32px;
+        min-width: 36px;
+        min-height: 28px;
         padding: 0 10px;
         text-decoration: none;
         color: var(--muted);
@@ -308,11 +385,11 @@ const contentClass = `content content--${variant}`;
       .lang-switcher a[aria-current="true"] {
         background: var(--accent-soft);
         color: var(--accent-ink);
-        border-radius: 999px;
+        border-radius: var(--radius-lg);
       }
 
       .page-header {
-        padding: 30px;
+        padding: 22px;
         border: 1px solid var(--line);
         border-radius: var(--radius-xl);
         background: linear-gradient(180deg, rgba(255, 253, 247, 0.97), rgba(255, 249, 236, 0.95));
@@ -320,7 +397,7 @@ const contentClass = `content content--${variant}`;
       }
 
       .page-header--home {
-        padding: 38px 34px 34px;
+        padding: 26px 24px 24px;
         background:
           radial-gradient(circle at top right, rgba(15, 99, 112, 0.14), transparent 24rem),
           linear-gradient(180deg, rgba(255, 253, 247, 0.98), rgba(250, 245, 232, 0.96));
@@ -340,7 +417,7 @@ const contentClass = `content content--${variant}`;
 
       h1 {
         margin: 0;
-        font-size: clamp(2.2rem, 6vw, 4rem);
+        font-size: clamp(2rem, 5vw, 3.35rem);
         line-height: 0.92;
         font-family: "Avenir Next", "IBM Plex Sans", "Segoe UI", sans-serif;
         font-weight: 800;
@@ -349,21 +426,21 @@ const contentClass = `content content--${variant}`;
 
       .page-header--docs h1,
       .page-header--spec h1 {
-        font-size: clamp(2rem, 5vw, 3.25rem);
+        font-size: clamp(1.9rem, 4vw, 3rem);
       }
 
       .lead {
         max-width: 52rem;
-        margin: 16px 0 0;
+        margin: 12px 0 0;
         font-size: 1.05rem;
-        line-height: 1.75;
+        line-height: 1.55;
         color: var(--muted);
       }
 
       .content {
         display: grid;
-        gap: 24px;
-        margin-top: 24px;
+        gap: var(--space-5);
+        margin-top: var(--space-5);
       }
 
       .content--spec {
@@ -371,11 +448,11 @@ const contentClass = `content content--${variant}`;
       }
 
       .content--home {
-        gap: 28px;
+        gap: 20px;
       }
 
       .card {
-        padding: 28px;
+        padding: 22px;
         border: 1px solid var(--line);
         border-radius: var(--radius-xl);
         background: var(--panel);
@@ -402,7 +479,7 @@ const contentClass = `content content--${variant}`;
       .button-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 12px;
+        gap: var(--space-3);
       }
 
       .button {
@@ -416,7 +493,7 @@ const contentClass = `content content--${variant}`;
         background: rgba(255, 255, 255, 0.84);
         text-decoration: none;
         color: var(--ink);
-        font: 700 0.92rem/1.2 "IBM Plex Sans", sans-serif;
+        font: 700 0.92rem/1.2 var(--font-sans);
         box-shadow: 0 10px 20px rgba(23, 32, 51, 0.05);
         transition:
           transform 180ms ease,
@@ -710,7 +787,7 @@ const contentClass = `content content--${variant}`;
       .relgeo-hl__code {
         display: grid;
         gap: 0;
-        font: 0.93rem/1.68 "IBM Plex Mono", monospace;
+        font: 0.93rem/1.68 var(--font-mono);
         letter-spacing: -0.01em;
         color: #163047;
       }
@@ -933,7 +1010,7 @@ const contentClass = `content content--${variant}`;
 
       .home-intro h2 {
         max-width: 14ch;
-        font-size: clamp(2.4rem, 5vw, 4.3rem);
+        font-size: clamp(2.2rem, 4vw, 3.5rem);
         line-height: 0.98;
         letter-spacing: -0.045em;
       }
@@ -960,7 +1037,7 @@ const contentClass = `content content--${variant}`;
         gap: 6px;
         padding: 16px 16px 15px;
         border: 1px solid rgba(175, 158, 118, 0.36);
-        border-radius: 20px;
+        border-radius: var(--radius-md);
         background:
           linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(248, 243, 232, 0.76));
         box-shadow:
@@ -1363,6 +1440,23 @@ const contentClass = `content content--${variant}`;
       @media (max-width: 899px) {
         .topbar {
           border-radius: 28px;
+          align-items: flex-start;
+          padding: 12px 14px;
+        }
+
+        .topbar-meta {
+          width: 100%;
+          align-items: flex-start;
+        }
+
+        .nav {
+          flex: 1 1 100%;
+          gap: 6px;
+        }
+
+        .nav a {
+          padding: 8px 10px;
+          font-size: 0.84rem;
         }
 
         .page-header,
@@ -1374,19 +1468,43 @@ const contentClass = `content content--${variant}`;
           max-width: none;
         }
       }
+
+      @media (max-width: 640px) {
+        .shell,
+        .shell--home {
+          width: min(100% - 20px, 1280px);
+        }
+
+        .topbar-meta {
+          gap: 8px;
+        }
+
+        .nav {
+          overflow-x: auto;
+          flex-wrap: nowrap;
+          padding-bottom: 2px;
+          scrollbar-width: thin;
+        }
+
+        .nav a {
+          flex: 0 0 auto;
+        }
+
+        .lang-switcher {
+          flex: 0 0 auto;
+        }
+      }
     </style>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">{navigationLabels.skip}</a>
     <div class={shellClass}>
       <div class="topbar">
         <a class="brand" href={activeLang ? `/${activeLang}/` : '/'}>RelGeo</a>
         <div class="topbar-meta">
-          <nav class="nav" aria-label="Primary">
-            {navItems.map((item) => {
-              const isActive =
-                item.href === '/'
-                  ? pathname === '/'
-                  : pathname === item.href || pathname.startsWith(item.href);
+              <nav class="nav" aria-label={navigationLabels.primary}>
+                {navItems.map((item) => {
+              const isActive = item.href === activeNavHref;
               return (
                 <a href={item.href} aria-current={isActive ? 'page' : undefined}>
                   {item.label}
@@ -1395,9 +1513,9 @@ const contentClass = `content content--${variant}`;
             })}
           </nav>
           {languageLinks.length > 0 && (
-            <nav class="lang-switcher" aria-label="Language">
+            <nav class="lang-switcher" aria-label={navigationLabels.language}>
               {languageLinks.map((item) => (
-                <a href={item.href} aria-current={item.active ? 'true' : undefined}>
+                <a href={item.href} aria-current={item.active ? 'page' : undefined}>
                   {item.label}
                 </a>
               ))}
@@ -1412,7 +1530,7 @@ const contentClass = `content content--${variant}`;
           <p class="lead">{lead}</p>
         </header>
       )}
-      <main class={contentClass}>
+      <main id="main-content" class={contentClass}>
         <slot />
       </main>
       <footer class="site-footer">

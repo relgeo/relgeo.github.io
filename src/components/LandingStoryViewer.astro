@@ -87,7 +87,7 @@ const initialStep = stepPayload[0];
     data-steps={JSON.stringify(stepPayload)}
   >
     <div class="landing-story-viewer__meta">
-      <div class="landing-story-viewer__step">
+      <div class="landing-story-viewer__step" aria-live="polite" aria-atomic="true">
         <span data-story-step-counter>{labels.step} {initialStep.stepNumber}/{initialStep.stepCount}</span>
         <strong data-story-step-label>{initialStep.label}</strong>
       </div>

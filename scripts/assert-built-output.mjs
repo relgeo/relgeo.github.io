@@ -69,9 +69,8 @@ for (const lang of ['id', 'en']) {
   const landingPath = `${lang}/index.html`;
   const landing = await readPage(landingPath);
   assertCommonMetadata(landing, landingPath, lang);
-  assert.match(landing, /data-landing-story-viewer/, `${landingPath}: story viewer`);
-  assert.match(landing, /data-definition-label=/, `${landingPath}: definition label`);
-  assert.match(landing, /data-steps=/, `${landingPath}: serialized story`);
+  assert.match(landing, /src="\/images\/relgeo-hero-v2\.png"/, `${landingPath}: static hero artwork`);
+  assert.doesNotMatch(landing, /data-landing-story-viewer|data-steps=|landing-source-code/, `${landingPath}: landing must not embed interactive demo`);
 
   const markdownPath = `${lang}/docs/markdown-surfaces/index.html`;
   const markdown = await readPage(markdownPath);
