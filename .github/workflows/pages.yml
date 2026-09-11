@@ -47,7 +47,7 @@ jobs:
           cache: pnpm
 
       - name: Install website dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Install playground dependencies
         working-directory: .ci/playground
