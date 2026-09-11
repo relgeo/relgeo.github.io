@@ -1,0 +1,88 @@
+name: Deploy RelGeo website
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout website
+        uses: actions/checkout@v4
+
+      - name: Checkout playground
+        uses: actions/checkout@v4
+        with:
+          repository: relgeo/playground
+          path: .ci/playground
+
+      - name: Checkout spec
+        uses: actions/checkout@v4
+        with:
+          repository: relgeo/spec
+          path: .ci/spec
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install website dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Install playground dependencies
+        working-directory: .ci/playground
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build playground
+        working-directory: .ci/playground
+        run: pnpm build
+
+      - name: Build website
+        run: pnpm build
+        env:
+          RELGEO_DOCS_SITE_URL: https://relgeo.github.io
+          RELGEO_DOCS_BASE: /
+          RELGEO_SPEC_PATH: .ci/spec/id
+
+      - name: Add playground artifact
+        run: mkdir -p dist/playground && cp -R .ci/playground/dist/. dist/playground/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

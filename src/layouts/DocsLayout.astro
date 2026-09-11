@@ -1,0 +1,1422 @@
+---
+import type { SupportedLang } from '../lib/i18n';
+
+const {
+  title = 'RelGeo Docs',
+  eyebrow = 'RelGeo Documentation',
+  lead = 'Markdown-first documentation surface for RelGeo, prepared for Astro, GitHub Pages, and future `remark` plugins for source highlighting and preview embedding.',
+  description,
+  variant = 'docs',
+  showPageHeader = true,
+  lang,
+  localizedSlug = '',
+  seoMode = 'localized',
+  canonicalPath,
+} = Astro.props;
+
+const pathname = Astro.url.pathname;
+const resolvedDescription =
+  typeof description === 'string' && description.trim().length > 0 ? description : lead;
+const normalizedLocalizedSlug =
+  typeof localizedSlug === 'string' ? localizedSlug.replace(/^\/+|\/+$/g, '') : '';
+const activeLang = (lang ?? null) as SupportedLang | null;
+const resolvedCanonicalPath =
+  typeof canonicalPath === 'string' && canonicalPath.length > 0
+    ? canonicalPath
+    : activeLang
+      ? normalizedLocalizedSlug
+        ? `/${activeLang}/${normalizedLocalizedSlug}/`
+        : `/${activeLang}/`
+      : pathname;
+const absoluteCanonical =
+  Astro.site instanceof URL ? new URL(resolvedCanonicalPath, Astro.site).toString() : null;
+const alternateLinks =
+  activeLang && seoMode === 'localized'
+    ? [
+        {
+          lang: 'id',
+          href:
+            Astro.site instanceof URL
+              ? new URL(normalizedLocalizedSlug ? `/id/${normalizedLocalizedSlug}/` : '/id/', Astro.site).toString()
+              : normalizedLocalizedSlug
+                ? `/id/${normalizedLocalizedSlug}/`
+                : '/id/',
+        },
+        {
+          lang: 'en',
+          href:
+            Astro.site instanceof URL
+              ? new URL(normalizedLocalizedSlug ? `/en/${normalizedLocalizedSlug}/` : '/en/', Astro.site).toString()
+              : normalizedLocalizedSlug
+                ? `/en/${normalizedLocalizedSlug}/`
+                : '/en/',
+        },
+      ]
+    : [];
+const defaultLanguageGateway =
+  Astro.site instanceof URL ? new URL('/', Astro.site).toString() : '/';
+const shouldNoIndex = seoMode === 'gateway' || seoMode === 'legacy';
+const socialLocale = activeLang === 'id' ? 'id_ID' : 'en_US';
+const navItems = variant === 'home'
+  ? [
+      { href: activeLang ? `/${activeLang}/why-relgeo/` : '/why-relgeo/', label: 'Why RelGeo' },
+      { href: activeLang ? `/${activeLang}/use-cases/` : '/use-cases/', label: 'Use Cases' },
+      { href: activeLang ? `/${activeLang}/docs/` : '/docs/', label: 'Docs' },
+    ]
+  : [
+      { href: activeLang ? `/${activeLang}/` : '/', label: 'Home' },
+      { href: activeLang ? `/${activeLang}/current-capabilities/` : '/current-capabilities/', label: 'Capabilities' },
+      { href: activeLang ? `/${activeLang}/use-cases/` : '/use-cases/', label: 'Use Cases' },
+      { href: activeLang ? `/${activeLang}/docs/` : '/docs/', label: 'Docs' },
+      { href: activeLang ? `/${activeLang}/docs/language-spec/` : '/docs/language-spec/', label: 'Language Spec' },
+    ];
+
+const languageLinks = activeLang
+  ? [
+      {
+        href: normalizedLocalizedSlug ? `/id/${normalizedLocalizedSlug}/` : '/id/',
+        label: 'ID',
+        active: activeLang === 'id',
+      },
+      {
+        href: normalizedLocalizedSlug ? `/en/${normalizedLocalizedSlug}/` : '/en/',
+        label: 'EN',
+        active: activeLang === 'en',
+      },
+    ]
+  : [];
+
+const shellClass = `shell shell--${variant}`;
+const heroClass = `page-header page-header--${variant}`;
+const contentClass = `content content--${variant}`;
+---
+
+<!doctype html>
+<html lang={activeLang ?? 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={resolvedDescription} />
+    <meta name="theme-color" content="#f3ecdd" />
+    {absoluteCanonical && <link rel="canonical" href={absoluteCanonical} />}
+    {alternateLinks.map((item) => <link rel="alternate" hreflang={item.lang} href={item.href} />)}
+    {alternateLinks.length > 0 && <link rel="alternate" hreflang="x-default" href={defaultLanguageGateway} />}
+    {absoluteCanonical && <meta property="og:url" content={absoluteCanonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="RelGeo" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={resolvedDescription} />
+    <meta property="og:locale" content={socialLocale} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={resolvedDescription} />
+    {shouldNoIndex && <meta name="robots" content="noindex,follow" />}
+    <style is:global>
+      :root {
+        color-scheme: light;
+        --bg: #f3ecdd;
+        --bg-deep: #ebe0c9;
+        --panel: rgba(255, 251, 243, 0.9);
+        --panel-strong: rgba(255, 254, 249, 0.96);
+        --panel-soft: rgba(246, 236, 216, 0.82);
+        --ink: #162033;
+        --muted: #586479;
+        --muted-strong: #404d61;
+        --line: rgba(197, 181, 143, 0.46);
+        --line-strong: rgba(170, 149, 102, 0.56);
+        --accent: #0f6370;
+        --accent-deep: #0b4652;
+        --accent-soft: #dcedef;
+        --accent-ink: #0f3741;
+        --accent-glow: rgba(15, 99, 112, 0.16);
+        --preview-line: rgba(145, 176, 181, 0.5);
+        --preview-bg: #ebf6f7;
+        --code-line: rgba(189, 164, 111, 0.58);
+        --code-bg: #f4ebd4;
+        --radius-xl: 30px;
+        --radius-lg: 24px;
+        --radius-md: 18px;
+        --radius-sm: 14px;
+        --shadow-soft: 0 18px 48px rgba(20, 30, 48, 0.08);
+        --shadow-strong: 0 28px 64px rgba(20, 30, 48, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Avenir Next", "IBM Plex Sans", "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(15, 99, 112, 0.14), transparent 30rem),
+          radial-gradient(circle at 85% 12%, rgba(180, 145, 71, 0.1), transparent 22rem),
+          linear-gradient(180deg, #faf5e8 0%, var(--bg) 34%, var(--bg-deep) 100%);
+        color: var(--ink);
+        min-height: 100vh;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -2;
+      }
+
+      body::before {
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.42)),
+          repeating-linear-gradient(
+            90deg,
+            transparent 0,
+            transparent 79px,
+            rgba(112, 126, 148, 0.04) 79px,
+            rgba(112, 126, 148, 0.04) 80px
+          ),
+          repeating-linear-gradient(
+            0deg,
+            transparent 0,
+            transparent 79px,
+            rgba(112, 126, 148, 0.04) 79px,
+            rgba(112, 126, 148, 0.04) 80px
+          );
+        opacity: 0.38;
+      }
+
+      body::after {
+        background:
+          radial-gradient(circle at 22% 18%, rgba(15, 99, 112, 0.08), transparent 16rem),
+          radial-gradient(circle at 78% 82%, rgba(180, 145, 71, 0.08), transparent 20rem);
+        z-index: -1;
+      }
+
+      a {
+        color: var(--accent);
+      }
+
+      .shell {
+        width: min(1180px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 18px 0 72px;
+      }
+
+      .shell--home {
+        width: min(1240px, calc(100vw - 32px));
+      }
+
+      .topbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        position: sticky;
+        top: 14px;
+        z-index: 30;
+        margin-bottom: 24px;
+        padding: 14px 18px;
+        border: 1px solid rgba(193, 176, 137, 0.44);
+        border-radius: 999px;
+        background: rgba(250, 245, 232, 0.98);
+        backdrop-filter: blur(20px);
+        box-shadow: 0 18px 38px rgba(23, 32, 51, 0.08);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        min-height: 42px;
+        padding: 0 2px;
+        font: 800 0.95rem/1 "IBM Plex Sans", sans-serif;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--ink);
+      }
+
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .topbar-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .nav a {
+        padding: 8px 12px;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        text-decoration: none;
+        color: var(--muted);
+        font: 600 0.92rem/1.2 "IBM Plex Sans", sans-serif;
+        transition:
+          background-color 180ms ease,
+          border-color 180ms ease,
+          color 180ms ease,
+          transform 180ms ease,
+          box-shadow 180ms ease;
+      }
+
+      .nav a:hover {
+        border-color: rgba(171, 151, 107, 0.42);
+        background: rgba(255, 255, 255, 0.7);
+        color: var(--ink);
+        transform: translateY(-1px);
+      }
+
+      .nav a[aria-current="page"] {
+        border-color: rgba(150, 129, 82, 0.36);
+        background: linear-gradient(180deg, rgba(231, 242, 244, 0.96), rgba(220, 237, 239, 0.94));
+        color: var(--accent-ink);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      }
+
+      .lang-switcher {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .lang-switcher a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        min-height: 32px;
+        padding: 0 10px;
+        text-decoration: none;
+        color: var(--muted);
+        font: 700 0.78rem/1 "IBM Plex Sans", sans-serif;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .lang-switcher a[aria-current="true"] {
+        background: var(--accent-soft);
+        color: var(--accent-ink);
+        border-radius: 999px;
+      }
+
+      .page-header {
+        padding: 30px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-xl);
+        background: linear-gradient(180deg, rgba(255, 253, 247, 0.97), rgba(255, 249, 236, 0.95));
+        box-shadow: var(--shadow-soft);
+      }
+
+      .page-header--home {
+        padding: 38px 34px 34px;
+        background:
+          radial-gradient(circle at top right, rgba(15, 99, 112, 0.14), transparent 24rem),
+          linear-gradient(180deg, rgba(255, 253, 247, 0.98), rgba(250, 245, 232, 0.96));
+      }
+
+      .page-header--spec {
+        background: linear-gradient(180deg, rgba(255, 253, 247, 0.97), rgba(246, 239, 225, 0.95));
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        font: 700 0.79rem/1.2 "IBM Plex Sans", sans-serif;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2.2rem, 6vw, 4rem);
+        line-height: 0.92;
+        font-family: "Avenir Next", "IBM Plex Sans", "Segoe UI", sans-serif;
+        font-weight: 800;
+        letter-spacing: -0.05em;
+      }
+
+      .page-header--docs h1,
+      .page-header--spec h1 {
+        font-size: clamp(2rem, 5vw, 3.25rem);
+      }
+
+      .lead {
+        max-width: 52rem;
+        margin: 16px 0 0;
+        font-size: 1.05rem;
+        line-height: 1.75;
+        color: var(--muted);
+      }
+
+      .content {
+        display: grid;
+        gap: 24px;
+        margin-top: 24px;
+      }
+
+      .content--spec {
+        gap: 20px;
+      }
+
+      .content--home {
+        gap: 28px;
+      }
+
+      .card {
+        padding: 28px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-xl);
+        background: var(--panel);
+        backdrop-filter: blur(6px);
+        box-shadow: var(--shadow-soft);
+      }
+
+      .card h2,
+      .card h3 {
+        margin-top: 0;
+      }
+
+      h2,
+      h3 {
+        font-family: "Avenir Next", "IBM Plex Sans", "Segoe UI", sans-serif;
+        letter-spacing: -0.025em;
+      }
+
+      .stack {
+        display: grid;
+        gap: 12px;
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0 18px;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.84);
+        text-decoration: none;
+        color: var(--ink);
+        font: 700 0.92rem/1.2 "IBM Plex Sans", sans-serif;
+        box-shadow: 0 10px 20px rgba(23, 32, 51, 0.05);
+        transition:
+          transform 180ms ease,
+          box-shadow 180ms ease,
+          border-color 180ms ease,
+          background-color 180ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 24px rgba(23, 32, 51, 0.08);
+        border-color: rgba(150, 129, 82, 0.54);
+      }
+
+      .button.primary {
+        border-color: var(--accent);
+        background: linear-gradient(180deg, #12839a, var(--accent));
+        color: #f8fcfc;
+        box-shadow: 0 16px 28px rgba(15, 99, 112, 0.22);
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .pill {
+        padding: 6px 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.76);
+        color: var(--muted);
+        font: 700 0.78rem/1.2 "IBM Plex Sans", sans-serif;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .home-pills {
+        gap: 8px;
+        margin-top: -2px;
+      }
+
+      .home-pills .pill {
+        background: rgba(255, 255, 255, 0.7);
+        border-color: rgba(171, 151, 107, 0.34);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+      }
+
+      .feature-grid,
+      .section-grid,
+      .split-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .feature-card,
+      .info-card {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(249, 244, 231, 0.84));
+        box-shadow: 0 10px 24px rgba(23, 32, 51, 0.04);
+        transition:
+          transform 180ms ease,
+          box-shadow 180ms ease,
+          border-color 180ms ease;
+      }
+
+      .feature-card:hover,
+      .info-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(171, 151, 107, 0.46);
+        box-shadow: 0 16px 32px rgba(23, 32, 51, 0.07);
+      }
+
+      .feature-card h3,
+      .info-card h3 {
+        margin: 0 0 8px;
+      }
+
+      .kicker {
+        margin: 0 0 8px;
+        color: var(--muted);
+        font: 700 0.76rem/1.2 "IBM Plex Sans", sans-serif;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .hero-grid {
+        display: grid;
+        gap: 22px;
+      }
+
+      .hero-panel {
+        padding: 22px;
+        border: 1px solid var(--preview-line);
+        border-radius: var(--radius-lg);
+        background:
+          radial-gradient(circle at top right, rgba(15, 99, 112, 0.08), transparent 16rem),
+          linear-gradient(180deg, rgba(235, 246, 247, 0.82), rgba(255, 253, 247, 0.9));
+      }
+
+      .hero-panel--home {
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+      }
+
+      .hero-panel h2 {
+        margin-top: 0;
+      }
+
+      .meta-list {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      .article {
+        line-height: 1.78;
+      }
+
+      .article :is(h1, h2, h3) {
+        line-height: 1.15;
+      }
+
+      .article pre {
+        overflow-x: auto;
+        padding: 16px;
+        border: 1px solid var(--code-line);
+        border-radius: var(--radius-md);
+        background: #f1ecdf;
+      }
+
+      .article code {
+        font-family: "IBM Plex Mono", monospace;
+      }
+
+      .docs-context,
+      .docs-next,
+      .state-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .docs-context-card {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: var(--panel-soft);
+      }
+
+      .docs-context-card--spec {
+        background: linear-gradient(180deg, rgba(246, 240, 226, 0.94), rgba(241, 235, 220, 0.94));
+      }
+
+      .docs-context-card h3 {
+        margin: 0 0 8px;
+      }
+
+      .spec-shell {
+        display: grid;
+        gap: 20px;
+      }
+
+      .docs-shell {
+        display: grid;
+        gap: 20px;
+      }
+
+      .docs-sidebar,
+      .spec-sidebar {
+        align-self: start;
+        position: relative;
+      }
+
+      .docs-sidebar h2,
+      .docs-sidebar h3,
+      .spec-sidebar h2,
+      .spec-sidebar h3 {
+        margin-top: 0;
+      }
+
+      .docs-sidebar ul,
+      .spec-sidebar ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      .docs-sidebar li + li,
+      .spec-sidebar li + li {
+        margin-top: 6px;
+      }
+
+      .docs-sidebar section + section,
+      .spec-sidebar section + section {
+        margin-top: 14px;
+      }
+
+      .docs-sidebar-nav {
+        display: grid;
+        gap: 8px;
+      }
+
+      .docs-sidebar-link {
+        display: block;
+        padding: 10px 12px;
+        border: 1px solid transparent;
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.42);
+        transition:
+          transform 180ms ease,
+          background-color 180ms ease,
+          border-color 180ms ease,
+          box-shadow 180ms ease;
+      }
+
+      .docs-sidebar-link:hover {
+        transform: translateY(-1px);
+        border-color: rgba(171, 151, 107, 0.38);
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 8px 20px rgba(23, 32, 51, 0.05);
+      }
+
+      .docs-sidebar-link strong {
+        display: block;
+        margin-bottom: 4px;
+        font: 700 0.9rem/1.35 "IBM Plex Sans", sans-serif;
+      }
+
+      .docs-sidebar-link span {
+        display: block;
+        color: var(--muted);
+        font: 0.86rem/1.55 "IBM Plex Sans", sans-serif;
+      }
+
+      .docs-sidebar-link[aria-current="page"] {
+        border-color: var(--line-strong);
+        background: rgba(220, 238, 240, 0.72);
+      }
+
+      .spec-nav {
+        display: grid;
+        gap: 12px;
+      }
+
+      .spec-nav-card {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: #f6f0e2;
+      }
+
+      .spec-nav-card strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .spec-section-note {
+        margin: 0;
+        color: var(--muted);
+        font: 600 0.86rem/1.55 "IBM Plex Sans", sans-serif;
+      }
+
+      .relgeo-hl,
+      .relgeo-preview__canvas {
+        overflow-x: auto;
+      }
+
+      .relgeo-hl {
+        position: relative;
+        padding: 18px 20px;
+        border: 1px solid rgba(195, 183, 152, 0.88);
+        border-radius: 22px;
+        background:
+          linear-gradient(180deg, rgba(255, 252, 246, 0.99), rgba(247, 240, 224, 0.96));
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.72),
+          0 14px 28px rgba(23, 32, 51, 0.07);
+      }
+
+      .relgeo-hl::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 50px;
+        width: 1px;
+        background: linear-gradient(180deg, rgba(205, 191, 159, 0.12), rgba(205, 191, 159, 0.48), rgba(205, 191, 159, 0.12));
+        pointer-events: none;
+      }
+
+      .relgeo-hl__code {
+        display: grid;
+        gap: 0;
+        font: 0.93rem/1.68 "IBM Plex Mono", monospace;
+        letter-spacing: -0.01em;
+        color: #163047;
+      }
+
+      .rg-line {
+        display: block;
+        white-space: pre;
+        min-height: 1.68em;
+        padding-left: 3rem;
+        position: relative;
+        border-radius: 4px;
+      }
+
+      .rg-line::before {
+        content: attr(data-line);
+        position: absolute;
+        left: 0;
+        width: 2rem;
+        color: rgba(123, 107, 75, 0.82);
+        text-align: right;
+        opacity: 0.72;
+        font-size: 0.78em;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      .relgeo-hl__token--keyword,
+      .relgeo-hl__token--container-keyword {
+        color: #0f5b72;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+      }
+
+      .relgeo-hl__token--key,
+      .relgeo-hl__token--parameter-key,
+      .relgeo-hl__token--component-param-key {
+        color: #1b6280;
+      }
+
+      .relgeo-hl__token--geometry-key {
+        color: #0f5570;
+        font-weight: 600;
+      }
+
+      .relgeo-hl__token--meta-key,
+      .relgeo-hl__token--meta-preset-key,
+      .relgeo-hl__token--presentation-key {
+        color: #6a4c13;
+        font-weight: 600;
+      }
+
+      .relgeo-hl__token--layout-key {
+        color: #5b3d8d;
+        font-weight: 600;
+      }
+
+      .relgeo-hl__token--enum-value,
+      .relgeo-hl__token--selector {
+        color: #8a2f5b;
+        font-weight: 600;
+      }
+
+      .relgeo-hl__token--compat-alias {
+        color: #8a6d1f;
+        text-decoration: underline dotted;
+        text-underline-offset: 0.14em;
+        text-decoration-thickness: 1px;
+      }
+
+      .relgeo-hl__token--object-type,
+      .relgeo-hl__token--function,
+      .relgeo-hl__token--query-function,
+      .relgeo-hl__token--math-function,
+      .relgeo-hl__token--collection-function {
+        color: #8b3f1f;
+        font-weight: 600;
+      }
+
+      .relgeo-hl__token--object-id,
+      .relgeo-hl__token--reference,
+      .relgeo-hl__token--anchor {
+        color: #4e3ca7;
+      }
+
+      .relgeo-hl__token--object-id {
+        font-weight: 700;
+      }
+
+      .relgeo-hl__token--reference {
+        color: #5b36a8;
+      }
+
+      .relgeo-hl__token--string {
+        color: #16724b;
+      }
+
+      .relgeo-hl__token--number,
+      .relgeo-hl__token--unit,
+      .relgeo-hl__token--angle,
+      .relgeo-hl__token--boolean {
+        color: #9a5a00;
+      }
+
+      .relgeo-hl__token--operator,
+      .relgeo-hl__token--punctuation {
+        color: #516173;
+        opacity: 0.9;
+      }
+
+      .relgeo-hl__token--comment {
+        color: #6f7a6b;
+        font-style: italic;
+        opacity: 0.96;
+      }
+
+      @media (max-width: 640px) {
+        .relgeo-hl {
+          padding: 14px 14px 14px 12px;
+        }
+
+        .relgeo-hl::before {
+          inset: 0 auto 0 42px;
+        }
+
+        .rg-line {
+          padding-left: 2.55rem;
+        }
+
+        .rg-line::before {
+          width: 1.7rem;
+        }
+      }
+
+      .relgeo-preview__placeholder {
+        padding: 12px 14px;
+        border: 1px dashed #8fb3ba;
+        background: rgba(255, 255, 255, 0.8);
+        color: #35515d;
+        font: 0.94rem/1.55 "IBM Plex Sans", sans-serif;
+      }
+
+      .relgeo-preview__canvas {
+        display: block;
+        padding: 18px;
+        border: 1px solid var(--preview-line);
+        border-radius: 22px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(242, 249, 249, 0.96));
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.68),
+          0 14px 28px rgba(15, 99, 112, 0.08);
+      }
+
+      .relgeo-preview__canvas svg {
+        width: 100%;
+        height: auto;
+      }
+
+      .relgeo-preview__image {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .code {
+        overflow-x: auto;
+        padding: 16px;
+        border: 1px solid var(--code-line);
+        background: var(--code-bg);
+        font: 0.95rem/1.6 "IBM Plex Mono", monospace;
+      }
+
+      .home-section {
+        position: relative;
+        overflow: hidden;
+        scroll-margin-top: 7.5rem;
+      }
+
+      .home-section::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto auto 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, rgba(10, 90, 105, 0.24), rgba(216, 207, 184, 0));
+        pointer-events: none;
+      }
+
+      .home-section::after {
+        content: "";
+        position: absolute;
+        inset: auto -80px -80px auto;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(15, 99, 112, 0.06), transparent 70%);
+        pointer-events: none;
+      }
+
+      .home-section--hero {
+        background:
+          radial-gradient(circle at top right, rgba(10, 90, 105, 0.06), transparent 28rem),
+          linear-gradient(180deg, rgba(255, 253, 247, 0.98), rgba(249, 244, 231, 0.94));
+      }
+
+      .home-section--proof {
+        background:
+          linear-gradient(180deg, rgba(255, 253, 247, 0.98), rgba(247, 241, 226, 0.94));
+      }
+
+      .home-section--pathway {
+        background:
+          radial-gradient(circle at bottom left, rgba(10, 90, 105, 0.05), transparent 24rem),
+          linear-gradient(180deg, rgba(255, 253, 247, 0.98), rgba(244, 248, 248, 0.95));
+      }
+
+      .home-intro {
+        max-width: 44rem;
+      }
+
+      .home-intro h2 {
+        max-width: 14ch;
+        font-size: clamp(2.4rem, 5vw, 4.3rem);
+        line-height: 0.98;
+        letter-spacing: -0.045em;
+      }
+
+      .home-intro p {
+        max-width: 62ch;
+        color: var(--muted-strong);
+        font-size: 1.04rem;
+      }
+
+      .home-proof-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .home-signal-grid {
+        display: grid;
+        gap: 12px;
+        margin-top: 4px;
+      }
+
+      .signal-card {
+        display: grid;
+        gap: 6px;
+        padding: 16px 16px 15px;
+        border: 1px solid rgba(175, 158, 118, 0.36);
+        border-radius: 20px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(248, 243, 232, 0.76));
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.68),
+          0 10px 22px rgba(23, 32, 51, 0.04);
+      }
+
+      .signal-card strong {
+        font: 700 0.92rem/1.25 "IBM Plex Sans", sans-serif;
+        color: var(--ink);
+      }
+
+      .signal-card span {
+        color: var(--muted);
+        font: 0.89rem/1.55 "IBM Plex Sans", sans-serif;
+      }
+
+      .home-proof-grid .feature-card,
+      .home-proof-grid .info-card {
+        min-height: 100%;
+      }
+
+      .artifact-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .artifact-grid--story {
+        align-items: start;
+      }
+
+      .artifact-card {
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.82);
+        box-shadow: 0 16px 34px rgba(23, 32, 51, 0.06);
+      }
+
+      .artifact-card--source {
+        background: linear-gradient(180deg, rgba(255, 251, 243, 0.98), rgba(247, 240, 224, 0.94));
+      }
+
+      .artifact-card--preview {
+        background: linear-gradient(180deg, rgba(245, 251, 251, 0.98), rgba(232, 245, 246, 0.94));
+      }
+
+      .artifact-surface {
+        margin-top: 12px;
+      }
+
+      .artifact-card--source .artifact-surface {
+        margin-top: 8px;
+      }
+
+      .artifact-card--source .artifact-surface.relgeo-hl {
+        border-radius: 10px;
+      }
+
+      .artifact-note {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font: 0.88rem/1.55 "IBM Plex Sans", sans-serif;
+      }
+
+      .artifact-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .artifact-label {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 0 10px;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.84);
+        color: var(--accent-ink);
+        font: 700 0.74rem/1 "IBM Plex Sans", sans-serif;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+      }
+
+      .preview-frame {
+        padding: 0;
+        border: 0;
+        background: transparent;
+      }
+
+      .artifact-card--preview .relgeo-preview__canvas {
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .artifact-card--preview .relgeo-preview__image,
+      .artifact-card--preview .relgeo-preview__canvas svg {
+        border-radius: 0;
+      }
+
+      .home-section--story {
+        background:
+          radial-gradient(circle at top right, rgba(15, 99, 112, 0.06), transparent 18rem),
+          linear-gradient(180deg, rgba(255, 253, 247, 0.98), rgba(241, 248, 248, 0.94));
+      }
+
+      .landing-story-viewer {
+        --story-panel-height: clamp(22rem, 56vh, 34rem);
+        display: grid;
+        gap: 18px;
+      }
+
+      .landing-story-viewer [data-story-source],
+      .landing-story-viewer [data-story-preview],
+      .landing-story-viewer [data-story-note],
+      .landing-story-viewer [data-story-step-label],
+      .landing-story-viewer [data-story-kind],
+      .landing-story-viewer [data-story-visual] {
+        transition:
+          opacity 160ms ease,
+          transform 160ms ease,
+          filter 160ms ease;
+      }
+
+      .landing-story-viewer.is-updating [data-story-source],
+      .landing-story-viewer.is-updating [data-story-preview],
+      .landing-story-viewer.is-updating [data-story-note],
+      .landing-story-viewer.is-updating [data-story-step-label],
+      .landing-story-viewer.is-updating [data-story-kind],
+      .landing-story-viewer.is-updating [data-story-visual] {
+        opacity: 0.58;
+        filter: saturate(0.84);
+      }
+
+      .landing-story-viewer__meta,
+      .landing-story-viewer__footer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .landing-story-viewer__step {
+        display: grid;
+        gap: 4px;
+      }
+
+      .landing-story-viewer__step span {
+        color: var(--muted);
+        font: 700 0.76rem/1.2 "IBM Plex Sans", sans-serif;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .landing-story-viewer__step strong {
+        font: 700 1rem/1.2 "IBM Plex Sans", sans-serif;
+        color: var(--ink);
+      }
+
+      .landing-story-viewer__pills {
+        gap: 8px;
+      }
+
+      .relgeo-preview__canvas--story {
+        display: grid;
+        place-items: center;
+        height: var(--story-panel-height);
+        min-height: 0;
+        padding: 0;
+        border: 1px solid rgba(145, 176, 181, 0.45);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 251, 251, 0.98));
+      }
+
+      .story-preview-svg {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        height: 100%;
+        max-height: 100%;
+      }
+
+      .landing-story-viewer:not(.is-updating) .story-preview-highlight {
+        animation: storyPreviewReveal 900ms ease-out;
+      }
+
+      .story-site {
+        fill: #edf4e7;
+        stroke: #8ea67f;
+        stroke-width: 1.5;
+      }
+
+      .story-house {
+        fill: #f8f5ef;
+        stroke: #49566a;
+        stroke-width: 2;
+      }
+
+      .story-zone {
+        fill: #eef7fb;
+        stroke: #7ea2b3;
+        stroke-width: 1.25;
+      }
+
+      .story-room {
+        fill: #f7f2e8;
+        stroke: #7b6c53;
+        stroke-width: 1.25;
+      }
+
+      .story-opening {
+        stroke: #264653;
+        stroke-width: 3;
+        stroke-linecap: round;
+      }
+
+      .story-furniture {
+        fill: #e8eef7;
+        stroke: #60738d;
+        stroke-width: 1.25;
+      }
+
+      .story-preview-highlight {
+        filter: drop-shadow(0 0 6px rgba(15, 99, 112, 0.34));
+      }
+
+      .story-preview-highlight--outline {
+        stroke: #0f6370;
+        stroke-width: 3;
+      }
+
+      .story-preview-highlight--wash {
+        stroke: #0f6370;
+        stroke-width: 2.5;
+        fill-opacity: 0.88;
+      }
+
+      .story-preview-highlight--pulse {
+        stroke: #0f6370;
+        stroke-width: 4;
+      }
+
+      .landing-story-viewer .button[disabled] {
+        opacity: 0.5;
+        cursor: default;
+        transform: none;
+        box-shadow: 0 10px 20px rgba(23, 32, 51, 0.05);
+      }
+
+      .artifact-card--source .relgeo-hl {
+        border-color: rgba(195, 183, 152, 0.92);
+        height: var(--story-panel-height);
+        max-height: none;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        overscroll-behavior: contain;
+      }
+
+      .artifact-card--source .relgeo-hl .rg-line {
+        transition:
+          background-color 240ms ease,
+          box-shadow 240ms ease,
+          color 240ms ease;
+      }
+
+      .artifact-card--source .relgeo-hl .rg-line--reveal {
+        background:
+          linear-gradient(90deg, rgba(15, 99, 112, 0.14), rgba(15, 99, 112, 0.04));
+        box-shadow: inset 3px 0 0 rgba(15, 99, 112, 0.46);
+        color: var(--ink);
+      }
+
+      @keyframes storyPreviewReveal {
+        0% {
+          filter: drop-shadow(0 0 0 rgba(15, 99, 112, 0));
+          opacity: 0.72;
+        }
+
+        45% {
+          filter: drop-shadow(0 0 10px rgba(15, 99, 112, 0.42));
+          opacity: 1;
+        }
+
+        100% {
+          filter: drop-shadow(0 0 6px rgba(15, 99, 112, 0.34));
+          opacity: 1;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .landing-story-viewer [data-story-source],
+        .landing-story-viewer [data-story-preview],
+        .landing-story-viewer [data-story-note],
+        .landing-story-viewer [data-story-step-label],
+        .landing-story-viewer [data-story-kind],
+        .landing-story-viewer [data-story-visual],
+        .artifact-card--source .relgeo-hl .rg-line {
+          transition: none;
+        }
+
+        .landing-story-viewer:not(.is-updating) .story-preview-highlight {
+          animation: none;
+        }
+      }
+
+      .docs-band {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-xl);
+        background: linear-gradient(180deg, rgba(247, 240, 222, 0.72), rgba(255, 253, 247, 0.9));
+      }
+
+      .docs-band--spec {
+        background: linear-gradient(180deg, rgba(241, 235, 220, 0.8), rgba(252, 249, 240, 0.96));
+      }
+
+      .docs-body-card {
+        background: linear-gradient(180deg, rgba(255, 253, 247, 1), rgba(255, 252, 244, 0.98));
+      }
+
+      .docs-body-card--spec {
+        background: linear-gradient(180deg, rgba(255, 253, 247, 1), rgba(249, 244, 233, 0.98));
+      }
+
+      .section-marker {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        padding: 0 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.75);
+        color: var(--muted);
+        font: 700 0.74rem/1 "IBM Plex Sans", sans-serif;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .site-footer {
+        margin-top: 34px;
+        padding: 24px 22px 0;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font: 0.92rem/1.7 "IBM Plex Sans", sans-serif;
+      }
+
+      @media (min-width: 900px) {
+        .feature-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .section-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .split-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .hero-grid {
+          grid-template-columns: minmax(0, 1.8fr) minmax(320px, 0.92fr);
+        }
+
+        .docs-shell,
+        .spec-shell {
+          grid-template-columns: minmax(250px, 300px) minmax(0, 1fr);
+        }
+
+        .docs-sidebar,
+        .spec-sidebar {
+          position: sticky;
+          top: 20px;
+          max-height: calc(100vh - 40px);
+          overflow-y: auto;
+        }
+
+        .docs-next {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .home-proof-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .home-signal-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .artifact-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 899px) {
+        .topbar {
+          border-radius: 28px;
+        }
+
+        .page-header,
+        .card {
+          padding: 22px;
+        }
+
+        .home-intro h2 {
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class={shellClass}>
+      <div class="topbar">
+        <a class="brand" href={activeLang ? `/${activeLang}/` : '/'}>RelGeo</a>
+        <div class="topbar-meta">
+          <nav class="nav" aria-label="Primary">
+            {navItems.map((item) => {
+              const isActive =
+                item.href === '/'
+                  ? pathname === '/'
+                  : pathname === item.href || pathname.startsWith(item.href);
+              return (
+                <a href={item.href} aria-current={isActive ? 'page' : undefined}>
+                  {item.label}
+                </a>
+              );
+            })}
+          </nav>
+          {languageLinks.length > 0 && (
+            <nav class="lang-switcher" aria-label="Language">
+              {languageLinks.map((item) => (
+                <a href={item.href} aria-current={item.active ? 'true' : undefined}>
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          )}
+        </div>
+      </div>
+      {showPageHeader && (
+        <header class={heroClass}>
+          <p class="eyebrow">{eyebrow}</p>
+          <h1>{title}</h1>
+          <p class="lead">{lead}</p>
+        </header>
+      )}
+      <main class={contentClass}>
+        <slot />
+      </main>
+      <footer class="site-footer">
+        RelGeo docs site is the presentation layer. The active language spec shown here
+        is loaded from the normative source instead of being rewritten inside the website.
+      </footer>
+    </div>
+  </body>
+</html>

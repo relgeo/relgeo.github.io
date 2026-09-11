@@ -1,0 +1,396 @@
+---
+import { getCollection } from 'astro:content';
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+import {
+  entryLang,
+  entryTitle,
+  languageSpecSection,
+  normalizeEntryId,
+  stripLangPrefix,
+  localizedDocsHref,
+  localizedLanguageSpecHref,
+} from '../../../lib/content';
+import { copy, isSupportedLang, type SupportedLang } from '../../../lib/i18n';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'id' } }, { params: { lang: 'en' } }];
+}
+
+const rawLang = Astro.params.lang;
+if (!isSupportedLang(rawLang)) {
+  throw new Error(`Unsupported language route: ${rawLang ?? 'unknown'}`);
+}
+
+const lang = rawLang as SupportedLang;
+const docsEntries = (await getCollection('docsPages'))
+  .filter((entry) => entryLang(entry.id) === lang && stripLangPrefix(entry.id, lang) !== '')
+  .sort((a, b) => localizedDocsHref(a, lang).localeCompare(localizedDocsHref(b, lang)));
+
+const specEntries = await getCollection('languageSpec');
+const rootSpec = specEntries.find((entry) => normalizeEntryId(entry.id) === '');
+const sectionEntries = specEntries
+  .filter((entry) => normalizeEntryId(entry.id).split('/').length === 1 && normalizeEntryId(entry.id) !== '')
+  .sort((a, b) => localizedLanguageSpecHref(a, lang).localeCompare(localizedLanguageSpecHref(b, lang)));
+
+const docsNavItems = [
+  {
+    href: `/${lang}/docs/getting-started/`,
+    title: 'Getting Started',
+    description: copy(
+      {
+        id: 'Jalur baca tercepat untuk memahami bentuk dasar dan cara membaca RelGeo.',
+        en: 'The fastest reading path to understand RelGeo’s shape and how to read it.',
+      },
+      lang
+    ),
+  },
+  {
+    href: `/${lang}/docs/current-capabilities/`,
+    title: 'Current Capabilities',
+    description: copy(
+      {
+        id: 'Ringkasan jujur tentang kapabilitas yang sudah siap dilihat dan dicoba hari ini.',
+        en: 'An honest summary of the capabilities that are already ready to be seen and tried today.',
+      },
+      lang
+    ),
+  },
+  {
+    href: `/${lang}/docs/markdown-surfaces/`,
+    title: 'Markdown Surfaces',
+    description: copy(
+      {
+        id: 'Pahami dua fence publik: `rg` untuk source dan `relgeo` untuk preview atau embed.',
+        en: 'Understand the two public fences: `rg` for source and `relgeo` for preview or embed.',
+      },
+      lang
+    ),
+  },
+  {
+    href: `/${lang}/docs/cli/`,
+    title: 'CLI',
+    description: copy(
+      {
+        id: 'Surface terminal untuk validasi, compile, dan workflow shell atau CI ringan.',
+        en: 'The terminal surface for validation, compilation, and lightweight shell or CI workflows.',
+      },
+      lang
+    ),
+  },
+  {
+    href: `/${lang}/docs/playground/`,
+    title: 'Playground',
+    description: copy(
+      {
+        id: 'IDE browser ringan untuk authoring, preview, dan inspection cepat.',
+        en: 'The lightweight browser IDE for quick authoring, preview, and inspection.',
+      },
+      lang
+    ),
+  },
+  {
+    href: `/${lang}/docs/desktop-app/`,
+    title: 'Desktop App',
+    description: copy(
+      {
+        id: 'Workbench lokal yang lebih kaya daripada playground browser.',
+        en: 'The richer local workbench beyond the browser playground.',
+      },
+      lang
+    ),
+  },
+  {
+    href: `/${lang}/docs/language-status/`,
+    title: 'Language Status',
+    description: copy(
+      {
+        id: 'Pahami boundary antara rumah normatif aktif, surface Inggris, dan route publik.',
+        en: 'Understand the boundary between the active normative home, the English surface, and the public routes.',
+      },
+      lang
+    ),
+  },
+  {
+    href: `/${lang}/why-relgeo/`,
+    title: 'Why RelGeo',
+    description: copy(
+      {
+        id: 'Masalah yang ingin dijawab dan posisi produk RelGeo hari ini.',
+        en: 'The problem RelGeo is trying to solve and its current product position.',
+      },
+      lang
+    ),
+  },
+  {
+    href: rootSpec ? localizedLanguageSpecHref(rootSpec, lang) : `/${lang}/docs/language-spec/`,
+    title: 'Language Spec',
+    description: copy(
+      {
+        id: 'Kontrak bahasa aktif yang dirender dari source normatif.',
+        en: 'The active language contract rendered from the normative source.',
+      },
+      lang
+    ),
+  },
+];
+
+type DocsNavItem = (typeof docsNavItems)[number];
+const isDocsNavItem = (item: DocsNavItem | undefined): item is DocsNavItem => item !== undefined;
+
+const docsOrientationItems = [
+  docsNavItems.find((item) => item.title === 'Getting Started'),
+  docsNavItems.find((item) => item.title === 'Current Capabilities'),
+  docsNavItems.find((item) => item.title === 'Markdown Surfaces'),
+  docsNavItems.find((item) => item.title === 'Language Status'),
+].filter(isDocsNavItem);
+
+const docsSurfaceItems = [
+  docsNavItems.find((item) => item.title === 'CLI'),
+  docsNavItems.find((item) => item.title === 'Playground'),
+  docsNavItems.find((item) => item.title === 'Desktop App'),
+].filter(isDocsNavItem);
+
+const docsReferenceItems = [
+  docsNavItems.find((item) => item.title === 'Language Spec'),
+].filter(isDocsNavItem);
+---
+
+<DocsLayout
+  title={copy({ id: 'Documentation', en: 'Documentation' }, lang)}
+  eyebrow={copy({ id: 'Website RelGeo', en: 'RelGeo Website' }, lang)}
+  lead={copy(
+    {
+      id: 'Documentation memuat guide penggunaan surface RelGeo. Language spec tetap menjadi rumah kontrak aktif.',
+      en: 'Documentation contains usage guides for RelGeo surfaces. The language spec remains the home of the active contract.',
+    },
+    lang
+  )}
+  variant="docs"
+  lang={lang}
+  localizedSlug="docs"
+>
+  <div class="docs-shell">
+    <aside class="card docs-context-card docs-sidebar">
+      <h2>{copy({ id: 'Documentation', en: 'Documentation' }, lang)}</h2>
+      <p class="spec-section-note">
+        {copy(
+          {
+            id: 'Documentation memuat onboarding dan penggunaan surface. Language spec memegang kontrak aktif.',
+            en: 'Documentation contains onboarding and surface usage guidance. The language spec holds the active contract.',
+          },
+          lang
+        )}
+      </p>
+      <section class="stack">
+        <h3>{copy({ id: 'Recommended Path', en: 'Recommended Path' }, lang)}</h3>
+        <nav class="docs-sidebar-nav" aria-label="Documentation path">
+          {docsNavItems.map((item) => (
+            <a class="docs-sidebar-link" href={item.href}>
+              <strong>{item.title}</strong>
+              <span>{item.description}</span>
+            </a>
+          ))}
+        </nav>
+      </section>
+      <section class="stack">
+        <h3>{copy({ id: 'Docs Pages', en: 'Docs Pages' }, lang)}</h3>
+        <ul>
+          {docsEntries.map((entry) => (
+            <li><a href={localizedDocsHref(entry, lang)}>{entryTitle(entry, 'Docs Page')}</a></li>
+          ))}
+        </ul>
+      </section>
+    </aside>
+
+    <div class="stack">
+      <section class="card docs-band stack">
+        <div class="hero-grid">
+          <div class="stack">
+            <p class="kicker">{copy({ id: 'Documentation Layer', en: 'Documentation Layer' }, lang)}</p>
+            <h2>{copy({ id: 'Mulai dari docs. Pindah ke spec saat Anda membutuhkan kontrak aktif.', en: 'Start with docs. Move to the spec when you need the active contract.' }, lang)}</h2>
+            <p>
+              {copy(
+                {
+                  id: 'Guide penggunaan berada di documentation. Aturan final bahasa tetap berada di language spec.',
+                  en: 'Usage guides live in documentation. The final language rules stay in the language spec.',
+                },
+                lang
+              )}
+            </p>
+            <p>
+              {copy(
+                {
+                  id: 'Mulai dari halaman pengantar, pilih surface penggunaan yang paling dekat dengan kebutuhan Anda, lalu buka language spec saat perlu melihat aturan final yang diikuti implementasi.',
+                  en: 'Start from the orientation pages, choose the usage surface closest to your need, then open the language spec when you need the final rules followed by the implementation.',
+                },
+                lang
+              )}
+            </p>
+            <div class="button-row">
+              <a class="button primary" href={`/${lang}/docs/getting-started/`}>Open Getting Started</a>
+              <a class="button" href={`/${lang}/docs/language-spec/`}>Open Language Spec</a>
+            </div>
+          </div>
+          <aside class="hero-panel stack">
+            <h2>{copy({ id: 'Read in this order', en: 'Read in this order' }, lang)}</h2>
+            <ol class="meta-list">
+              <li><a href={`/${lang}/docs/getting-started/`}>Getting started</a></li>
+              <li><a href={`/${lang}/docs/current-capabilities/`}>Current Capabilities</a></li>
+              <li><a href={`/${lang}/docs/cli/`}>CLI or Playground</a></li>
+              <li><a href={`/${lang}/docs/markdown-surfaces/`}>Markdown Surfaces</a></li>
+              <li><a href={`/${lang}/docs/language-status/`}>Language Status</a></li>
+              <li><a href={`/${lang}/docs/language-spec/`}>Active language spec</a></li>
+            </ol>
+          </aside>
+        </div>
+      </section>
+
+      <section class="card docs-body-card stack">
+        <p class="kicker">{copy({ id: 'Suggested Route', en: 'Suggested Route' }, lang)}</p>
+        <h2>{copy({ id: 'Tiga kelompok docs yang paling penting', en: 'The three most important docs groups' }, lang)}</h2>
+        <div class="feature-grid">
+          {[ 
+            {
+              title: copy({ id: 'Orientation', en: 'Orientation' }, lang),
+              description: copy(
+                {
+                  id: 'Mulai dari halaman-halaman yang menjelaskan cara membaca RelGeo dan boundary publiknya.',
+                  en: 'Start with the pages that explain how to read RelGeo and its public boundary.',
+                },
+                lang
+              ),
+              href: `/${lang}/docs/getting-started/`,
+            },
+            {
+              title: copy({ id: 'Usage Surfaces', en: 'Usage Surfaces' }, lang),
+              description: copy(
+                {
+                  id: 'Lanjut ke surface yang paling dekat dengan kebutuhan Anda: CLI, Playground, atau Desktop App.',
+                  en: 'Then move to the surface closest to your need: CLI, Playground, or Desktop App.',
+                },
+                lang
+              ),
+              href: `/${lang}/docs/cli/`,
+            },
+            {
+              title: copy({ id: 'Language Contract', en: 'Language Contract' }, lang),
+              description: copy(
+                {
+                  id: 'Masuk ke language spec saat Anda membutuhkan aturan final yang diikuti implementasi.',
+                  en: 'Move into the language spec when you need the final rules followed by the implementation.',
+                },
+                lang
+              ),
+              href: `/${lang}/docs/language-spec/`,
+            },
+          ].map((item, index) => (
+            <article class="feature-card">
+              <p class="kicker">{copy({ id: `Langkah ${index + 1}`, en: `Step ${index + 1}` }, lang)}</p>
+              <h3><a href={item.href}>{item.title}</a></h3>
+              <p>{item.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="card docs-body-card stack">
+        <p class="kicker">{copy({ id: 'Orientation Docs', en: 'Orientation Docs' }, lang)}</p>
+        <h2>{copy({ id: 'Mulai dari halaman pengantar', en: 'Start from the orientation pages' }, lang)}</h2>
+        <p>
+          {copy(
+            {
+              id: 'Halaman-halaman ini menjelaskan alur baca proyek, status bahasa publik, dan surface markdown dasar sebelum memilih tool atau surface kerja.',
+              en: 'These pages explain the project reading flow, the public language status, and the core markdown surfaces before choosing a tool or working surface.',
+            },
+            lang
+          )}
+        </p>
+        <div class="feature-grid">
+          {docsOrientationItems.map((item) => (
+            <article class="feature-card">
+              <h3><a href={item.href}>{item.title}</a></h3>
+              <p>{item.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="card docs-body-card stack">
+        <p class="kicker">{copy({ id: 'Usage Surfaces', en: 'Usage Surfaces' }, lang)}</p>
+        <h2>{copy({ id: 'Pilih surface kerja yang paling dekat', en: 'Choose the working surface closest to your need' }, lang)}</h2>
+        <p>
+          {copy(
+            {
+              id: 'Surface docs ini memetakan bagaimana RelGeo dipakai dari terminal, browser IDE ringan, dan workbench lokal yang lebih kaya.',
+              en: 'These surface docs map how RelGeo is used from the terminal, the lightweight browser IDE, and the richer local workbench.',
+            },
+            lang
+          )}
+        </p>
+        <div class="feature-grid">
+          {docsSurfaceItems.map((item) => (
+            <article class="feature-card">
+              <h3><a href={item.href}>{item.title}</a></h3>
+              <p>{item.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="card docs-body-card stack">
+        <p class="kicker">{copy({ id: 'Reference Entry', en: 'Reference Entry' }, lang)}</p>
+        <h2>{copy({ id: 'Masuk ke kontrak aktif saat perlu presisi penuh', en: 'Move into the active contract when you need full precision' }, lang)}</h2>
+        <p>
+          {copy(
+            {
+              id: 'Reference layer ini dipisahkan agar docs tidak berubah menjadi source of truth kedua.',
+              en: 'This reference layer is kept separate so the docs do not turn into a second source of truth.',
+            },
+            lang
+          )}
+        </p>
+        <div class="feature-grid">
+          {docsReferenceItems.map((item) => (
+            <article class="feature-card">
+              <h3><a href={item.href}>{item.title}</a></h3>
+              <p>{item.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="card docs-body-card stack">
+        <p class="kicker">{copy({ id: 'Normative Layer', en: 'Normative Layer' }, lang)}</p>
+        <h2>Language Spec</h2>
+        <p>
+          {copy(
+            {
+              id: 'Language spec dibaca langsung dari source normatif aktif. Route publiknya tetap `/docs/language-spec/`.',
+              en: 'The language spec is read directly from the active normative source. Its public route remains `/docs/language-spec/`.',
+            },
+            lang
+          )}
+        </p>
+        <p>
+          {copy(
+            {
+              id: 'Masuk ke section ini saat Anda membutuhkan semantics aktif, vocabulary yang dibakukan, dan kontrak yang dipakai implementasi serta audit.',
+              en: 'Move into this section when you need the active semantics, standardized vocabulary, and the contract used by implementation and audits.',
+            },
+            lang
+          )}
+        </p>
+        <div class="section-grid">
+          {sectionEntries.map((entry) => (
+            <article class="feature-card">
+              <h3>{entryTitle(entry, languageSpecSection(entry))}</h3>
+              <p>
+                <a href={localizedLanguageSpecHref(entry, lang)}>Open section</a>
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+  </div>
+</DocsLayout>

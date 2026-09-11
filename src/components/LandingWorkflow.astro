@@ -1,0 +1,70 @@
+---
+import {
+  landingFixtureSourceHtml,
+  landingFixtureSvg,
+} from '../lib/landing-fixture';
+
+type Labels = {
+  sourceLabel: string;
+  previewLabel: string;
+  steps: string[];
+  sourceDescription: string;
+  previewDescription: string;
+  relationLabel: string;
+};
+
+const { labels } = Astro.props as { labels: Labels };
+---
+
+<section class="landing-workflow" aria-labelledby="landing-workflow-title">
+  <div class="landing-workflow__intro">
+    <p class="landing-kicker">{labels.steps.join(' / ')}</p>
+    <h2 id="landing-workflow-title">{labels.sourceDescription}</h2>
+  </div>
+  <div class="landing-workflow__grid">
+    <article class="landing-source-panel">
+      <header class="landing-panel-heading">
+        <span class="landing-panel-index">01</span>
+        <div>
+          <p class="landing-kicker">{labels.sourceLabel}</p>
+          <p>{labels.sourceDescription}</p>
+        </div>
+      </header>
+      <div
+        class="landing-source-code relgeo-hl"
+        role="region"
+        tabindex="0"
+        aria-label={`${labels.sourceLabel} source code`}
+        set:html={landingFixtureSourceHtml}
+      />
+    </article>
+    <ol class="landing-workflow-rail" aria-label={labels.steps.join(', ')}>
+      {labels.steps.map((step, index) => (
+        <li class:list={{ 'is-active': index === 0 }}>
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <strong>{step}</strong>
+        </li>
+      ))}
+    </ol>
+    <article class="landing-preview-panel">
+      <header class="landing-panel-heading">
+        <span class="landing-panel-index">02</span>
+        <div>
+          <p class="landing-kicker">{labels.previewLabel}</p>
+          <p>{labels.previewDescription}</p>
+        </div>
+      </header>
+      <div class="landing-preview-stage">
+        <div class="landing-preview-art" set:html={landingFixtureSvg} />
+        <svg class="landing-relation-overlay" viewBox="0 0 120 80" aria-hidden="true">
+          <path d="M16 22H104M16 58H104M18 18V62M102 18V62" />
+          <circle cx="60" cy="40" r="3" />
+          <path d="M60 40L88 20M60 40L90 60" />
+          <text x="68" y="18">center</text>
+          <text x="91" y="67">relation</text>
+        </svg>
+      </div>
+      <p class="landing-artifact-caption">{labels.relationLabel} / SVG</p>
+    </article>
+  </div>
+</section>

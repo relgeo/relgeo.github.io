@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import LegacyRedirect from '../../layouts/LegacyRedirect.astro';
+import { entryLang, stripLangPrefix } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('docsPages');
+  return entries
+    .filter((entry) => entryLang(entry.id) === 'id')
+    .map((entry) => ({ normalized: stripLangPrefix(entry.id, 'id') }))
+    .filter(({ normalized }) => normalized !== '')
+    .map(({ normalized }) => ({
+      params: { slug: normalized },
+      props: { normalized },
+    }));
+}
+
+const { normalized } = Astro.props;
+---
+
+<LegacyRedirect
+  to={`/id/docs/${normalized}/`}
+  title="Documentation page has moved"
+  description="This documentation page now lives on the localized Indonesian route."
+/>

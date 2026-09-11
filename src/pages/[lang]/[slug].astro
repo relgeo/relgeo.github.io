@@ -1,0 +1,121 @@
+---
+import { getCollection, render } from 'astro:content';
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import { entryLang, entryTitle, stripLangPrefix } from '../../lib/content';
+import { copy, isSupportedLang, type SupportedLang } from '../../lib/i18n';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('sitePages');
+  return entries
+    .filter((entry) => {
+      const lang = entryLang(entry.id);
+      const slug = lang ? stripLangPrefix(entry.id, lang) : '';
+      return lang && slug !== '' && slug !== 'home';
+    })
+    .map((entry) => {
+      const lang = entryLang(entry.id) as SupportedLang;
+      return {
+        params: { lang, slug: stripLangPrefix(entry.id, lang) },
+        props: { entry },
+      };
+    });
+}
+
+const rawLang = Astro.params.lang;
+if (!isSupportedLang(rawLang)) {
+  throw new Error(`Unsupported language route: ${rawLang ?? 'unknown'}`);
+}
+
+const lang = rawLang as SupportedLang;
+const { entry } = Astro.props;
+const slug = stripLangPrefix(entry.id, lang);
+const { Content } = await render(entry);
+
+const siteEntries = (await getCollection('sitePages')).filter((candidate) => {
+  const candidateLang = entryLang(candidate.id);
+  const candidateSlug = candidateLang ? stripLangPrefix(candidate.id, candidateLang) : '';
+  return candidateLang === lang && candidateSlug !== '' && candidateSlug !== 'home';
+});
+
+const siteOrder = ['why-relgeo', 'current-capabilities', 'use-cases', 'ecosystem-status'];
+const orderedSiteEntries = siteOrder
+  .map((siteSlug) => siteEntries.find((candidate) => stripLangPrefix(candidate.id, lang) === siteSlug) ?? null)
+  .filter((candidate): candidate is NonNullable<(typeof siteEntries)[number]> => candidate !== null);
+
+const currentIndex = orderedSiteEntries.findIndex(
+  (candidate) => stripLangPrefix(candidate.id, lang) === slug
+);
+const nextEntry =
+  currentIndex >= 0 && currentIndex < orderedSiteEntries.length - 1
+    ? orderedSiteEntries[currentIndex + 1]
+    : null;
+---
+
+<DocsLayout
+  title={entryTitle(entry, 'RelGeo Website')}
+  eyebrow={copy({ id: 'Website RelGeo', en: 'RelGeo Website' }, lang)}
+  lead={
+    entry.data.description ??
+    copy(
+      {
+        id: 'Halaman product-facing yang membantu pembaca luar memahami posisi dan status RelGeo.',
+        en: 'A product-facing page that helps outside readers understand RelGeo’s position and status.',
+      },
+      lang
+    )
+  }
+  variant="docs"
+  lang={lang}
+  localizedSlug={slug}
+>
+  <article class="card docs-body-card article">
+    <Content />
+  </article>
+
+  <section class="docs-next">
+    <article class="docs-context-card">
+      <p class="kicker">{copy({ id: 'Use RelGeo', en: 'Use RelGeo' }, lang)}</p>
+      <h3><a href={`/${lang}/docs/`}>Documentation</a></h3>
+      <p>
+        {copy(
+          {
+            id: 'Masuk ke sini untuk memilih surface penggunaan seperti CLI, Playground, atau Desktop App.',
+            en: 'Move here to choose a usage surface such as the CLI, Playground, or Desktop App.',
+          },
+          lang
+        )}
+      </p>
+    </article>
+    <article class="docs-context-card">
+      <p class="kicker">{copy({ id: 'Next Reading', en: 'Next Reading' }, lang)}</p>
+      <h3>
+        <a
+          href={
+            nextEntry
+              ? `/${lang}/${stripLangPrefix(nextEntry.id, lang)}/`
+              : `/${lang}/docs/language-spec/`
+          }
+        >
+          {nextEntry ? entryTitle(nextEntry, 'Next Site Page') : 'Open Language Spec'}
+        </a>
+      </h3>
+      <p>
+        {nextEntry
+          ? copy(
+              {
+                id: 'Lanjutkan ke halaman product-facing berikutnya.',
+                en: 'Continue to the next product-facing page.',
+              },
+              lang
+            )
+          : copy(
+              {
+                id: 'Jika framing produk ini sudah cukup, lanjutkan ke kontrak normatif aktif.',
+                en: 'If this product framing is enough, continue to the active normative contract.',
+              },
+              lang
+            )}
+      </p>
+    </article>
+  </section>
+</DocsLayout>

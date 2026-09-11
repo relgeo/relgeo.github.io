@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import LegacyRedirect from '../../../layouts/LegacyRedirect.astro';
+import { normalizeEntryId } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('languageSpec');
+  return entries
+    .map((entry) => ({ normalized: normalizeEntryId(entry.id) }))
+    .filter(({ normalized }) => normalized !== '')
+    .map(({ normalized }) => ({
+      params: { slug: normalized },
+      props: { normalized },
+    }));
+}
+
+const { normalized } = Astro.props;
+---
+
+<LegacyRedirect
+  to={`/id/docs/language-spec/${normalized}/`}
+  title="Language spec page has moved"
+  description="This language-spec page now lives on the localized Indonesian route."
+/>

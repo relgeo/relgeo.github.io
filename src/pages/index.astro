@@ -1,0 +1,39 @@
+---
+import DocsLayout from '../layouts/DocsLayout.astro';
+---
+
+<DocsLayout
+  title="RelGeo"
+  eyebrow="Language Gateway"
+  lead="RelGeo public documentation is being prepared as a bilingual surface. Choose Bahasa Indonesia or English to continue."
+  variant="home"
+  showPageHeader={false}
+  seoMode="gateway"
+  canonicalPath="/"
+>
+  <section class="card home-section home-section--hero">
+    <div class="hero-grid">
+      <div class="stack home-intro">
+        <p class="kicker">Choose Language</p>
+        <h2>RelGeo is preparing a public surface in Indonesian and English.</h2>
+        <p>
+          Use one of the language entries below. The localized docs and spec routes are now the
+          preferred foundation for the public website.
+        </p>
+        <div class="button-row">
+          <a class="button primary" href="/id/">Bahasa Indonesia</a>
+          <a class="button" href="/en/">English</a>
+        </div>
+      </div>
+
+      <aside class="hero-panel hero-panel--home stack">
+        <h2>Why this gateway exists</h2>
+        <ul class="meta-list">
+          <li>RelGeo should support Indonesian because it is part of the real working context.</li>
+          <li>RelGeo should support English because a public technical surface cannot stop at one local language.</li>
+          <li>The site architecture is being shifted early so bilingual publishing does not become expensive later.</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+</DocsLayout>

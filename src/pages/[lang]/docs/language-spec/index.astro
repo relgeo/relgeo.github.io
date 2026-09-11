@@ -1,0 +1,100 @@
+---
+import { getCollection, render } from 'astro:content';
+import DocsLayout from '../../../../layouts/DocsLayout.astro';
+import {
+  entryTitle,
+  groupLanguageSpecEntries,
+  localizedLanguageSpecHref,
+  normalizeEntryId,
+} from '../../../../lib/content';
+import { copy, isSupportedLang, type SupportedLang } from '../../../../lib/i18n';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'id' } }, { params: { lang: 'en' } }];
+}
+
+const rawLang = Astro.params.lang;
+if (!isSupportedLang(rawLang)) {
+  throw new Error(`Unsupported language route: ${rawLang ?? 'unknown'}`);
+}
+
+const lang = rawLang as SupportedLang;
+const entries = await getCollection('languageSpec');
+const rootEntry = entries.find((entry) => normalizeEntryId(entry.id) === '');
+if (!rootEntry) {
+  throw new Error('languageSpec root README entry was not found.');
+}
+
+const { Content } = await render(rootEntry);
+const sectionGroups = groupLanguageSpecEntries(entries);
+---
+
+<DocsLayout
+  title="Language Spec"
+  eyebrow={copy({ id: 'Normative Source', en: 'Normative Source' }, lang)}
+  lead={copy(
+    {
+      id: 'Section ini menampilkan source normatif aktif dari language spec RelGeo secara langsung dari filesystem workspace.',
+      en: 'This section presents the active normative source of the RelGeo language spec directly from the workspace filesystem.',
+    },
+    lang
+  )}
+  variant="spec"
+  lang={lang}
+  localizedSlug="docs/language-spec"
+>
+  <div class="spec-shell">
+    <aside class="card docs-context-card docs-context-card--spec spec-sidebar">
+      <h2>{copy({ id: 'Spec Index', en: 'Spec Index' }, lang)}</h2>
+      <p class="spec-section-note">
+        {copy(
+          {
+            id: 'Ini adalah pintu masuk ke source normatif aktif. Gunakan sidebar dan section cards untuk langsung meloncat ke bagian kontrak yang dibutuhkan.',
+            en: 'This is the entry point to the active normative source. Use the sidebar and section cards to jump directly to the contract sections you need.',
+          },
+          lang
+        )}
+      </p>
+      <div class="stack">
+        {sectionGroups.map((group) => (
+          <section>
+            <h3><a href={localizedLanguageSpecHref(group.entry ?? { id: group.section }, lang)}>{group.title}</a></h3>
+            {group.chapters.length > 0 && (
+              <ul>
+                {group.chapters.map((chapter) => (
+                  <li><a href={localizedLanguageSpecHref(chapter, lang)}>{entryTitle(chapter, 'Chapter')}</a></li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))}
+      </div>
+    </aside>
+
+    <div class="stack">
+      <section class="card docs-body-card docs-body-card--spec article">
+        <Content />
+      </section>
+
+      <section class="card docs-body-card docs-body-card--spec stack">
+        <p class="kicker">{copy({ id: 'Sections', en: 'Sections' }, lang)}</p>
+        <h2>{copy({ id: 'Browse the active contract', en: 'Browse the active contract' }, lang)}</h2>
+        <div class="section-grid">
+          {sectionGroups.map((group) => (
+            <article class="feature-card">
+              <h3>{group.title}</h3>
+              <p><a href={localizedLanguageSpecHref(group.entry ?? { id: group.section }, lang)}>Open section</a></p>
+              {group.chapters.length > 0 && (
+                <ul class="meta-list">
+                  {group.chapters.map((chapter) => (
+                    <li><a href={localizedLanguageSpecHref(chapter, lang)}>{entryTitle(chapter, 'Chapter')}</a></li>
+                  ))}
+                </ul>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+  </div>
+</DocsLayout>

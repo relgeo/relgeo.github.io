@@ -1,0 +1,103 @@
+---
+import { getCollection, render } from 'astro:content';
+import DocsLayout from '../../../../layouts/DocsLayout.astro';
+import {
+  type LanguageSpecEntry,
+  type LanguageSpecSectionGroup,
+  entryTitle,
+  groupLanguageSpecEntries,
+  localizedLanguageSpecHref,
+  languageSpecSection,
+  normalizeEntryId,
+  sortLanguageSpecEntries,
+} from '../../../../lib/content';
+import { copy, isSupportedLang, type SupportedLang } from '../../../../lib/i18n';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('languageSpec');
+  return entries
+    .map((entry) => ({ entry, normalized: normalizeEntryId(entry.id) }))
+    .filter(({ normalized }) => normalized !== '')
+    .flatMap(({ entry, normalized }) => [
+      { params: { lang: 'id', slug: normalized }, props: { entry, lang: 'id' } },
+      { params: { lang: 'en', slug: normalized }, props: { entry, lang: 'en' } },
+    ]);
+}
+
+const rawLang = Astro.params.lang;
+if (!isSupportedLang(rawLang)) {
+  throw new Error(`Unsupported language route: ${rawLang ?? 'unknown'}`);
+}
+
+const lang = rawLang as SupportedLang;
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const allEntries = sortLanguageSpecEntries(await getCollection('languageSpec'));
+const groups = groupLanguageSpecEntries(allEntries);
+const normalized = normalizeEntryId(entry.id);
+const section = languageSpecSection(entry);
+const currentGroup = groups.find((group: LanguageSpecSectionGroup) => group.section === section) ?? null;
+---
+
+<DocsLayout
+  title={entryTitle(entry, 'Language Spec')}
+  eyebrow={copy({ id: 'Normative Source', en: 'Normative Source' }, lang)}
+  lead={copy(
+    {
+      id: 'Halaman ini dirender langsung dari source normatif language spec aktif, bukan dari salinan konten di package website.',
+      en: 'This page is rendered directly from the active normative language-spec source, not from a duplicated content copy inside the website package.',
+    },
+    lang
+  )}
+  variant="spec"
+  lang={lang}
+  localizedSlug={`docs/language-spec/${normalized}`}
+>
+  <div class="spec-shell">
+    <aside class="card docs-context-card docs-context-card--spec spec-sidebar">
+      <h2>Language Spec</h2>
+      <p class="spec-section-note">
+        {copy(
+          {
+            id: 'Spec mode dipakai untuk reference reading. Gunakan halaman ini saat Anda membutuhkan kontrak aktif dan struktur section yang stabil.',
+            en: 'Spec mode is used for reference reading. Use this page when you need the active contract and a stable section structure.',
+          },
+          lang
+        )}
+      </p>
+      <p><a href={`/${lang}/docs/language-spec/`}>{copy({ id: 'Kembali ke index', en: 'Back to index' }, lang)}</a></p>
+      {groups.map((group: LanguageSpecSectionGroup) => (
+        <section class="stack">
+          <h3><a href={localizedLanguageSpecHref(group.entry ?? { id: group.section }, lang)}>{group.title}</a></h3>
+          {group.chapters.length > 0 && (
+            <ul>
+              {group.chapters.map((chapter: LanguageSpecEntry) => {
+                const href = localizedLanguageSpecHref(chapter, lang);
+                const active = normalizeEntryId(chapter.id) === normalized;
+                return (
+                  <li>
+                    <a href={href} aria-current={active ? 'page' : undefined}>
+                      {active ? <strong>{entryTitle(chapter, 'Chapter')}</strong> : entryTitle(chapter, 'Chapter')}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+      ))}
+    </aside>
+
+    <div class="stack">
+      <article class="card docs-body-card docs-body-card--spec article">
+        {currentGroup && (
+          <p>
+            <span class="section-marker">{copy({ id: 'Current Section', en: 'Current Section' }, lang)}</span>{' '}
+            <a href={localizedLanguageSpecHref(currentGroup.entry ?? { id: currentGroup.section }, lang)}>{currentGroup.title}</a>
+          </p>
+        )}
+        <Content />
+      </article>
+    </div>
+  </div>
+</DocsLayout>
