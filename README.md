@@ -4,16 +4,16 @@ Astro-based documentation site scaffold for RelGeo.
 
 ## Versioning
 
-The package metadata version (`0.5.0`) and the active RelGeo DSL contract version (`v0.5`) are separate versioning systems. This package presents the DSL contract; the package number does not by itself announce a language-semantics change.
+The site package is a private deployment application at version `0.5.0`. It presents the active RelGeo DSL `v0.5` contract; the site version does not by itself announce a language-semantics change.
 
 ## Intent
 
-This package is prepared to become:
+This package is now:
 
-1. the official docs site
-2. the first public consumer of `@relgeo/remark-relgeo-hl`
-3. the first public consumer of `@relgeo/remark-relgeo`
-4. an early GitHub Pages deployment target
+1. the official docs site at `https://relgeo.github.io/`
+2. a public consumer of `@relgeo/remark-relgeo-hl`
+3. a public consumer of `@relgeo/remark-relgeo`
+4. deployed through GitHub Pages from `main`
 
 ## Content Role
 
@@ -25,8 +25,8 @@ The intended direction is:
 
 1. the website hosts documentation as one section of the broader RelGeo site
 2. the language spec section loads the normative source directly
-3. the current normative source is `../spec/id/` in the local staging workspace
-4. the future normative source will be the separate spec repository
+3. local workspace builds use `../spec/id/`
+4. GitHub Pages builds checkout `relgeo/spec` into `.ci/spec/`
 
 ## Stack
 
