@@ -111,6 +111,8 @@ This document is also the working status register for the redesign.
 - [x] Desktop Documentation index checked: compact group map, reading column, and “Read in this order” links remain aligned and readable.
 - [x] Desktop Language Spec index checked: authoritative sidebar, heading, metadata, and first contract section remain readable without nested-card regression.
 - [x] Accessibility tree checked on landing, docs, and spec routes: skip link, landmarks, page-language links, primary nav, headings, and key actions are exposed.
+- [x] Keyboard traversal spot-check completed on the landing route: skip link, brand, primary nav, language switcher, and all primary/secondary actions are reachable without a focus trap.
+- [x] Contrast spot-check completed for the main landing text and controls; the coral primary action was darkened to reach approximately 5.38:1 against its light text.
 - [x] Narrow-window check performed: content remains readable and the primary nav is intentionally horizontally scrollable rather than wrapping into an unstable card layout.
 - [ ] True device emulation and full keyboard traversal still need a dedicated pass; the current narrow-window check is not a substitute for real mobile viewport emulation.
 
