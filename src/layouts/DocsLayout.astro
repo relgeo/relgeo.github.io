@@ -184,15 +184,22 @@ const contentClass = `content content--${variant}`;
         box-sizing: border-box;
       }
 
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
         margin: 0;
         font-family: var(--font-sans);
+        font-size: 1rem;
+        line-height: 1.5;
         background:
           radial-gradient(circle at top left, rgba(15, 99, 112, 0.14), transparent 30rem),
           radial-gradient(circle at 85% 12%, rgba(180, 145, 71, 0.1), transparent 22rem),
           linear-gradient(180deg, #faf5e8 0%, var(--bg) 34%, var(--bg-deep) 100%);
         color: var(--ink);
         min-height: 100vh;
+        overflow-x: clip;
       }
 
       body::before,
@@ -318,6 +325,8 @@ const contentClass = `content content--${variant}`;
       }
 
       .nav a {
+        min-height: 40px;
+        align-items: center;
         padding: 8px 12px;
         border: 1px solid transparent;
         border-radius: var(--radius-lg);
@@ -369,11 +378,11 @@ const contentClass = `content content--${variant}`;
         align-items: center;
         justify-content: center;
         min-width: 36px;
-        min-height: 28px;
+        min-height: 36px;
         padding: 0 10px;
         text-decoration: none;
         color: var(--muted);
-        font: 700 0.78rem/1 "IBM Plex Sans", sans-serif;
+        font: 700 0.875rem/1 "IBM Plex Sans", sans-serif;
         letter-spacing: 0.05em;
         text-transform: uppercase;
       }
@@ -995,7 +1004,7 @@ const contentClass = `content content--${variant}`;
       .docs-sidebar-link span {
         display: block;
         color: var(--muted);
-        font: 0.86rem/1.55 "IBM Plex Sans", sans-serif;
+        font: 0.875rem/1.55 "IBM Plex Sans", sans-serif;
       }
 
       .docs-sidebar-link[aria-current="page"] {
@@ -1023,7 +1032,7 @@ const contentClass = `content content--${variant}`;
       .spec-section-note {
         margin: 0;
         color: var(--muted);
-        font: 600 0.86rem/1.55 "IBM Plex Sans", sans-serif;
+        font: 600 0.875rem/1.55 "IBM Plex Sans", sans-serif;
       }
 
       /* Layer: technical surfaces — code, rendered diagrams, and metadata. */
@@ -1355,7 +1364,7 @@ const contentClass = `content content--${variant}`;
 
         .nav a {
           padding: 8px 10px;
-          font-size: 0.84rem;
+          font-size: 0.875rem;
         }
 
         .page-header,
@@ -1454,6 +1463,21 @@ const contentClass = `content content--${variant}`;
         .docs-link-row {
           grid-template-columns: 28px minmax(0, 1fr) auto;
           gap: 8px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
         }
       }
     </style>
