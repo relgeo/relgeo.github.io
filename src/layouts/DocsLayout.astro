@@ -141,6 +141,7 @@ const contentClass = `content content--${variant}`;
     <meta name="color-scheme" content="light" />
     {shouldNoIndex && <meta name="robots" content="noindex,follow" />}
     <style is:global>
+      /* Layer: foundations — tokens, reset, document defaults. */
       :root {
         color-scheme: light;
         --space-1: 4px;
@@ -243,6 +244,7 @@ const contentClass = `content content--${variant}`;
         box-shadow: 0 0 0 5px rgba(220, 237, 239, 0.92);
       }
 
+      /* Layer: shell — skip link, page frame, navigation, and language controls. */
       .skip-link {
         position: fixed;
         top: 10px;
@@ -376,12 +378,13 @@ const contentClass = `content content--${variant}`;
         text-transform: uppercase;
       }
 
-      .lang-switcher a[aria-current="true"] {
+      .lang-switcher a[aria-current="page"] {
         background: var(--accent-soft);
         color: var(--accent-ink);
         border-radius: var(--radius-lg);
       }
 
+      /* Layer: framing — page headers, content columns, controls, and compact surfaces. */
       .page-header {
         padding: 22px;
         border: 1px solid var(--line);
@@ -483,7 +486,7 @@ const contentClass = `content content--${variant}`;
         min-height: 48px;
         padding: 0 18px;
         border: 1px solid var(--line-strong);
-        border-radius: 999px;
+        border-radius: var(--radius-sm);
         background: rgba(255, 255, 255, 0.84);
         text-decoration: none;
         color: var(--ink);
@@ -507,66 +510,6 @@ const contentClass = `content content--${variant}`;
         background: linear-gradient(180deg, #12839a, var(--accent));
         color: #f8fcfc;
         box-shadow: 0 16px 28px rgba(15, 99, 112, 0.22);
-      }
-
-      .pill-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .pill {
-        padding: 6px 10px;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.76);
-        color: var(--muted);
-        font: 700 0.78rem/1.2 "IBM Plex Sans", sans-serif;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-      }
-
-      .home-pills {
-        gap: 8px;
-        margin-top: -2px;
-      }
-
-      .home-pills .pill {
-        background: rgba(255, 255, 255, 0.7);
-        border-color: rgba(171, 151, 107, 0.34);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
-      }
-
-      .feature-grid,
-      .section-grid,
-      .split-grid {
-        display: grid;
-        gap: 16px;
-      }
-
-      .feature-card,
-      .info-card {
-        padding: 20px;
-        border: 1px solid var(--line);
-        border-radius: var(--radius-lg);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(249, 244, 231, 0.84));
-        box-shadow: 0 10px 24px rgba(23, 32, 51, 0.04);
-        transition:
-          transform 180ms ease,
-          box-shadow 180ms ease,
-          border-color 180ms ease;
-      }
-
-      .feature-card:hover,
-      .info-card:hover {
-        transform: translateY(-2px);
-        border-color: rgba(171, 151, 107, 0.46);
-        box-shadow: 0 16px 32px rgba(23, 32, 51, 0.07);
-      }
-
-      .feature-card h3,
-      .info-card h3 {
-        margin: 0 0 8px;
       }
 
       .kicker {
@@ -604,6 +547,7 @@ const contentClass = `content content--${variant}`;
         padding-left: 18px;
       }
 
+      /* Layer: reading — editorial prose, docs columns, and spec columns. */
       .article {
         line-height: 1.78;
       }
@@ -1082,6 +1026,7 @@ const contentClass = `content content--${variant}`;
         font: 600 0.86rem/1.55 "IBM Plex Sans", sans-serif;
       }
 
+      /* Layer: technical surfaces — code, rendered diagrams, and metadata. */
       .relgeo-hl,
       .relgeo-preview__canvas {
         overflow-x: auto;
@@ -1091,7 +1036,7 @@ const contentClass = `content content--${variant}`;
         position: relative;
         padding: 18px 20px;
         border: 1px solid rgba(195, 183, 152, 0.88);
-        border-radius: 22px;
+        border-radius: 0;
         background:
           linear-gradient(180deg, rgba(255, 252, 246, 0.99), rgba(247, 240, 224, 0.96));
         box-shadow:
@@ -1122,7 +1067,7 @@ const contentClass = `content content--${variant}`;
         min-height: 1.68em;
         padding-left: 3rem;
         position: relative;
-        border-radius: 4px;
+        border-radius: 0;
       }
 
       .rg-line::before {
@@ -1257,7 +1202,7 @@ const contentClass = `content content--${variant}`;
         display: block;
         padding: 18px;
         border: 1px solid var(--preview-line);
-        border-radius: 22px;
+        border-radius: 0;
         background:
           linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(242, 249, 249, 0.96));
         box-shadow:
@@ -1345,353 +1290,6 @@ const contentClass = `content content--${variant}`;
         font-size: 1.04rem;
       }
 
-      .home-proof-grid {
-        display: grid;
-        gap: 16px;
-      }
-
-      .home-signal-grid {
-        display: grid;
-        gap: 12px;
-        margin-top: 4px;
-      }
-
-      .signal-card {
-        display: grid;
-        gap: 6px;
-        padding: 16px 16px 15px;
-        border: 1px solid rgba(175, 158, 118, 0.36);
-        border-radius: var(--radius-md);
-        background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(248, 243, 232, 0.76));
-        box-shadow:
-          inset 0 1px 0 rgba(255, 255, 255, 0.68),
-          0 10px 22px rgba(23, 32, 51, 0.04);
-      }
-
-      .signal-card strong {
-        font: 700 0.92rem/1.25 "IBM Plex Sans", sans-serif;
-        color: var(--ink);
-      }
-
-      .signal-card span {
-        color: var(--muted);
-        font: 0.89rem/1.55 "IBM Plex Sans", sans-serif;
-      }
-
-      .home-proof-grid .feature-card,
-      .home-proof-grid .info-card {
-        min-height: 100%;
-      }
-
-      .artifact-grid {
-        display: grid;
-        gap: 16px;
-      }
-
-      .artifact-grid--story {
-        align-items: start;
-      }
-
-      .artifact-card {
-        padding: 22px;
-        border: 1px solid var(--line);
-        border-radius: 28px;
-        background: rgba(255, 255, 255, 0.82);
-        box-shadow: 0 16px 34px rgba(23, 32, 51, 0.06);
-      }
-
-      .artifact-card--source {
-        background: linear-gradient(180deg, rgba(255, 251, 243, 0.98), rgba(247, 240, 224, 0.94));
-      }
-
-      .artifact-card--preview {
-        background: linear-gradient(180deg, rgba(245, 251, 251, 0.98), rgba(232, 245, 246, 0.94));
-      }
-
-      .artifact-surface {
-        margin-top: 12px;
-      }
-
-      .artifact-card--source .artifact-surface {
-        margin-top: 8px;
-      }
-
-      .artifact-card--source .artifact-surface.relgeo-hl {
-        border-radius: 10px;
-      }
-
-      .artifact-note {
-        margin: 6px 0 0;
-        color: var(--muted);
-        font: 0.88rem/1.55 "IBM Plex Sans", sans-serif;
-      }
-
-      .artifact-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 12px;
-      }
-
-      .artifact-label {
-        display: inline-flex;
-        align-items: center;
-        min-height: 28px;
-        padding: 0 10px;
-        border: 1px solid var(--line-strong);
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.84);
-        color: var(--accent-ink);
-        font: 700 0.74rem/1 "IBM Plex Sans", sans-serif;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
-      }
-
-      .preview-frame {
-        padding: 0;
-        border: 0;
-        background: transparent;
-      }
-
-      .artifact-card--preview .relgeo-preview__canvas {
-        padding: 0;
-        border: 0;
-        border-radius: 0;
-        background: transparent;
-        box-shadow: none;
-      }
-
-      .artifact-card--preview .relgeo-preview__image,
-      .artifact-card--preview .relgeo-preview__canvas svg {
-        border-radius: 0;
-      }
-
-      .home-section--story {
-        background:
-          radial-gradient(circle at top right, rgba(15, 99, 112, 0.06), transparent 18rem),
-          linear-gradient(180deg, rgba(255, 253, 247, 0.98), rgba(241, 248, 248, 0.94));
-      }
-
-      .landing-story-viewer {
-        --story-panel-height: clamp(22rem, 56vh, 34rem);
-        display: grid;
-        gap: 18px;
-      }
-
-      .landing-story-viewer [data-story-source],
-      .landing-story-viewer [data-story-preview],
-      .landing-story-viewer [data-story-note],
-      .landing-story-viewer [data-story-step-label],
-      .landing-story-viewer [data-story-kind],
-      .landing-story-viewer [data-story-visual] {
-        transition:
-          opacity 160ms ease,
-          transform 160ms ease,
-          filter 160ms ease;
-      }
-
-      .landing-story-viewer.is-updating [data-story-source],
-      .landing-story-viewer.is-updating [data-story-preview],
-      .landing-story-viewer.is-updating [data-story-note],
-      .landing-story-viewer.is-updating [data-story-step-label],
-      .landing-story-viewer.is-updating [data-story-kind],
-      .landing-story-viewer.is-updating [data-story-visual] {
-        opacity: 0.58;
-        filter: saturate(0.84);
-      }
-
-      .landing-story-viewer__meta,
-      .landing-story-viewer__footer {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 14px;
-      }
-
-      .landing-story-viewer__step {
-        display: grid;
-        gap: 4px;
-      }
-
-      .landing-story-viewer__step span {
-        color: var(--muted);
-        font: 700 0.76rem/1.2 "IBM Plex Sans", sans-serif;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-      }
-
-      .landing-story-viewer__step strong {
-        font: 700 1rem/1.2 "IBM Plex Sans", sans-serif;
-        color: var(--ink);
-      }
-
-      .landing-story-viewer__pills {
-        gap: 8px;
-      }
-
-      .relgeo-preview__canvas--story {
-        display: grid;
-        place-items: center;
-        height: var(--story-panel-height);
-        min-height: 0;
-        padding: 0;
-        border: 1px solid rgba(145, 176, 181, 0.45);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 251, 251, 0.98));
-      }
-
-      .story-preview-svg {
-        display: block;
-        width: auto;
-        max-width: 100%;
-        height: 100%;
-        max-height: 100%;
-      }
-
-      .landing-story-viewer:not(.is-updating) .story-preview-highlight {
-        animation: storyPreviewReveal 900ms ease-out;
-      }
-
-      .story-site {
-        fill: #edf4e7;
-        stroke: #8ea67f;
-        stroke-width: 1.5;
-      }
-
-      .story-house {
-        fill: #f8f5ef;
-        stroke: #49566a;
-        stroke-width: 2;
-      }
-
-      .story-zone {
-        fill: #eef7fb;
-        stroke: #7ea2b3;
-        stroke-width: 1.25;
-      }
-
-      .story-room {
-        fill: #f7f2e8;
-        stroke: #7b6c53;
-        stroke-width: 1.25;
-      }
-
-      .story-opening {
-        stroke: #264653;
-        stroke-width: 3;
-        stroke-linecap: round;
-      }
-
-      .story-furniture {
-        fill: #e8eef7;
-        stroke: #60738d;
-        stroke-width: 1.25;
-      }
-
-      .story-preview-highlight {
-        filter: drop-shadow(0 0 6px rgba(15, 99, 112, 0.34));
-      }
-
-      .story-preview-highlight--outline {
-        stroke: #0f6370;
-        stroke-width: 3;
-      }
-
-      .story-preview-highlight--wash {
-        stroke: #0f6370;
-        stroke-width: 2.5;
-        fill-opacity: 0.88;
-      }
-
-      .story-preview-highlight--pulse {
-        stroke: #0f6370;
-        stroke-width: 4;
-      }
-
-      .landing-story-viewer .button[disabled] {
-        opacity: 0.5;
-        cursor: default;
-        transform: none;
-        box-shadow: 0 10px 20px rgba(23, 32, 51, 0.05);
-      }
-
-      .artifact-card--source .relgeo-hl {
-        border-color: rgba(195, 183, 152, 0.92);
-        height: var(--story-panel-height);
-        max-height: none;
-        overflow-y: auto;
-        scroll-behavior: smooth;
-        overscroll-behavior: contain;
-      }
-
-      .artifact-card--source .relgeo-hl .rg-line {
-        transition:
-          background-color 240ms ease,
-          box-shadow 240ms ease,
-          color 240ms ease;
-      }
-
-      .artifact-card--source .relgeo-hl .rg-line--reveal {
-        background:
-          linear-gradient(90deg, rgba(15, 99, 112, 0.14), rgba(15, 99, 112, 0.04));
-        box-shadow: inset 3px 0 0 rgba(15, 99, 112, 0.46);
-        color: var(--ink);
-      }
-
-      @keyframes storyPreviewReveal {
-        0% {
-          filter: drop-shadow(0 0 0 rgba(15, 99, 112, 0));
-          opacity: 0.72;
-        }
-
-        45% {
-          filter: drop-shadow(0 0 10px rgba(15, 99, 112, 0.42));
-          opacity: 1;
-        }
-
-        100% {
-          filter: drop-shadow(0 0 6px rgba(15, 99, 112, 0.34));
-          opacity: 1;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .landing-story-viewer [data-story-source],
-        .landing-story-viewer [data-story-preview],
-        .landing-story-viewer [data-story-note],
-        .landing-story-viewer [data-story-step-label],
-        .landing-story-viewer [data-story-kind],
-        .landing-story-viewer [data-story-visual],
-        .artifact-card--source .relgeo-hl .rg-line {
-          transition: none;
-        }
-
-        .landing-story-viewer:not(.is-updating) .story-preview-highlight {
-          animation: none;
-        }
-      }
-
-      .docs-band {
-        border: 1px solid var(--line);
-        border-radius: var(--radius-xl);
-        background: linear-gradient(180deg, rgba(247, 240, 222, 0.72), rgba(255, 253, 247, 0.9));
-      }
-
-      .docs-band--spec {
-        background: linear-gradient(180deg, rgba(241, 235, 220, 0.8), rgba(252, 249, 240, 0.96));
-      }
-
-      .docs-body-card {
-        background: linear-gradient(180deg, rgba(255, 253, 247, 1), rgba(255, 252, 244, 0.98));
-      }
-
-      .docs-body-card--spec {
-        background: linear-gradient(180deg, rgba(255, 253, 247, 1), rgba(249, 244, 233, 0.98));
-      }
-
       .section-marker {
         display: inline-flex;
         align-items: center;
@@ -1715,18 +1313,6 @@ const contentClass = `content content--${variant}`;
       }
 
       @media (min-width: 900px) {
-        .feature-grid {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .section-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .split-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
         .hero-grid {
           grid-template-columns: minmax(0, 1.8fr) minmax(320px, 0.92fr);
         }
@@ -1748,17 +1334,6 @@ const contentClass = `content content--${variant}`;
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
-        .home-proof-grid {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .home-signal-grid {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .artifact-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
       }
 
       @media (max-width: 899px) {

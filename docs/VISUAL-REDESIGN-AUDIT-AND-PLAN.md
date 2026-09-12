@@ -94,10 +94,13 @@ This document is also the working status register for the redesign.
 - [x] Rebuilt and validated the site after these changes: 138 pages, zero Astro diagnostics, and passing built-output assertions.
 - [x] Removed the retired landing workflow/viewer, fixtures, animation story data, and their unused page CSS after repository-wide reference checks.
 - [x] Removed unused direct package dependencies and regenerated the site lockfile so the public site only declares packages it uses directly.
+- [x] Removed legacy story/artifact selectors from the shared layout stylesheet and documented its current foundation, shell, framing, reading, and technical-surface layers.
+- [x] Made code and rendered-preview surfaces square by default and corrected the language switcher's active-state selector.
+- [x] Removed additional unused generic card/grid/pill selectors from the shared layout stylesheet and changed gateway buttons to compact square controls.
 
 ### Still open
 
-- [ ] Complete the shared layout refactor into explicit style layers.
+- [ ] Complete the shared layout refactor by extracting the explicit style layers into separately owned stylesheet files if the stylesheet continues to grow.
 - [x] Add automated assertions for all primary routes and active navigation states.
 - [x] Redesign the Documentation index.
 - [x] Redesign the Language Spec index.
