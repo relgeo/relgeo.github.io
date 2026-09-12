@@ -125,6 +125,7 @@ This document is also the working status register for the redesign.
 - [x] CI-like clean build repeated with local dev servers stopped: 138 pages built with no content-loader duplicate-ID warning; the earlier warning was caused by concurrent Astro cache writers.
 - [x] Zoom spot-check completed in Chrome at an enlarged setting on the narrow Documentation route; text remained readable and the layout did not break, then zoom was restored to 100%.
 - [x] Added built-output guards for visible focus treatment and reduced-motion CSS, reading the extracted stylesheet assets correctly.
+- [x] Removed the sticky mobile navbar behavior so two-line navigation cannot cover reading content during long document scrolls.
 - [ ] True device emulation and full keyboard traversal still need a dedicated pass; the current narrow-window check is not a substitute for real mobile viewport emulation.
 
 ### Still open
