@@ -29,6 +29,7 @@ const docsNavItems = [
   {
     href: `/${lang}/docs/getting-started/`,
     title: 'Getting Started',
+    label: copy(uiCopy.gettingStarted, lang),
     description: copy(
       {
         id: 'Jalur baca tercepat untuk memahami bentuk dasar dan cara membaca RelGeo.',
@@ -40,6 +41,7 @@ const docsNavItems = [
   {
     href: `/${lang}/docs/current-capabilities/`,
     title: 'Current Capabilities',
+    label: copy(uiCopy.currentCapabilities, lang),
     description: copy(
       {
         id: 'Ringkasan jujur tentang kapabilitas yang sudah siap dilihat dan dicoba hari ini.',
@@ -51,6 +53,7 @@ const docsNavItems = [
   {
     href: `/${lang}/docs/markdown-surfaces/`,
     title: 'Markdown Surfaces',
+    label: copy(uiCopy.markdownSurfaces, lang),
     description: copy(
       {
         id: 'Pahami dua fence publik: `rg` untuk source dan `relgeo` untuk preview atau embed.',
@@ -62,6 +65,7 @@ const docsNavItems = [
   {
     href: `/${lang}/docs/cli/`,
     title: 'CLI',
+    label: 'CLI',
     description: copy(
       {
         id: 'Surface terminal untuk validasi, compile, dan workflow shell atau CI ringan.',
@@ -73,6 +77,7 @@ const docsNavItems = [
   {
     href: `/${lang}/docs/playground/`,
     title: 'Playground',
+    label: 'Playground',
     description: copy(
       {
         id: 'IDE browser ringan untuk authoring, preview, dan inspection cepat.',
@@ -84,6 +89,7 @@ const docsNavItems = [
   {
     href: `/${lang}/docs/desktop-app/`,
     title: 'Desktop App',
+    label: copy({ id: 'Aplikasi desktop', en: 'Desktop App' }, lang),
     description: copy(
       {
         id: 'Workbench lokal yang lebih kaya daripada playground browser.',
@@ -95,6 +101,7 @@ const docsNavItems = [
   {
     href: `/${lang}/docs/language-status/`,
     title: 'Language Status',
+    label: copy(uiCopy.languageStatus, lang),
     description: copy(
       {
         id: 'Pahami boundary antara rumah normatif aktif, surface Inggris, dan route publik.',
@@ -106,6 +113,7 @@ const docsNavItems = [
   {
     href: `/${lang}/why-relgeo/`,
     title: 'Why RelGeo',
+    label: copy(uiCopy.navWhyRelGeo, lang),
     description: copy(
       {
         id: 'Masalah yang ingin dijawab dan posisi produk RelGeo hari ini.',
@@ -117,6 +125,7 @@ const docsNavItems = [
   {
     href: rootSpec ? localizedLanguageSpecHref(rootSpec, lang) : `/${lang}/docs/language-spec/`,
     title: 'Language Spec',
+    label: copy(uiCopy.languageSpec, lang),
     description: copy(
       {
         id: 'Kontrak bahasa aktif yang dirender dari source normatif.',
@@ -168,6 +177,7 @@ const docsGroups = [
     items: sectionEntries.map((entry) => ({
       href: localizedLanguageSpecHref(entry, lang),
       title: entryTitle(entry, languageSpecSection(entry)),
+      label: entryTitle(entry, languageSpecSection(entry)),
       description: copy({ id: 'Section dari source normatif aktif.', en: 'A section from the active normative source.' }, lang),
     })),
   },
@@ -175,7 +185,7 @@ const docsGroups = [
 ---
 
 <DocsLayout
-  title={copy({ id: 'Documentation', en: 'Documentation' }, lang)}
+  title={copy(uiCopy.documentation, lang)}
   eyebrow={copy({ id: 'Website RelGeo', en: 'RelGeo Website' }, lang)}
   lead={copy(
     {
@@ -191,7 +201,7 @@ const docsGroups = [
   <div class="docs-shell docs-shell--index">
     <aside class="docs-sidebar docs-sidebar--index">
       <p class="kicker">{copy({ id: 'Peta docs', en: 'Docs map' }, lang)}</p>
-      <h2>{copy({ id: 'Documentation', en: 'Documentation' }, lang)}</h2>
+      <h2>{copy(uiCopy.documentation, lang)}</h2>
       <p class="spec-section-note">
         {copy(
           {
@@ -218,7 +228,7 @@ const docsGroups = [
       <section class="docs-index-hero">
         <div class="hero-grid">
           <div>
-            <p class="kicker">{copy({ id: 'Documentation Layer', en: 'Documentation Layer' }, lang)}</p>
+            <p class="kicker">{copy(uiCopy.documentationLayer, lang)}</p>
             <h2>{copy({ id: 'Mulai dari docs. Pindah ke spec saat Anda membutuhkan kontrak aktif.', en: 'Start with docs. Move to the spec when you need the active contract.' }, lang)}</h2>
             <p>
               {copy(
@@ -241,7 +251,7 @@ const docsGroups = [
             <p class="docs-index-actions"><a href={`/${lang}/docs/getting-started/`}>{copy(uiCopy.openGettingStarted, lang)}</a><a href={`/${lang}/docs/language-spec/`}>{copy(uiCopy.openLanguageSpec, lang)}</a></p>
           </div>
           <aside class="docs-reading-path">
-            <h2>{copy({ id: 'Read in this order', en: 'Read in this order' }, lang)}</h2>
+            <h2>{copy(uiCopy.readInThisOrder, lang)}</h2>
             <ol class="meta-list">
               <li><a href={`/${lang}/docs/getting-started/`}>{copy(uiCopy.gettingStarted, lang)}</a></li>
               <li><a href={`/${lang}/docs/current-capabilities/`}>{copy(uiCopy.currentCapabilities, lang)}</a></li>
@@ -264,7 +274,7 @@ const docsGroups = [
             {group.items.map((item, index) => (
               <a class="docs-link-row" href={item.href}>
                 <span class="docs-link-index">{String(index + 1).padStart(2, '0')}</span>
-                <span><strong>{item.title}</strong><small>{item.description}</small></span>
+                <span><strong>{item.label ?? item.title}</strong><small>{item.description}</small></span>
                 <span class="docs-link-arrow" aria-hidden="true">↗</span>
               </a>
             ))}

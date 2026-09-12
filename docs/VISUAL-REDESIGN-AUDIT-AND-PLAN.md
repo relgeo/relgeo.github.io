@@ -97,6 +97,7 @@ This document is also the working status register for the redesign.
 - [x] Removed legacy story/artifact selectors from the shared layout stylesheet and documented its current foundation, shell, framing, reading, and technical-surface layers.
 - [x] Made code and rendered-preview surfaces square by default and corrected the language switcher's active-state selector.
 - [x] Removed additional unused generic card/grid/pill selectors from the shared layout stylesheet and changed gateway buttons to compact square controls.
+- [x] Localized the shared docs/spec UI labels for Indonesian routes and kept technical/product terminology intentionally canonical.
 
 ### Still open
 

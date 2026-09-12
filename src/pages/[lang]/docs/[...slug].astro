@@ -42,7 +42,7 @@ const docsIndex = docsEntries.map((candidate) => ({
 ---
 
 <DocsLayout
-  title={entryTitle(entry, 'Documentation')}
+  title={entryTitle(entry, copy(uiCopy.documentation, lang))}
   eyebrow={copy({ id: 'RelGeo Docs', en: 'RelGeo Docs' }, lang)}
   lead={copy(
     {
@@ -70,7 +70,7 @@ const docsIndex = docsEntries.map((candidate) => ({
       <p><a href={`/${lang}/docs/`}>{copy(uiCopy.backToDocsIndex, lang)}</a></p>
       <section class="stack">
         <h3>{copy(uiCopy.pages, lang)}</h3>
-        <nav class="docs-sidebar-nav" aria-label="Docs pages">
+        <nav class="docs-sidebar-nav" aria-label={copy(uiCopy.docsPages, lang)}>
           {docsIndex.map((item) => (
             <a class="docs-sidebar-link" href={item.href} aria-current={item.href === localizedDocsHref(entry, lang) ? 'page' : undefined}>
               <strong>{item.title}</strong>

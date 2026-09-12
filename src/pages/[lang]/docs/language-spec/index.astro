@@ -7,7 +7,7 @@ import {
   localizedLanguageSpecHref,
   normalizeEntryId,
 } from '../../../../lib/content';
-import { copy, isSupportedLang, type SupportedLang } from '../../../../lib/i18n';
+import { copy, isSupportedLang, uiCopy, type SupportedLang } from '../../../../lib/i18n';
 
 export function getStaticPaths() {
   return [{ params: { lang: 'id' } }, { params: { lang: 'en' } }];
@@ -30,8 +30,8 @@ const sectionGroups = groupLanguageSpecEntries(entries);
 ---
 
 <DocsLayout
-  title="Language Spec"
-  eyebrow={copy({ id: 'Normative Source', en: 'Normative Source' }, lang)}
+  title={copy(uiCopy.languageSpec, lang)}
+  eyebrow={copy(uiCopy.normativeSource, lang)}
   lead={copy(
     {
       id: 'Section ini menampilkan source normatif aktif dari language spec RelGeo secara langsung dari filesystem workspace.',
@@ -46,7 +46,7 @@ const sectionGroups = groupLanguageSpecEntries(entries);
 >
   <div class="spec-shell">
     <aside class="spec-sidebar">
-      <h2>{copy({ id: 'Spec Index', en: 'Spec Index' }, lang)}</h2>
+      <h2>{copy({ id: 'Indeks spec', en: 'Spec Index' }, lang)}</h2>
       <p class="spec-section-note">
         {copy(
           {

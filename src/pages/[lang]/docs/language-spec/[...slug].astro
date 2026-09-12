@@ -40,7 +40,7 @@ const currentGroup = groups.find((group: LanguageSpecSectionGroup) => group.sect
 ---
 
 <DocsLayout
-  title={entryTitle(entry, 'Language Spec')}
+  title={entryTitle(entry, copy(uiCopy.languageSpec, lang))}
   eyebrow={copy({ id: 'Normative Source', en: 'Normative Source' }, lang)}
   lead={copy(
     {
