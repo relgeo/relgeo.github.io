@@ -49,6 +49,20 @@ const nextEntry =
   currentIndex >= 0 && currentIndex < orderedSiteEntries.length - 1
     ? orderedSiteEntries[currentIndex + 1]
     : null;
+const isWhyPage = slug === 'why-relgeo';
+const whySections = lang === 'id'
+  ? [
+      { label: 'Masalah yang ingin diselesaikan', href: '#masalah-yang-ingin-diselesaikan' },
+      { label: 'Kenapa relation-first', href: '#kenapa-relation-first' },
+      { label: 'Kenapa technical drawing didahulukan', href: '#kenapa-technical-drawing-didahulukan' },
+      { label: 'Namun RelGeo tidak sempit', href: '#namun-relgeo-tidak-sempit' },
+    ]
+  : [
+      { label: 'The problem RelGeo is trying to solve', href: '#the-problem-relgeo-is-trying-to-solve' },
+      { label: 'Why relation-first', href: '#why-relation-first' },
+      { label: 'Why technical drawing comes first', href: '#why-technical-drawing-comes-first' },
+      { label: 'But RelGeo is not narrow', href: '#but-relgeo-is-not-narrow' },
+    ];
 ---
 
 <DocsLayout
@@ -67,12 +81,38 @@ const nextEntry =
   variant="docs"
   lang={lang}
   localizedSlug={slug}
+  showPageHeader={!isWhyPage}
 >
-  <article class="card docs-body-card article">
-    <Content />
-  </article>
+  {isWhyPage ? (
+    <>
+      <header class="article-masthead">
+        <p class="eyebrow">{copy({ id: 'Website RelGeo', en: 'RelGeo Website' }, lang)}</p>
+        <h1>{entryTitle(entry, 'Why RelGeo')}</h1>
+        <p class="lead">{entry.data.description}</p>
+      </header>
+      <div class="article-layout article-layout--editorial">
+        <aside class="article-index" aria-label={copy({ id: 'Daftar isi', en: 'On this page' }, lang)}>
+          <p class="kicker">{copy({ id: 'Di halaman ini', en: 'On this page' }, lang)}</p>
+          <ol>
+            {whySections.map((section, index) => (
+              <li>
+                <a href={section.href}><span>{String(index + 1).padStart(2, '0')}</span>{section.label}</a>
+              </li>
+            ))}
+          </ol>
+        </aside>
+        <article class="article article-page article-page--editorial">
+          <Content />
+        </article>
+      </div>
+    </>
+  ) : (
+    <article class="card docs-body-card article">
+      <Content />
+    </article>
+  )}
 
-  <section class="docs-next">
+  <section class:list={['docs-next', { 'article-next': isWhyPage }]}>
     <article class="docs-context-card">
       <p class="kicker">{copy({ id: 'Use RelGeo', en: 'Use RelGeo' }, lang)}</p>
       <h3><a href={`/${lang}/docs/`}>Documentation</a></h3>
