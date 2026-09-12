@@ -102,6 +102,7 @@ This document is also the working status register for the redesign.
 - [x] Removed the landing hero's artificial viewport-height minimum so the first proof row enters the desktop viewport sooner.
 - [x] Added a WebP hero variant (with PNG fallback) and corrected the artwork's intrinsic 1774×887 dimensions to reduce transfer size and layout-shift risk.
 - [x] Added a minimal geometric SVG favicon.
+- [x] Updated the Pages workflow to Node 24 and switched playground installation to `--frozen-lockfile`; added the standalone playground lockfile in the sibling `playground` repository.
 
 ### Manual QA record — 2026-09-12
 
@@ -124,7 +125,9 @@ This document is also the working status register for the redesign.
 - [x] Remove unused direct landing-only dependencies and keep the lockfile consistent.
 - [ ] Perform viewport, keyboard, contrast, zoom, and reduced-motion review.
 - [ ] Add a platform-specific touch icon if the final public asset policy requires one; the SVG favicon and WebP hero are now present.
-- [ ] Move the Pages workflow to Node 24 and frozen playground installation after compatibility verification.
+- [x] Move the Pages workflow to Node 24 and frozen playground installation; local lockfile/build verification passes on Node 22.
+- [ ] Confirm the Node 24 Pages run is green in GitHub Actions; local verification used Node 22 because Node 24 is not installed on this machine.
+- [ ] Decide whether to split the playground's Vite entry chunk; the current build succeeds but reports a non-blocking >500 kB chunk advisory.
 
 The Why RelGeo work is a first page slice, not a claim that Phase 2 is complete.
 
