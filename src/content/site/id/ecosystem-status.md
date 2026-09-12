@@ -7,7 +7,7 @@ RelGeo sudah memiliki ekosistem awal yang nyata, tetapi belum selesai sebagai ek
 
 ## Yang Sudah Cukup Jelas
 
-1. language spec aktif sudah ada
+1. spesifikasi bahasa aktif sudah ada
 2. implementasi utama sudah mengikuti spec aktif
 3. renderer SVG utama sudah cukup penting sebagai baseline
 4. surface markdown awal sudah nyata

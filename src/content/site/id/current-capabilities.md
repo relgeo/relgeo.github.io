@@ -7,7 +7,7 @@ RelGeo adalah bahasa relation-first dengan beberapa permukaan nyata yang sudah a
 
 ## Yang Sudah Ada Sekarang
 
-1. language spec aktif v0.5
+1. spesifikasi bahasa aktif v0.5
 2. renderer SVG utama
 3. CLI
 4. playground
@@ -52,7 +52,7 @@ Remark plugins menunjukkan arah penting RelGeo:
 
 Surface ini menegaskan bahwa RelGeo nyaman hidup di medium teks tanpa kehilangan bentuk bahasanya.
 
-### App Surface
+### Surface Aplikasi
 
 Aplikasi desktop atau workbench awal menunjukkan arah RelGeo ke surface authoring yang lebih lengkap daripada browser atau markdown saja.
 

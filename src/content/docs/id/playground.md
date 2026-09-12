@@ -7,7 +7,7 @@ description: IDE browser ringan untuk authoring, preview, dan inspection cepat.
 
 Ia sengaja diposisikan sebagai:
 
-1. lightweight IDE
+1. IDE browser ringan
 2. cepat dibuka
 3. cepat dipakai untuk loop `edit -> resolve -> preview -> inspect`
 
@@ -29,7 +29,7 @@ Pada snapshot repo aktif saat ini:
 3. ia bukan target publish registry
 4. ia berfungsi sebagai workspace browser IDE resmi yang ringan
 
-## Positioning Penting
+## Posisi Penting
 
 Playground sengaja dijaga lebih ringan daripada workbench lokal yang lebih kaya.
 

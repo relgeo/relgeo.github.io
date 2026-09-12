@@ -110,6 +110,7 @@ This document is also the working status register for the redesign.
 - [x] Localized generic Indonesian cross-page link labels while keeping product names such as `CLI`, `Playground`, and `Workbench` canonical.
 - [x] Namespaced internal content-collection IDs to prevent site/docs collisions without changing any public route.
 - [x] Added built-output guards for the localized Indonesian titles so generic UI labels cannot silently regress to English.
+- [x] Added a public terminology policy distinguishing translated editorial labels from canonical product, package, and DSL terms.
 
 ### Manual QA record — 2026-09-12
 
@@ -130,7 +131,7 @@ This document is also the working status register for the redesign.
 - [x] Redesign the Documentation index.
 - [x] Redesign the Language Spec index.
 - [x] Simplify leaf pages and remove redundant card wrappers.
-- [ ] Review the remaining canonical English terms in Indonesian prose and confirm each is intentional rather than an untranslated UI label.
+- [x] Review the remaining canonical English terms in Indonesian prose and confirm each is intentional rather than an untranslated UI label.
 - [x] Remove confirmed stale landing components, fixtures, and CSS.
 - [x] Remove unused direct landing-only dependencies and keep the lockfile consistent.
 - [ ] Perform viewport, keyboard, contrast, zoom, and reduced-motion review.

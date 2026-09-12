@@ -34,8 +34,8 @@ Secara praktis, CLI saat ini sudah mencakup:
 2. `compile` untuk menghasilkan output
 3. `check` atau `validate` untuk validasi tanpa output final
 4. parameter override
-5. profile selection
-6. target sheet untuk export SVG
+5. pemilihan profil
+6. sheet target untuk ekspor SVG
 
 ## Contoh Alur
 

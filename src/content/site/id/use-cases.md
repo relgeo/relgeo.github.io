@@ -14,9 +14,9 @@ Dalam konteks ini:
 1. `rg` berguna saat source perlu tetap terbaca
 2. `relgeo` berguna saat hasil render perlu langsung tampil
 
-## 2. Technical Drawing yang Mendokumentasikan Diri Sendiri
+## 2. Gambar Teknik yang Mendokumentasikan Diri Sendiri
 
-Technical drawing adalah domain awal yang paling dalam. Relasi, ukuran, perhitungan, dan intent konstruksi tetap terbaca di source.
+Gambar teknik adalah domain awal yang paling dalam. Relasi, ukuran, perhitungan, dan intent konstruksi tetap terbaca di source.
 
 ## 3. Drafting Parametrik
 
