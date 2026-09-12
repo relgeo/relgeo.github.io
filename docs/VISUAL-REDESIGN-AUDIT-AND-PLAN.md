@@ -1,6 +1,6 @@
 # RelGeo Website Visual Redesign — Audit & Change Plan
 
-**Status:** Proposed plan  
+**Status:** In progress — staged implementation and QA
 **Date:** 2026-09-12  
 **Scope:** `relgeo.github.io` website, including the shared shell, landing pages, documentation index, language-spec index, and supporting delivery quality.  
 **Baseline:** post-landing visual reset (`ede9c4c`)
@@ -99,6 +99,18 @@ This document is also the working status register for the redesign.
 - [x] Removed additional unused generic card/grid/pill selectors from the shared layout stylesheet and changed gateway buttons to compact square controls.
 - [x] Localized the shared docs/spec UI labels for Indonesian routes and kept technical/product terminology intentionally canonical.
 - [x] Added accessibility/responsive baselines for explicit body typography, control sizing, horizontal overflow containment, and reduced-motion behavior.
+- [x] Removed the landing hero's artificial viewport-height minimum so the first proof row enters the desktop viewport sooner.
+- [x] Added a WebP hero variant (with PNG fallback) and corrected the artwork's intrinsic 1774×887 dimensions to reduce transfer size and layout-shift risk.
+- [x] Added a minimal geometric SVG favicon.
+
+### Manual QA record — 2026-09-12
+
+- [x] Desktop landing preview checked in Chrome against the local Astro server: hero, artwork, actions, proof row, and navigation render without horizontal clipping.
+- [x] Desktop Documentation index checked: compact group map, reading column, and “Read in this order” links remain aligned and readable.
+- [x] Desktop Language Spec index checked: authoritative sidebar, heading, metadata, and first contract section remain readable without nested-card regression.
+- [x] Accessibility tree checked on landing, docs, and spec routes: skip link, landmarks, page-language links, primary nav, headings, and key actions are exposed.
+- [x] Narrow-window check performed: content remains readable and the primary nav is intentionally horizontally scrollable rather than wrapping into an unstable card layout.
+- [ ] True device emulation and full keyboard traversal still need a dedicated pass; the current narrow-window check is not a substitute for real mobile viewport emulation.
 
 ### Still open
 
@@ -111,7 +123,7 @@ This document is also the working status register for the redesign.
 - [x] Remove confirmed stale landing components, fixtures, and CSS.
 - [x] Remove unused direct landing-only dependencies and keep the lockfile consistent.
 - [ ] Perform viewport, keyboard, contrast, zoom, and reduced-motion review.
-- [ ] Add favicon/touch icon and optimize the hero asset.
+- [ ] Add a platform-specific touch icon if the final public asset policy requires one; the SVG favicon and WebP hero are now present.
 - [ ] Move the Pages workflow to Node 24 and frozen playground installation after compatibility verification.
 
 The Why RelGeo work is a first page slice, not a claim that Phase 2 is complete.

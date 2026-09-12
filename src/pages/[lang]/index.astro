@@ -52,14 +52,17 @@ const lang = rawLang as SupportedLang;
     </div>
     <div class="landing-hero__visual">
       <figure class="landing-hero__artwork">
-        <img
-          src="/images/relgeo-hero-v2.png"
-          alt={copy({ id: 'Ilustrasi editorial tentang relasi geometri yang membentuk ruang.', en: 'Editorial illustration of geometric relationships forming space.' }, lang)}
-          width="1536"
-          height="1024"
-          loading="eager"
-          decoding="async"
-        />
+        <picture>
+          <source srcset="/images/relgeo-hero-v2.webp" type="image/webp" />
+          <img
+            src="/images/relgeo-hero-v2.png"
+            alt={copy({ id: 'Ilustrasi editorial tentang relasi geometri yang membentuk ruang.', en: 'Editorial illustration of geometric relationships forming space.' }, lang)}
+            width="1774"
+            height="887"
+            loading="eager"
+            decoding="async"
+          />
+        </picture>
         <figcaption>{copy({ id: 'Relasi menjadi bentuk.', en: 'Relations become form.' }, lang)}</figcaption>
       </figure>
     </div>
@@ -148,8 +151,7 @@ const lang = rawLang as SupportedLang;
     display: grid;
     gap: 28px;
     align-items: center;
-    min-height: min(560px, calc(100vh - 76px));
-    padding: 28px clamp(8px, 3vw, 36px) 36px;
+    padding: 24px clamp(8px, 3vw, 36px) 40px;
   }
 
   .landing-hero__copy {
