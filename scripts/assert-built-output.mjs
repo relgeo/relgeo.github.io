@@ -63,6 +63,10 @@ function assertActiveNav(html, path, href) {
   assert.ok(html.includes(`<a href="${href}" aria-current="page">`), `${path}: active navigation for ${href}`);
 }
 
+function assertLocalizedTitle(html, path, title) {
+  assert.ok(html.includes(title), `${path}: localized title "${title}"`);
+}
+
 async function listHtmlFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   const files = [];
@@ -113,6 +117,22 @@ for (const [path, href] of navigationChecks) {
   const html = await readPage(path);
   assertAccessibleShell(html, path, path.startsWith('id/') ? 'id' : 'en');
   assertActiveNav(html, path, href);
+}
+
+const IndonesianTitleChecks = [
+  ['id/current-capabilities/index.html', 'Kapabilitas Saat Ini'],
+  ['id/ecosystem-status/index.html', 'Status Ekosistem'],
+  ['id/use-cases/index.html', 'Contoh Penggunaan'],
+  ['id/why-relgeo/index.html', 'Mengapa RelGeo'],
+  ['id/docs/current-capabilities/index.html', 'Kapabilitas Saat Ini'],
+  ['id/docs/desktop-app/index.html', 'Aplikasi Desktop'],
+  ['id/docs/getting-started/index.html', 'Mulai'],
+  ['id/docs/language-status/index.html', 'Status Bahasa'],
+  ['id/docs/markdown-surfaces/index.html', 'Surface Markdown'],
+];
+
+for (const [path, title] of IndonesianTitleChecks) {
+  assertLocalizedTitle(await readPage(path), path, title);
 }
 
 for (const path of [

@@ -109,6 +109,7 @@ This document is also the working status register for the redesign.
 - [x] Localized Indonesian page titles in the site and documentation collections while retaining canonical product and technical names where they are intentional.
 - [x] Localized generic Indonesian cross-page link labels while keeping product names such as `CLI`, `Playground`, and `Workbench` canonical.
 - [x] Namespaced internal content-collection IDs to prevent site/docs collisions without changing any public route.
+- [x] Added built-output guards for the localized Indonesian titles so generic UI labels cannot silently regress to English.
 
 ### Manual QA record — 2026-09-12
 
