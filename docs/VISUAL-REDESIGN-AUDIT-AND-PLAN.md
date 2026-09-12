@@ -88,6 +88,7 @@ This document is also the working status register for the redesign.
 - [x] Introduced the first editorial Why RelGeo layout: compact masthead, contents rail, and reading column.
 - [x] Redesigned the Documentation index around a compact group map, one reading path, and dense reference rows instead of repeated card sections.
 - [x] Redesigned the Language Spec index as a standards/reference surface with a single authoritative sidebar and reading column.
+- [x] Simplified docs, language-spec, and product-facing leaf pages into reading columns with reference sidebars instead of repeated body cards.
 - [x] Rebuilt and validated the site after these changes: 138 pages, zero Astro diagnostics, and passing built-output assertions.
 
 ### Still open
@@ -96,7 +97,7 @@ This document is also the working status register for the redesign.
 - [ ] Add automated assertions for all primary routes and active navigation states.
 - [x] Redesign the Documentation index.
 - [x] Redesign the Language Spec index.
-- [ ] Simplify leaf pages and remove redundant card wrappers.
+- [x] Simplify leaf pages and remove redundant card wrappers.
 - [ ] Centralize visible localized navigation and action labels.
 - [ ] Remove confirmed stale landing components, fixtures, and CSS.
 - [ ] Perform viewport, keyboard, contrast, zoom, and reduced-motion review.

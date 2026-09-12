@@ -55,8 +55,8 @@ const docsIndex = docsEntries.map((candidate) => ({
   lang={lang}
   localizedSlug={`docs/${normalized}`}
 >
-  <div class="docs-shell">
-    <aside class="card docs-context-card docs-sidebar">
+  <div class="docs-shell docs-shell--leaf">
+    <aside class="docs-sidebar docs-sidebar--leaf">
       <h2>{copy({ id: 'Docs Navigation', en: 'Docs Navigation' }, lang)}</h2>
       <p class="spec-section-note">
         {copy(
@@ -88,29 +88,12 @@ const docsIndex = docsEntries.map((candidate) => ({
       </section>
     </aside>
 
-    <div class="stack">
-      <section class="docs-context">
-        <article class="docs-context-card docs-band">
-          <p class="kicker">{copy({ id: 'Docs Mode', en: 'Docs Mode' }, lang)}</p>
-          <h2>{copy({ id: 'Guide and onboarding layer', en: 'Guide and onboarding layer' }, lang)}</h2>
-          <p>
-            {copy(
-              {
-                id: 'Halaman ini adalah documentation non-normatif. Gunakan halaman ini untuk memahami cara membaca proyek, lalu lanjutkan ke language spec saat membutuhkan kontrak aktif.',
-                en: 'This page is non-normative documentation. Use it to understand how to read the project, then continue to the language spec when you need the active contract.',
-              },
-              lang
-            )}
-          </p>
-          <p><a href={`/${lang}/docs/`}>{copy({ id: 'Kembali ke docs index', en: 'Back to docs index' }, lang)}</a></p>
-        </article>
-      </section>
-
-      <article class="card docs-body-card article">
+    <div class="docs-leaf-column">
+      <article class="article docs-reading--leaf">
         <Content />
       </article>
 
-      <section class="docs-next">
+      <section class="docs-next docs-next--leaf">
         <article class="docs-context-card">
           <p class="kicker">{copy({ id: 'Related', en: 'Related' }, lang)}</p>
           <h3><a href={`/${lang}/why-relgeo/`}>Why RelGeo</a></h3>

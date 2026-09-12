@@ -55,7 +55,7 @@ const currentGroup = groups.find((group: LanguageSpecSectionGroup) => group.sect
   showPageHeader={false}
 >
   <div class="spec-shell">
-    <aside class="card docs-context-card docs-context-card--spec spec-sidebar">
+    <aside class="spec-sidebar">
       <h2>Language Spec</h2>
       <p class="spec-section-note">
         {copy(
@@ -89,8 +89,8 @@ const currentGroup = groups.find((group: LanguageSpecSectionGroup) => group.sect
       ))}
     </aside>
 
-    <div class="stack">
-      <article class="card docs-body-card docs-body-card--spec article">
+    <div class="spec-index-column">
+      <article class="article spec-reading spec-reading--leaf">
         {currentGroup && (
           <p>
             <span class="section-marker">{copy({ id: 'Current Section', en: 'Current Section' }, lang)}</span>{' '}

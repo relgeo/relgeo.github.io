@@ -749,6 +749,14 @@ const contentClass = `content content--${variant}`;
         margin-top: 0;
       }
 
+      .spec-reading--leaf > :first-child {
+        margin-top: 0;
+      }
+
+      .spec-reading--leaf .section-marker {
+        border-radius: var(--radius-sm);
+      }
+
       .spec-reading h1 {
         max-width: 18ch;
         font-size: clamp(2.2rem, 5vw, 4rem);
@@ -770,6 +778,10 @@ const contentClass = `content content--${variant}`;
         gap: clamp(32px, 5vw, 56px);
       }
 
+      .docs-shell--leaf {
+        gap: clamp(32px, 5vw, 56px);
+      }
+
       .docs-index-column {
         display: grid;
         gap: 34px;
@@ -788,6 +800,58 @@ const contentClass = `content content--${variant}`;
 
       .docs-sidebar--index h2 {
         margin-bottom: 12px;
+      }
+
+      .docs-sidebar--leaf {
+        padding: 12px 24px 0 0;
+        border-right: 1px solid var(--line-strong);
+      }
+
+      .docs-sidebar--leaf h2 {
+        margin-bottom: 12px;
+      }
+
+      .docs-sidebar--leaf .docs-sidebar-link {
+        padding: 10px 0;
+        border: 0;
+        border-top: 1px solid var(--line);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .docs-sidebar--leaf .docs-sidebar-link:hover,
+      .docs-sidebar--leaf .docs-sidebar-link[aria-current="page"] {
+        transform: none;
+        border-color: var(--line);
+        background: transparent;
+      }
+
+      .docs-sidebar--leaf .docs-sidebar-link[aria-current="page"] strong {
+        color: var(--accent);
+      }
+
+      .docs-leaf-column {
+        display: grid;
+        gap: 34px;
+        min-width: 0;
+      }
+
+      .docs-reading--leaf {
+        max-width: 800px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .docs-reading--leaf > :first-child {
+        margin-top: 0;
+      }
+
+      .docs-next--leaf {
+        border-top: 1px solid var(--line-strong);
+        padding-top: 24px;
       }
 
       .docs-index-nav {
@@ -1750,6 +1814,12 @@ const contentClass = `content content--${variant}`;
         }
 
         .docs-sidebar--index {
+          padding: 0 0 22px;
+          border-right: 0;
+          border-bottom: 1px solid var(--line-strong);
+        }
+
+        .docs-sidebar--leaf {
           padding: 0 0 22px;
           border-right: 0;
           border-bottom: 1px solid var(--line-strong);
