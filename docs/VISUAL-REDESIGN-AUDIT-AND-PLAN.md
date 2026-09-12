@@ -122,6 +122,7 @@ This document is also the working status register for the redesign.
 - [x] Keyboard traversal spot-check started on the Documentation route: skip link, brand, and primary navigation receive focus in the expected order without a focus trap.
 - [x] Contrast spot-check completed for the main landing text and controls; the coral primary action was darkened to reach approximately 5.38:1 against its light text.
 - [x] Narrow-window check performed at approximately 440px on landing and Documentation routes: content remains readable, the header stays compact, and the primary nav is intentionally horizontally scrollable rather than wrapping into an unstable card layout.
+- [x] CI-like clean build repeated with local dev servers stopped: 138 pages built with no content-loader duplicate-ID warning; the earlier warning was caused by concurrent Astro cache writers.
 - [ ] True device emulation and full keyboard traversal still need a dedicated pass; the current narrow-window check is not a substitute for real mobile viewport emulation.
 
 ### Still open
