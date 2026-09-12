@@ -89,6 +89,8 @@ This document is also the working status register for the redesign.
 - [x] Redesigned the Documentation index around a compact group map, one reading path, and dense reference rows instead of repeated card sections.
 - [x] Redesigned the Language Spec index as a standards/reference surface with a single authoritative sidebar and reading column.
 - [x] Simplified docs, language-spec, and product-facing leaf pages into reading columns with reference sidebars instead of repeated body cards.
+- [x] Added a shared `uiCopy` map for common navigation/action labels and applied it to the shell and detail surfaces.
+- [x] Added built-output assertions for primary route existence and active navigation state.
 - [x] Rebuilt and validated the site after these changes: 138 pages, zero Astro diagnostics, and passing built-output assertions.
 
 ### Still open
@@ -98,7 +100,7 @@ This document is also the working status register for the redesign.
 - [x] Redesign the Documentation index.
 - [x] Redesign the Language Spec index.
 - [x] Simplify leaf pages and remove redundant card wrappers.
-- [ ] Centralize visible localized navigation and action labels.
+- [ ] Complete the remaining visible-label inventory and apply the terminology policy to all page templates.
 - [ ] Remove confirmed stale landing components, fixtures, and CSS.
 - [ ] Perform viewport, keyboard, contrast, zoom, and reduced-motion review.
 - [ ] Add favicon/touch icon and optimize the hero asset.

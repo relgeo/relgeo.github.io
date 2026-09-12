@@ -1,5 +1,5 @@
 ---
-import type { SupportedLang } from '../lib/i18n';
+import { copy, uiCopy, type SupportedLang } from '../lib/i18n';
 
 const {
   title = 'RelGeo Docs',
@@ -63,27 +63,27 @@ const navigationLabels = isIndonesian
       primary: 'Navigasi utama',
       language: 'Bahasa halaman',
       skip: 'Lewati ke konten',
-      home: 'Beranda',
-      capabilities: 'Kapabilitas',
-      useCases: 'Contoh penggunaan',
-      docs: 'Dokumentasi',
-      languageSpec: 'Spesifikasi bahasa',
-      playground: 'Playground',
+      home: copy(uiCopy.navHome, 'id'),
+      capabilities: copy(uiCopy.navCapabilities, 'id'),
+      useCases: copy(uiCopy.navUseCases, 'id'),
+      docs: copy(uiCopy.navDocs, 'id'),
+      languageSpec: copy(uiCopy.navLanguageSpec, 'id'),
+      playground: copy(uiCopy.navPlayground, 'id'),
     }
   : {
       primary: 'Primary navigation',
       language: 'Page language',
       skip: 'Skip to content',
-      home: 'Home',
-      capabilities: 'Capabilities',
-      useCases: 'Use Cases',
-      docs: 'Docs',
-      languageSpec: 'Language Spec',
-      playground: 'Playground',
+      home: copy(uiCopy.navHome, 'en'),
+      capabilities: copy(uiCopy.navCapabilities, 'en'),
+      useCases: copy(uiCopy.navUseCases, 'en'),
+      docs: copy(uiCopy.navDocs, 'en'),
+      languageSpec: copy(uiCopy.navLanguageSpec, 'en'),
+      playground: copy(uiCopy.navPlayground, 'en'),
     };
 const navItems = [
   { href: activeLang ? `/${activeLang}/` : '/', label: navigationLabels.home },
-  { href: activeLang ? `/${activeLang}/why-relgeo/` : '/why-relgeo/', label: isIndonesian ? 'Mengapa RelGeo' : 'Why RelGeo' },
+  { href: activeLang ? `/${activeLang}/why-relgeo/` : '/why-relgeo/', label: copy(uiCopy.navWhyRelGeo, activeLang ?? 'en') },
   { href: activeLang ? `/${activeLang}/current-capabilities/` : '/current-capabilities/', label: navigationLabels.capabilities },
   { href: activeLang ? `/${activeLang}/use-cases/` : '/use-cases/', label: navigationLabels.useCases },
   { href: activeLang ? `/${activeLang}/docs/` : '/docs/', label: navigationLabels.docs },

@@ -2,7 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import DocsLayout from '../../../layouts/DocsLayout.astro';
 import { entryLang, entryTitle, stripLangPrefix, localizedDocsHref } from '../../../lib/content';
-import { copy, isSupportedLang, type SupportedLang } from '../../../lib/i18n';
+import { copy, isSupportedLang, uiCopy, type SupportedLang } from '../../../lib/i18n';
 
 export async function getStaticPaths() {
   const entries = await getCollection('docsPages');
@@ -57,7 +57,7 @@ const docsIndex = docsEntries.map((candidate) => ({
 >
   <div class="docs-shell docs-shell--leaf">
     <aside class="docs-sidebar docs-sidebar--leaf">
-      <h2>{copy({ id: 'Docs Navigation', en: 'Docs Navigation' }, lang)}</h2>
+      <h2>{copy(uiCopy.docsNavigation, lang)}</h2>
       <p class="spec-section-note">
         {copy(
           {
@@ -67,9 +67,9 @@ const docsIndex = docsEntries.map((candidate) => ({
           lang
         )}
       </p>
-      <p><a href={`/${lang}/docs/`}>{copy({ id: 'Kembali ke docs index', en: 'Back to docs index' }, lang)}</a></p>
+      <p><a href={`/${lang}/docs/`}>{copy(uiCopy.backToDocsIndex, lang)}</a></p>
       <section class="stack">
-        <h3>{copy({ id: 'Pages', en: 'Pages' }, lang)}</h3>
+        <h3>{copy(uiCopy.pages, lang)}</h3>
         <nav class="docs-sidebar-nav" aria-label="Docs pages">
           {docsIndex.map((item) => (
             <a class="docs-sidebar-link" href={item.href} aria-current={item.href === localizedDocsHref(entry, lang) ? 'page' : undefined}>
@@ -80,10 +80,10 @@ const docsIndex = docsEntries.map((candidate) => ({
         </nav>
       </section>
       <section class="stack">
-        <h3>{copy({ id: 'Related', en: 'Related' }, lang)}</h3>
+        <h3>{copy(uiCopy.related, lang)}</h3>
         <ul>
-          <li><a href={`/${lang}/why-relgeo/`}>Why RelGeo</a></li>
-          <li><a href={`/${lang}/docs/language-spec/`}>Active Language Spec</a></li>
+          <li><a href={`/${lang}/why-relgeo/`}>{copy({ id: 'Mengapa RelGeo', en: 'Why RelGeo' }, lang)}</a></li>
+          <li><a href={`/${lang}/docs/language-spec/`}>{copy(uiCopy.activeLanguageSpec, lang)}</a></li>
         </ul>
       </section>
     </aside>
@@ -95,15 +95,15 @@ const docsIndex = docsEntries.map((candidate) => ({
 
       <section class="docs-next docs-next--leaf">
         <article class="docs-context-card">
-          <p class="kicker">{copy({ id: 'Related', en: 'Related' }, lang)}</p>
-          <h3><a href={`/${lang}/why-relgeo/`}>Why RelGeo</a></h3>
+          <p class="kicker">{copy(uiCopy.related, lang)}</p>
+          <h3><a href={`/${lang}/why-relgeo/`}>{copy({ id: 'Mengapa RelGeo', en: 'Why RelGeo' }, lang)}</a></h3>
           <p>{copy({ id: 'Gunakan ini bila Anda ingin membaca problem framing dan product intent terlebih dahulu.', en: 'Use this when you want to read the problem framing and product intent first.' }, lang)}</p>
         </article>
         <article class="docs-context-card">
-          <p class="kicker">{copy({ id: 'Next Reading', en: 'Next Reading' }, lang)}</p>
+          <p class="kicker">{copy(uiCopy.nextReading, lang)}</p>
           <h3>
             <a href={nextDocsEntry ? localizedDocsHref(nextDocsEntry, lang) : `/${lang}/docs/language-spec/`}>
-              {nextDocsEntry ? entryTitle(nextDocsEntry, 'Next Docs Page') : 'Open Language Spec'}
+              {nextDocsEntry ? entryTitle(nextDocsEntry, 'Next Docs Page') : copy(uiCopy.openLanguageSpec, lang)}
             </a>
           </h3>
           <p>

@@ -49,6 +49,10 @@ function assertGettingStarted(html, path, lang) {
   assert.match(html, /playground/i, `${path}: Playground route`);
 }
 
+function assertActiveNav(html, path, href) {
+  assert.ok(html.includes(`<a href="${href}" aria-current="page">`), `${path}: active navigation for ${href}`);
+}
+
 async function listHtmlFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   const files = [];
@@ -80,6 +84,35 @@ for (const lang of ['id', 'en']) {
   const gettingStartedPath = `${lang}/docs/getting-started/index.html`;
   const gettingStarted = await readPage(gettingStartedPath);
   assertGettingStarted(gettingStarted, gettingStartedPath, lang);
+}
+
+const navigationChecks = [
+  ['en/why-relgeo/index.html', '/en/why-relgeo/'],
+  ['id/why-relgeo/index.html', '/id/why-relgeo/'],
+  ['en/docs/index.html', '/en/docs/'],
+  ['id/docs/index.html', '/id/docs/'],
+  ['en/docs/language-spec/index.html', '/en/docs/language-spec/'],
+  ['id/docs/language-spec/index.html', '/id/docs/language-spec/'],
+  ['en/current-capabilities/index.html', '/en/current-capabilities/'],
+  ['id/current-capabilities/index.html', '/id/current-capabilities/'],
+];
+
+for (const [path, href] of navigationChecks) {
+  const html = await readPage(path);
+  assertActiveNav(html, path, href);
+}
+
+for (const path of [
+  'en/index.html',
+  'id/index.html',
+  'en/docs/index.html',
+  'id/docs/index.html',
+  'en/docs/language-spec/index.html',
+  'id/docs/language-spec/index.html',
+  'en/why-relgeo/index.html',
+  'id/why-relgeo/index.html',
+]) {
+  await readPage(path);
 }
 
 const gateway = await readPage('index.html');

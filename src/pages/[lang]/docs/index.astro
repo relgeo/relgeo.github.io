@@ -7,7 +7,7 @@ import {
   normalizeEntryId,
   localizedLanguageSpecHref,
 } from '../../../lib/content';
-import { copy, isSupportedLang, type SupportedLang } from '../../../lib/i18n';
+import { copy, isSupportedLang, uiCopy, type SupportedLang } from '../../../lib/i18n';
 
 export function getStaticPaths() {
   return [{ params: { lang: 'id' } }, { params: { lang: 'en' } }];
@@ -238,16 +238,16 @@ const docsGroups = [
                 lang
               )}
             </p>
-            <p class="docs-index-actions"><a href={`/${lang}/docs/getting-started/`}>Open Getting Started</a><a href={`/${lang}/docs/language-spec/`}>Open Language Spec</a></p>
+            <p class="docs-index-actions"><a href={`/${lang}/docs/getting-started/`}>{copy(uiCopy.openGettingStarted, lang)}</a><a href={`/${lang}/docs/language-spec/`}>{copy(uiCopy.openLanguageSpec, lang)}</a></p>
           </div>
           <aside class="docs-reading-path">
             <h2>{copy({ id: 'Read in this order', en: 'Read in this order' }, lang)}</h2>
             <ol class="meta-list">
-              <li><a href={`/${lang}/docs/getting-started/`}>Getting started</a></li>
-              <li><a href={`/${lang}/docs/current-capabilities/`}>Current Capabilities</a></li>
-              <li><a href={`/${lang}/docs/cli/`}>CLI or Playground</a></li>
-              <li><a href={`/${lang}/docs/markdown-surfaces/`}>Markdown Surfaces</a></li>
-              <li><a href={`/${lang}/docs/language-spec/`}>Active language spec</a></li>
+              <li><a href={`/${lang}/docs/getting-started/`}>{copy(uiCopy.gettingStarted, lang)}</a></li>
+              <li><a href={`/${lang}/docs/current-capabilities/`}>{copy(uiCopy.currentCapabilities, lang)}</a></li>
+              <li><a href={`/${lang}/docs/cli/`}>{copy(uiCopy.cliOrPlayground, lang)}</a></li>
+              <li><a href={`/${lang}/docs/markdown-surfaces/`}>{copy(uiCopy.markdownSurfaces, lang)}</a></li>
+              <li><a href={`/${lang}/docs/language-spec/`}>{copy(uiCopy.activeLanguageSpecLower, lang)}</a></li>
             </ol>
           </aside>
         </div>
