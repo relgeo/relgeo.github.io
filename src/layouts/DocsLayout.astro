@@ -733,6 +733,34 @@ const contentClass = `content content--${variant}`;
         gap: 20px;
       }
 
+      .spec-index-column {
+        min-width: 0;
+      }
+
+      .spec-reading {
+        max-width: 800px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .spec-reading > :first-child {
+        margin-top: 0;
+      }
+
+      .spec-reading h1 {
+        max-width: 18ch;
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        line-height: 0.98;
+      }
+
+      .spec-reading h2 {
+        margin-top: 2.2em;
+        padding-top: 0.5em;
+        border-top: 1px solid var(--line-strong);
+      }
+
       .docs-shell {
         display: grid;
         gap: 20px;
@@ -749,6 +777,11 @@ const contentClass = `content content--${variant}`;
       }
 
       .docs-sidebar--index {
+        padding: 12px 24px 0 0;
+        border-right: 1px solid var(--line-strong);
+      }
+
+      .spec-sidebar {
         padding: 12px 24px 0 0;
         border-right: 1px solid var(--line-strong);
       }
@@ -1735,6 +1768,12 @@ const contentClass = `content content--${variant}`;
           padding: 20px 0 0;
           border-top: 1px solid var(--line-strong);
           border-left: 0;
+        }
+
+        .spec-sidebar {
+          padding: 0 0 22px;
+          border-right: 0;
+          border-bottom: 1px solid var(--line-strong);
         }
       }
 

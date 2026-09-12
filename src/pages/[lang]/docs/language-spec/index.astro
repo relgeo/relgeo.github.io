@@ -45,7 +45,7 @@ const sectionGroups = groupLanguageSpecEntries(entries);
   showPageHeader={false}
 >
   <div class="spec-shell">
-    <aside class="card docs-context-card docs-context-card--spec spec-sidebar">
+    <aside class="spec-sidebar">
       <h2>{copy({ id: 'Spec Index', en: 'Spec Index' }, lang)}</h2>
       <p class="spec-section-note">
         {copy(
@@ -72,30 +72,10 @@ const sectionGroups = groupLanguageSpecEntries(entries);
       </div>
     </aside>
 
-    <div class="stack">
-      <section class="card docs-body-card docs-body-card--spec article">
+    <div class="spec-index-column">
+      <article class="article spec-reading">
         <Content />
-      </section>
-
-      <section class="card docs-body-card docs-body-card--spec stack">
-        <p class="kicker">{copy({ id: 'Sections', en: 'Sections' }, lang)}</p>
-        <h2>{copy({ id: 'Browse the active contract', en: 'Browse the active contract' }, lang)}</h2>
-        <div class="section-grid">
-          {sectionGroups.map((group) => (
-            <article class="feature-card">
-              <h3>{group.title}</h3>
-              <p><a href={localizedLanguageSpecHref(group.entry ?? { id: group.section }, lang)}>Open section</a></p>
-              {group.chapters.length > 0 && (
-                <ul class="meta-list">
-                  {group.chapters.map((chapter) => (
-                    <li><a href={localizedLanguageSpecHref(chapter, lang)}>{entryTitle(chapter, 'Chapter')}</a></li>
-                  ))}
-                </ul>
-              )}
-            </article>
-          ))}
-        </div>
-      </section>
+      </article>
     </div>
   </div>
 </DocsLayout>
