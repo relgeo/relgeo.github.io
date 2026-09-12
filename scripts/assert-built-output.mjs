@@ -67,15 +67,15 @@ function assertLocalizedTitle(html, path, title) {
   assert.ok(html.includes(title), `${path}: localized title "${title}"`);
 }
 
-async function listHtmlFiles(directory) {
+async function listFiles(directory, extension) {
   const entries = await readdir(directory, { withFileTypes: true });
   const files = [];
 
   for (const entry of entries) {
     const entryPath = join(directory, entry.name);
     if (entry.isDirectory()) {
-      files.push(...(await listHtmlFiles(entryPath)));
-    } else if (entry.isFile() && entry.name.endsWith('.html')) {
+      files.push(...(await listFiles(entryPath, extension)));
+    } else if (entry.isFile() && entry.name.endsWith(extension)) {
       files.push(entryPath);
     }
   }
@@ -151,7 +151,14 @@ for (const path of [
 const gateway = await readPage('index.html');
 assert.match(gateway, /<meta name="robots" content="noindex,follow"/, 'root gateway: noindex');
 
-for (const htmlPath of await listHtmlFiles(dist)) {
+const stylesheetPaths = await listFiles(join(dist, '_astro'), '.css');
+assert.ok(stylesheetPaths.length > 0, 'built output: stylesheet assets');
+const stylesheets = await Promise.all(stylesheetPaths.map((path) => readFile(path, 'utf8')));
+const styles = stylesheets.join('\n');
+assert.match(styles, /:focus-visible/, 'built styles: visible focus treatment');
+assert.match(styles, /prefers-reduced-motion:\s*reduce/, 'built styles: reduced-motion treatment');
+
+for (const htmlPath of await listFiles(dist, '.html')) {
   const html = await readFile(htmlPath, 'utf8');
   assert.doesNotMatch(html, /data-relgeo-kind="preview-error"/, `${htmlPath}: preview error`);
   assert.doesNotMatch(html, /Preview unavailable\./, `${htmlPath}: unavailable preview`);

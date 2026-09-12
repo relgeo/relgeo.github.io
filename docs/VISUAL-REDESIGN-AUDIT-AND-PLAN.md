@@ -123,6 +123,8 @@ This document is also the working status register for the redesign.
 - [x] Contrast spot-check completed for the main landing text and controls; the coral primary action was darkened to reach approximately 5.38:1 against its light text.
 - [x] Narrow-window check performed at approximately 440px on landing and Documentation routes: content remains readable, the header stays compact, and the primary nav is intentionally horizontally scrollable rather than wrapping into an unstable card layout.
 - [x] CI-like clean build repeated with local dev servers stopped: 138 pages built with no content-loader duplicate-ID warning; the earlier warning was caused by concurrent Astro cache writers.
+- [x] Zoom spot-check completed in Chrome at an enlarged setting on the narrow Documentation route; text remained readable and the layout did not break, then zoom was restored to 100%.
+- [x] Added built-output guards for visible focus treatment and reduced-motion CSS, reading the extracted stylesheet assets correctly.
 - [ ] True device emulation and full keyboard traversal still need a dedicated pass; the current narrow-window check is not a substitute for real mobile viewport emulation.
 
 ### Still open
