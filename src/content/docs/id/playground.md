@@ -72,5 +72,5 @@ Rumah dokumentasi yang lebih dekat ke package sekarang mulai hidup di `docs/READ
 ## Lanjut Membaca
 
 1. baca [CLI](/id/docs/cli/) bila Anda butuh workflow terminal
-2. baca [Desktop App](/id/docs/desktop-app/) untuk memahami boundary workbench lokal yang lebih kaya
-3. baca [Markdown Surfaces](/id/docs/markdown-surfaces/) untuk surface embed di dokumen
+2. baca [Aplikasi Desktop](/id/docs/desktop-app/) untuk memahami boundary workbench lokal yang lebih kaya
+3. baca [Surface Markdown](/id/docs/markdown-surfaces/) untuk surface embed di dokumen

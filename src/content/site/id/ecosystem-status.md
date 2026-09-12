@@ -36,6 +36,6 @@ Ini berarti:
 
 ## Lanjut Membaca
 
-1. baca [Current Capabilities](/id/current-capabilities/) untuk melihat permukaan yang sudah nyata
-2. baca [Use Cases](/id/use-cases/) untuk memahami kebutuhan yang paling cocok
-3. buka [Documentation](/id/docs/) untuk masuk ke surface penggunaan
+1. baca [Kapabilitas Saat Ini](/id/current-capabilities/) untuk melihat permukaan yang sudah nyata
+2. baca [Contoh Penggunaan](/id/use-cases/) untuk memahami kebutuhan yang paling cocok
+3. buka [Dokumentasi](/id/docs/) untuk masuk ke surface penggunaan

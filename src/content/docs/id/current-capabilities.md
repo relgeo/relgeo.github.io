@@ -82,11 +82,11 @@ Fokus domain awal RelGeo memang gambar teknik. Alasannya bukan karena RelGeo sem
 
 Urutan baca terdekat:
 
-1. baca [Why RelGeo](/id/why-relgeo/)
-2. baca [Markdown Surfaces](/id/docs/markdown-surfaces/)
+1. baca [Mengapa RelGeo](/id/why-relgeo/)
+2. baca [Surface Markdown](/id/docs/markdown-surfaces/)
 3. baca halaman ini untuk melihat kapabilitas yang sudah nyata
-4. baca [Language Status](/id/docs/language-status/)
-5. masuk ke [Language Spec](/id/docs/language-spec/) saat perlu aturan aktif yang lebih rinci
+4. baca [Status Bahasa](/id/docs/language-status/)
+5. masuk ke [Spesifikasi Bahasa](/id/docs/language-spec/) saat perlu aturan aktif yang lebih rinci
 
 ## Surface Yang Masih Terus Diperkuat
 

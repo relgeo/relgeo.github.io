@@ -63,4 +63,4 @@ Untuk saat ini, website hanya membakukan:
 
 1. baca [Playground](/id/docs/playground/) untuk surface browser yang ringan
 2. baca [CLI](/id/docs/cli/) untuk automation terminal
-3. baca [Current Capabilities](/id/current-capabilities/) untuk melihat bagaimana surface ini diposisikan di level produk
+3. baca [Kapabilitas Saat Ini](/id/current-capabilities/) untuk melihat bagaimana surface ini diposisikan di level produk

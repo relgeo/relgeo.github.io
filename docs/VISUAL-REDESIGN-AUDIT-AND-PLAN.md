@@ -107,6 +107,7 @@ This document is also the working status register for the redesign.
 - [x] Made the website independently checkable from a clean clone by declaring `typescript` directly and synchronizing its standalone lockfile.
 - [x] Reorganized the narrow mobile header so brand and language controls share the first row while the primary navigation remains a deliberate horizontal strip.
 - [x] Localized Indonesian page titles in the site and documentation collections while retaining canonical product and technical names where they are intentional.
+- [x] Localized generic Indonesian cross-page link labels while keeping product names such as `CLI`, `Playground`, and `Workbench` canonical.
 - [x] Namespaced internal content-collection IDs to prevent site/docs collisions without changing any public route.
 
 ### Manual QA record — 2026-09-12
@@ -128,7 +129,7 @@ This document is also the working status register for the redesign.
 - [x] Redesign the Documentation index.
 - [x] Redesign the Language Spec index.
 - [x] Simplify leaf pages and remove redundant card wrappers.
-- [ ] Complete the remaining visible-label inventory and apply the terminology policy to all page templates.
+- [ ] Review the remaining canonical English terms in Indonesian prose and confirm each is intentional rather than an untranslated UI label.
 - [x] Remove confirmed stale landing components, fixtures, and CSS.
 - [x] Remove unused direct landing-only dependencies and keep the lockfile consistent.
 - [ ] Perform viewport, keyboard, contrast, zoom, and reduced-motion review.

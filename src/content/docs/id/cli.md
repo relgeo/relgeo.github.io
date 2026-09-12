@@ -67,5 +67,5 @@ Rumah dokumentasi yang lebih dekat ke package sekarang mulai hidup di `docs/READ
 ## Lanjut Membaca
 
 1. baca [Playground](/id/docs/playground/) bila Anda ingin authoring interaktif
-2. baca [Markdown Surfaces](/id/docs/markdown-surfaces/) bila Anda ingin embedding di markdown
-3. buka [Language Spec](/id/docs/language-spec/) saat membutuhkan kontrak bahasa aktif
+2. baca [Surface Markdown](/id/docs/markdown-surfaces/) bila Anda ingin embedding di markdown
+3. buka [Spesifikasi Bahasa](/id/docs/language-spec/) saat membutuhkan kontrak bahasa aktif

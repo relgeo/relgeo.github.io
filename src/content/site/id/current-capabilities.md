@@ -31,7 +31,7 @@ Workbench lokal memberi arah ke surface authoring yang lebih kaya.
 
 ## Bentuk Kematangan Yang Sudah Terlihat
 
-### Language Spec
+### Spesifikasi Bahasa
 
 Spec aktif menjadi kontrak bahasa yang diikuti implementasi.
 
@@ -43,7 +43,7 @@ Renderer SVG utama membawa kontrak bahasa sampai ke output nyata.
 
 CLI, language service, dan playground membentuk jalur pakai, jalur uji, dan jalur integrasi.
 
-### Markdown Surfaces
+### Surface Markdown
 
 Remark plugins menunjukkan arah penting RelGeo:
 
@@ -66,6 +66,6 @@ Sebagian lain masih berada pada tahap penguatan sebagai produk publik.
 
 ## Lanjut Membaca
 
-1. baca [Use Cases](/id/use-cases/) untuk melihat apa yang bisa dilakukan dari permukaan-permukaan ini
-2. baca [Documentation](/id/docs/) untuk mulai memakai surface tertentu
-3. buka [Language Spec](/id/docs/language-spec/) saat membutuhkan kontrak aktif
+1. baca [Contoh Penggunaan](/id/use-cases/) untuk melihat apa yang bisa dilakukan dari permukaan-permukaan ini
+2. baca [Dokumentasi](/id/docs/) untuk mulai memakai surface tertentu
+3. buka [Spesifikasi Bahasa](/id/docs/language-spec/) saat membutuhkan kontrak aktif

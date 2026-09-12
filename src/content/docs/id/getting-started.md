@@ -8,11 +8,11 @@ RelGeo adalah DSL dan toolchain untuk gambar vektor deklaratif berbasis relasi.
 Untuk mulai memahami proyek ini, gunakan urutan singkat berikut:
 
 1. pahami posisi produk dan filosofi umumnya
-2. baca [Current Capabilities](/id/docs/current-capabilities/) untuk melihat apa yang sudah nyata hari ini
+2. baca [Kapabilitas Saat Ini](/id/docs/current-capabilities/) untuk melihat apa yang sudah nyata hari ini
 3. pilih surface penggunaan yang paling dekat dengan kebutuhan Anda:
-   [CLI](/id/docs/cli/), [Playground](/id/docs/playground/), atau [Desktop App](/id/docs/desktop-app/)
-4. baca [Markdown Surfaces](/id/docs/markdown-surfaces/) untuk memahami perbedaan `rg` dan `relgeo`
-5. baca [Language Status](/id/docs/language-status/) untuk memahami boundary `id` vs `en`
+   [CLI](/id/docs/cli/), [Playground](/id/docs/playground/), atau [Aplikasi Desktop](/id/docs/desktop-app/)
+4. baca [Surface Markdown](/id/docs/markdown-surfaces/) untuk memahami perbedaan `rg` dan `relgeo`
+5. baca [Status Bahasa](/id/docs/language-status/) untuk memahami boundary `id` vs `en`
 6. buka `language-spec` jika ingin melihat kontrak normatif aktif
 
 ## Coba Workflow Utama
@@ -41,7 +41,7 @@ pnpm --dir ../cli exec tsx src/index.ts check ../playground/src/assets/examples/
 pnpm --dir ../cli exec tsx src/index.ts compile ../playground/src/assets/examples/basics/01_fundamentals.yaml -f svg
 ```
 
-Untuk jalur Markdown, lanjutkan ke [Markdown Surfaces](/id/docs/markdown-surfaces/). Fence `rg` menampilkan source, sedangkan fence `relgeo` menampilkan rendered preview.
+Untuk jalur Markdown, lanjutkan ke [Surface Markdown](/id/docs/markdown-surfaces/). Fence `rg` menampilkan source, sedangkan fence `relgeo` menampilkan rendered preview.
 
 Blok `rg` ditujukan untuk source RelGeo yang ingin dibaca:
 

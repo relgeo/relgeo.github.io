@@ -53,6 +53,6 @@ Markdown embed dan technical drawing sama-sama penting, tetapi keduanya bukan ba
 
 ## Lanjut Membaca
 
-1. baca [Current Capabilities](/id/current-capabilities/) untuk melihat permukaan yang sudah ada
-2. baca [Why RelGeo](/id/why-relgeo/) untuk memahami problem framing-nya
-3. buka [Documentation](/id/docs/) untuk masuk ke surface penggunaan
+1. baca [Kapabilitas Saat Ini](/id/current-capabilities/) untuk melihat permukaan yang sudah ada
+2. baca [Mengapa RelGeo](/id/why-relgeo/) untuk memahami problem framing-nya
+3. buka [Dokumentasi](/id/docs/) untuk masuk ke surface penggunaan
