@@ -1,6 +1,6 @@
 # RelGeo Website Visual Design Rules
 
-Status: draft untuk dibahas.
+Status: diterapkan sebagai baseline visual; QA lanjutan dicatat di audit plan.
 
 Dokumen ini menetapkan aturan visual untuk website `relgeo.github.io`. Tujuannya adalah menjaga website tetap padat informasi, mudah dipindai, dan konsisten pada viewport desktop maupun mobile.
 
@@ -138,15 +138,15 @@ Aturan praktis:
 
 Sebelum perubahan visual dianggap selesai, periksa:
 
-- [ ] viewport 1280×720 tidak memiliki ruang kosong besar di atas navbar;
-- [ ] navbar gateway, home, docs, dan spec konsisten;
-- [ ] brand, nav, language switcher, dan content memakai grid yang sama;
-- [ ] heading dan aksi utama terlihat tanpa scroll yang tidak perlu;
-- [ ] padding card tidak berlebihan;
-- [ ] `/playground/` terlihat jelas dari navigasi;
-- [ ] layout tidak pecah pada viewport sempit;
-- [ ] keyboard focus dan active state tetap terlihat;
-- [ ] build, check, dan test website berhasil.
+- [x] viewport 1280×720 tidak memiliki ruang kosong besar di atas navbar;
+- [x] navbar gateway, home, docs, dan spec konsisten;
+- [x] brand, nav, language switcher, dan content memakai grid yang sama;
+- [x] heading dan aksi utama terlihat tanpa scroll yang tidak perlu;
+- [x] padding card tidak berlebihan;
+- [x] `/playground/` terlihat jelas dari navigasi;
+- [x] layout tidak pecah pada viewport sempit;
+- [x] keyboard focus dan active state tetap terlihat;
+- [x] build, check, dan test website berhasil.
 
 ## 12. Batasan Perubahan
 

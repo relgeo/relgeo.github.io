@@ -25,6 +25,7 @@ function assertCommonMetadata(html, path, lang) {
   assert.match(html, /<meta name="twitter:card" content="summary"/i, `${path}: twitter card`);
   assert.match(html, new RegExp(`<meta property="og:locale" content="${lang === 'id' ? 'id_ID' : 'en_US'}"`), `${path}: locale`);
   assert.match(html, /<link rel="icon" href="\/favicon\.svg" type="image\/svg\+xml">/, `${path}: favicon`);
+  assert.match(html, /<link rel="apple-touch-icon" sizes="180x180" href="\/apple-touch-icon\.png">/, `${path}: touch icon`);
 }
 
 function assertAccessibleShell(html, path, lang) {

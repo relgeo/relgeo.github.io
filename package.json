@@ -15,6 +15,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "test": "node scripts/assert-built-output.mjs",
+    "test:pages-artifact": "node scripts/assert-pages-artifact.mjs",
     "check": "astro check"
   },
   "dependencies": {

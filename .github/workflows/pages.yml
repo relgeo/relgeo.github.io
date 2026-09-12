@@ -25,12 +25,16 @@ jobs:
         with:
           repository: relgeo/playground
           path: .ci/playground
+          # Update deliberately after validating a new playground baseline.
+          ref: 620cb51d7899c9097a7eeb9d4031454570c8c876
 
       - name: Checkout spec
         uses: actions/checkout@v4
         with:
           repository: relgeo/spec
           path: .ci/spec
+          # Update deliberately after validating a new normative spec baseline.
+          ref: b96ba3b23de202227eade06614635ef6717df516
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -67,6 +71,9 @@ jobs:
       - name: Add playground artifact
         run: mkdir -p dist/playground && cp -R .ci/playground/dist/. dist/playground/
 
+      - name: Verify Pages artifact
+        run: pnpm run test:pages-artifact
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -86,3 +93,14 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Checkout website smoke-test script
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/smoke-public-site.mjs
+          sparse-checkout-cone: false
+
+      - name: Smoke-test deployed site
+        run: node scripts/smoke-public-site.mjs
+        env:
+          RELGEO_PUBLIC_SITE_URL: ${{ steps.deployment.outputs.page_url }}
