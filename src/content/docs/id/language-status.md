@@ -1,5 +1,5 @@
 ---
-title: Language Status
+title: Status Bahasa
 description: Menjelaskan mana source normatif aktif, mana surface publik Inggris, dan arah sinkronisasinya.
 ---
 

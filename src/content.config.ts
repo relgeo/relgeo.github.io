@@ -3,8 +3,8 @@ import { glob } from 'astro/loaders';
 
 const languageSpecBase = process.env.RELGEO_SPEC_PATH ?? '../spec/id';
 
-function createStableContentId(entry: string): string {
-  return entry
+function createStableContentId(namespace: string, entry: string): string {
+  return `${namespace}/${entry}`
     .replace(/\\/g, '/')
     .replace(/(^|\/)README\.(md|mdx)$/i, '$1__readme__.md')
     .replace(/(^|\/)index\.(md|mdx)$/i, '$1__index__.md')
@@ -16,7 +16,7 @@ const sitePages = defineCollection({
   loader: glob({
     pattern: '**/*.{md,mdx}',
     base: './src/content/site',
-    generateId: ({ entry }) => createStableContentId(entry),
+    generateId: ({ entry }) => createStableContentId('site', entry),
   }),
   schema: z.object({
     title: z.string().optional(),
@@ -28,7 +28,7 @@ const docsPages = defineCollection({
   loader: glob({
     pattern: '**/*.{md,mdx}',
     base: './src/content/docs',
-    generateId: ({ entry }) => createStableContentId(entry),
+    generateId: ({ entry }) => createStableContentId('docs', entry),
   }),
   schema: z.object({
     title: z.string().optional(),
@@ -40,7 +40,7 @@ const languageSpec = defineCollection({
   loader: glob({
     pattern: '**/*.md',
     base: languageSpecBase,
-    generateId: ({ entry }) => createStableContentId(entry),
+    generateId: ({ entry }) => createStableContentId('language-spec', entry),
   }),
   schema: z.object({
     title: z.string().optional(),

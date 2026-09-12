@@ -1,5 +1,5 @@
 ---
-title: Getting Started
+title: Mulai
 description: Jalur baca pertama untuk pengguna RelGeo baru.
 ---
 

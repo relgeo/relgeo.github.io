@@ -1,5 +1,5 @@
 ---
-title: Why RelGeo
+title: Mengapa RelGeo
 description: Mengapa authoring vektor relation-first itu penting.
 ---
 

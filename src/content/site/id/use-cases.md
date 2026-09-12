@@ -1,5 +1,5 @@
 ---
-title: Use Cases
+title: Contoh Penggunaan
 description: Kebutuhan-kebutuhan nyata yang saat ini paling cocok dijawab oleh RelGeo.
 ---
 

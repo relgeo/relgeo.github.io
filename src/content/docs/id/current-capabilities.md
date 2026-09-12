@@ -1,5 +1,5 @@
 ---
-title: Current Capabilities
+title: Kapabilitas Saat Ini
 description: Ringkasan singkat tentang apa yang sudah bisa dilakukan RelGeo saat ini.
 ---
 

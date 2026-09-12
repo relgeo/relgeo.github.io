@@ -14,6 +14,7 @@ export type LanguageSpecSectionGroup = {
 
 export function normalizeEntryId(id: string): string {
   return id
+    .replace(/^(site|docs|language-spec)\//i, '')
     .replace(/(^|\/)__readme__$/i, '')
     .replace(/(^|\/)__index__$/i, '')
     .replace(/(^|\/)readme$/i, '')

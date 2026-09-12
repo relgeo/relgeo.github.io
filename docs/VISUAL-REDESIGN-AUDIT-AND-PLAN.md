@@ -106,6 +106,8 @@ This document is also the working status register for the redesign.
 - [x] Extended built-output assertions to protect the favicon, optimized hero source, skip link, and active page-language state.
 - [x] Made the website independently checkable from a clean clone by declaring `typescript` directly and synchronizing its standalone lockfile.
 - [x] Reorganized the narrow mobile header so brand and language controls share the first row while the primary navigation remains a deliberate horizontal strip.
+- [x] Localized Indonesian page titles in the site and documentation collections while retaining canonical product and technical names where they are intentional.
+- [x] Namespaced internal content-collection IDs to prevent site/docs collisions without changing any public route.
 
 ### Manual QA record — 2026-09-12
 

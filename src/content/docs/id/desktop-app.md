@@ -1,5 +1,5 @@
 ---
-title: Desktop App
+title: Aplikasi Desktop
 description: Surface workbench lokal yang lebih kaya daripada playground browser.
 ---
 

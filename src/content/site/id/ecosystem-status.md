@@ -1,5 +1,5 @@
 ---
-title: Ecosystem Status
+title: Status Ekosistem
 description: Status awal ekosistem RelGeo sebagaimana tampak dari permukaan yang sudah ada sekarang.
 ---
 

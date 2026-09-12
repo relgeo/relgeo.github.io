@@ -1,5 +1,5 @@
 ---
-title: Current Capabilities
+title: Kapabilitas Saat Ini
 description: Gambaran jujur tentang permukaan nyata yang sudah dimiliki RelGeo saat ini.
 ---
 
