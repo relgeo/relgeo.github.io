@@ -104,6 +104,8 @@ This document is also the working status register for the redesign.
 - [x] Added a minimal geometric SVG favicon.
 - [x] Updated the Pages workflow to Node 24 and switched playground installation to `--frozen-lockfile`; added the standalone playground lockfile in the sibling `playground` repository.
 - [x] Extended built-output assertions to protect the favicon, optimized hero source, skip link, and active page-language state.
+- [x] Made the website independently checkable from a clean clone by declaring `typescript` directly and synchronizing its standalone lockfile.
+- [x] Reorganized the narrow mobile header so brand and language controls share the first row while the primary navigation remains a deliberate horizontal strip.
 
 ### Manual QA record — 2026-09-12
 
@@ -112,8 +114,9 @@ This document is also the working status register for the redesign.
 - [x] Desktop Language Spec index checked: authoritative sidebar, heading, metadata, and first contract section remain readable without nested-card regression.
 - [x] Accessibility tree checked on landing, docs, and spec routes: skip link, landmarks, page-language links, primary nav, headings, and key actions are exposed.
 - [x] Keyboard traversal spot-check completed on the landing route: skip link, brand, primary nav, language switcher, and all primary/secondary actions are reachable without a focus trap.
+- [x] Keyboard traversal spot-check started on the Documentation route: skip link, brand, and primary navigation receive focus in the expected order without a focus trap.
 - [x] Contrast spot-check completed for the main landing text and controls; the coral primary action was darkened to reach approximately 5.38:1 against its light text.
-- [x] Narrow-window check performed: content remains readable and the primary nav is intentionally horizontally scrollable rather than wrapping into an unstable card layout.
+- [x] Narrow-window check performed at approximately 440px on landing and Documentation routes: content remains readable, the header stays compact, and the primary nav is intentionally horizontally scrollable rather than wrapping into an unstable card layout.
 - [ ] True device emulation and full keyboard traversal still need a dedicated pass; the current narrow-window check is not a substitute for real mobile viewport emulation.
 
 ### Still open
