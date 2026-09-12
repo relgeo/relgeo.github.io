@@ -8,21 +8,12 @@ importers:
 
   .:
     dependencies:
-      '@relgeo/core':
-        specifier: ^0.5.0
-        version: 0.5.0
-      '@relgeo/language-service':
-        specifier: ^0.5.0
-        version: 0.5.0(@relgeo/core@0.5.0)
       '@relgeo/remark-relgeo':
         specifier: ^0.5.0
         version: 0.5.0
       '@relgeo/remark-relgeo-hl':
         specifier: ^0.5.0
         version: 0.5.0(@relgeo/language-service@0.5.0(@relgeo/core@0.5.0))
-      '@relgeo/renderer-svg':
-        specifier: ^0.5.0
-        version: 0.5.0
       astro:
         specifier: ^5.18.0
         version: 5.18.2(@types/node@24.13.4)(rollup@4.63.1)(typescript@5.9.3)(yaml@2.9.0)

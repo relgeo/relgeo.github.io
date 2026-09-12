@@ -92,16 +92,19 @@ This document is also the working status register for the redesign.
 - [x] Added a shared `uiCopy` map for common navigation/action labels and applied it to the shell and detail surfaces.
 - [x] Added built-output assertions for primary route existence and active navigation state.
 - [x] Rebuilt and validated the site after these changes: 138 pages, zero Astro diagnostics, and passing built-output assertions.
+- [x] Removed the retired landing workflow/viewer, fixtures, animation story data, and their unused page CSS after repository-wide reference checks.
+- [x] Removed unused direct package dependencies and regenerated the site lockfile so the public site only declares packages it uses directly.
 
 ### Still open
 
 - [ ] Complete the shared layout refactor into explicit style layers.
-- [ ] Add automated assertions for all primary routes and active navigation states.
+- [x] Add automated assertions for all primary routes and active navigation states.
 - [x] Redesign the Documentation index.
 - [x] Redesign the Language Spec index.
 - [x] Simplify leaf pages and remove redundant card wrappers.
 - [ ] Complete the remaining visible-label inventory and apply the terminology policy to all page templates.
-- [ ] Remove confirmed stale landing components, fixtures, and CSS.
+- [x] Remove confirmed stale landing components, fixtures, and CSS.
+- [x] Remove unused direct landing-only dependencies and keep the lockfile consistent.
 - [ ] Perform viewport, keyboard, contrast, zoom, and reduced-motion review.
 - [ ] Add favicon/touch icon and optimize the hero asset.
 - [ ] Move the Pages workflow to Node 24 and frozen playground installation after compatibility verification.

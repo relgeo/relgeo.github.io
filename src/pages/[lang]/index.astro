@@ -165,8 +165,6 @@ const lang = rawLang as SupportedLang;
   }
 
   .landing-hero h1,
-  .landing-workflow h2,
-  .landing-technical-proof h2,
   .landing-cta-band h2 {
     margin: 0;
     color: var(--ink-blue);
@@ -253,186 +251,6 @@ const lang = rawLang as SupportedLang;
     text-transform: uppercase;
   }
 
-  .landing-hero-line {
-    fill: none;
-    stroke-linecap: round;
-    vector-effect: non-scaling-stroke;
-  }
-
-  .landing-hero-line--construction {
-    stroke: rgba(22, 32, 51, 0.4);
-    stroke-width: 1;
-    stroke-dasharray: 5 6;
-  }
-
-  .landing-hero-line--relation {
-    stroke: var(--coral);
-    stroke-width: 2;
-  }
-
-  .landing-hero-line--measure {
-    stroke: var(--teal);
-    stroke-width: 1.5;
-  }
-
-  .landing-hero-form {
-    fill: rgba(255, 248, 238, 0.42);
-    stroke: var(--ink-blue);
-    stroke-width: 2;
-    vector-effect: non-scaling-stroke;
-  }
-
-  .landing-hero-point {
-    fill: var(--signal);
-    stroke: var(--ink-blue);
-    stroke-width: 2;
-    vector-effect: non-scaling-stroke;
-  }
-
-  .landing-anchor {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border: 2px solid var(--coral);
-    background: var(--signal);
-    transform: rotate(45deg);
-    z-index: 2;
-  }
-
-  .landing-anchor--one { top: 8%; left: 50%; }
-  .landing-anchor--two { top: 27%; left: 16%; }
-  .landing-anchor--three { top: 27%; right: 16%; }
-
-  .landing-dimension {
-    position: absolute;
-    z-index: 2;
-    color: var(--teal);
-    font: 0.66rem/1 'IBM Plex Mono', monospace;
-    text-transform: uppercase;
-  }
-
-  .landing-dimension--x { right: 4%; bottom: 10%; }
-  .landing-dimension--y { top: 44%; left: 2%; transform: rotate(-90deg); }
-
-  .landing-workflow {
-    padding: 42px 0 18px;
-  }
-
-  .landing-workflow__intro {
-    display: grid;
-    grid-template-columns: minmax(180px, 0.5fr) 1fr;
-    gap: 24px;
-    align-items: end;
-    margin: 0 clamp(8px, 4vw, 58px) 20px;
-  }
-
-  .landing-workflow h2 {
-    font-size: clamp(2rem, 4vw, 4rem);
-    line-height: 0.95;
-  }
-
-  .landing-workflow__grid {
-    display: grid;
-    gap: 14px;
-  }
-
-  .landing-source-panel,
-  .landing-preview-panel {
-    min-width: 0;
-    padding: 22px;
-    border: 1px solid var(--ink-blue);
-  }
-
-  .landing-source-panel { display: flex; flex-direction: column; }
-
-  .landing-source-panel { background: var(--ink-blue); color: #f4ebdd; }
-  .landing-preview-panel { background: #dcedef; color: var(--ink-blue); }
-
-  .landing-panel-heading {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    min-height: 54px;
-  }
-
-  .landing-panel-heading p:last-child {
-    margin: 3px 0 0;
-    color: inherit;
-    font-size: 0.86rem;
-    line-height: 1.45;
-  }
-
-  .landing-panel-index {
-    color: var(--coral);
-    font: 0.72rem/1 'IBM Plex Mono', monospace;
-  }
-
-  .landing-source-panel .landing-kicker { color: var(--signal); }
-  .landing-source-code.relgeo-hl {
-    min-height: 0;
-    flex: 1 1 auto;
-    max-height: 360px;
-    margin-top: 18px;
-    overflow: auto;
-    border: 1px solid rgba(199, 240, 0, 0.28);
-    border-radius: 0;
-    background: #202b3d;
-    box-shadow: none;
-    scrollbar-color: rgba(199, 240, 0, 0.72) rgba(32, 43, 61, 0.9);
-    scrollbar-width: thin;
-  }
-
-  .landing-source-code.relgeo-hl:focus-visible {
-    outline: 2px solid var(--signal);
-    outline-offset: 3px;
-  }
-  .landing-source-code.relgeo-hl::before { background: rgba(199, 240, 0, 0.18); }
-  .landing-source-code .relgeo-hl__code { color: #f4ebdd; }
-  .landing-source-code .rg-line::before { color: rgba(244, 235, 221, 0.5); }
-
-  .landing-workflow-rail {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    justify-content: space-between;
-    margin: 0;
-    padding: 4px 0;
-    list-style: none;
-  }
-
-  .landing-workflow-rail li {
-    display: grid;
-    gap: 4px;
-    color: #586479;
-    font: 0.68rem/1.15 'IBM Plex Mono', monospace;
-    letter-spacing: 0.08em;
-  }
-
-  .landing-workflow-rail li::after { content: '→'; color: var(--coral); }
-  .landing-workflow-rail li:last-child::after { content: ''; }
-  .landing-workflow-rail li.is-active { color: var(--ink-blue); }
-  .landing-workflow-rail li span { color: var(--coral); }
-
-  .landing-preview-stage {
-    position: relative;
-    display: grid;
-    place-items: center;
-    min-height: 360px;
-    margin-top: 18px;
-    overflow: hidden;
-    border: 1px solid rgba(15, 99, 112, 0.35);
-    background: #f7fbfa;
-  }
-
-  .landing-preview-panel { display: flex; flex-direction: column; }
-
-  .landing-preview-art { position: relative; z-index: 1; width: 78%; }
-  .landing-preview-art svg { display: block; width: 100%; height: auto; }
-  .landing-relation-overlay { position: absolute; inset: 12% 6%; width: 88%; height: 76%; fill: none; stroke: rgba(240, 90, 71, 0.68); stroke-width: 0.8; stroke-dasharray: 3 3; }
-  .landing-relation-overlay circle { fill: var(--signal); stroke: var(--ink-blue); stroke-width: 1; }
-  .landing-relation-overlay text { fill: var(--teal); stroke: none; font: 4px 'IBM Plex Mono', monospace; }
-  .landing-artifact-caption { margin: 12px 0 0; color: var(--teal); font: 0.7rem/1 'IBM Plex Mono', monospace; text-transform: uppercase; }
-
   .landing-proof-row {
     display: grid;
     gap: 24px;
@@ -445,21 +263,6 @@ const lang = rawLang as SupportedLang;
   .landing-proof-index { color: var(--coral); font: 0.72rem/1 'IBM Plex Mono', monospace; }
   .landing-proof-row h3 { margin: 12px 0 8px; font: 600 1.3rem/1.1 Georgia, 'Times New Roman', serif; }
   .landing-proof-row p { margin: 0; color: #586479; font-size: 0.92rem; line-height: 1.5; }
-
-  .landing-technical-proof {
-    display: grid;
-    gap: 30px;
-    align-items: start;
-    padding: 72px clamp(8px, 4vw, 58px);
-  }
-
-  .landing-technical-proof > div:first-child { max-width: 540px; }
-  .landing-technical-proof h2 { font-size: clamp(2.3rem, 5vw, 4.6rem); line-height: 0.94; }
-  .landing-technical-proof > div:first-child > p:last-child { margin-top: 24px; color: #586479; line-height: 1.65; }
-  .landing-technical-proof__artifact .home-section--story { padding: 20px; border-radius: 0; box-shadow: none; }
-  .landing-technical-proof__artifact .home-section--story > .kicker,
-  .landing-technical-proof__artifact .home-section--story > h2 { display: none; }
-  .landing-technical-proof__artifact .landing-story-viewer__meta { margin-bottom: 12px; }
 
   .landing-cta-band {
     display: grid;
@@ -478,57 +281,13 @@ const lang = rawLang as SupportedLang;
 
   @media (min-width: 900px) {
     .landing-hero { grid-template-columns: minmax(0, 0.88fr) minmax(440px, 1.12fr); }
-    .landing-workflow__grid { grid-template-columns: minmax(0, 1fr) 120px minmax(0, 1fr); align-items: start; }
-    .landing-source-panel,
-    .landing-preview-panel { height: 500px; }
-    .landing-source-code.relgeo-hl,
-    .landing-preview-stage { min-height: 0; }
-    .landing-preview-stage { flex: 1 1 auto; }
-    .landing-workflow-rail { display: grid; align-content: center; gap: 20px; padding: 20px 0; }
-    .landing-workflow-rail li { grid-template-columns: 28px 1fr; align-items: center; }
-    .landing-workflow-rail li::after { grid-column: 2; content: '↓'; }
-    .landing-workflow-rail li:last-child::after { content: ''; }
     .landing-proof-row { grid-template-columns: repeat(3, 1fr); }
-    .landing-technical-proof { grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr); }
     .landing-cta-band { grid-template-columns: minmax(0, 1fr) auto; }
-  }
-
-  @media (max-width: 899px) {
-    .landing-workflow__intro { grid-template-columns: 1fr; }
-  }
-
-  @media (min-width: 900px) and (max-height: 780px) {
-    .landing-hero {
-      min-height: 480px;
-      padding-top: 28px;
-      padding-bottom: 32px;
-    }
-
-    .landing-workflow { padding-top: 28px; }
-    .landing-workflow__intro { margin-bottom: 10px; }
-    .landing-workflow h2 { font-size: clamp(1.8rem, 3.2vw, 2.8rem); }
-  }
-
-  @media (min-width: 1200px) and (min-height: 781px) {
-    .landing-hero {
-      min-height: 560px;
-      padding-top: 32px;
-      padding-bottom: 36px;
-    }
-
-    .landing-workflow { padding-top: 32px; }
   }
 
   @media (max-width: 640px) {
     .landing-hero { padding-top: 38px; }
     .landing-hero h1 { max-width: 11ch; font-size: clamp(3.2rem, 16vw, 5.3rem); }
-    .landing-source-panel { max-height: 430px; }
-    .landing-source-code.relgeo-hl { max-height: 300px; }
-    .landing-preview-stage { min-height: 300px; }
-    .landing-workflow-rail { overflow-x: auto; justify-content: flex-start; }
-    .landing-workflow-rail li { min-width: 92px; }
-    .landing-technical-proof__artifact .artifact-grid { grid-template-columns: 1fr; }
-    .landing-technical-proof__artifact .artifact-card { padding: 12px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
