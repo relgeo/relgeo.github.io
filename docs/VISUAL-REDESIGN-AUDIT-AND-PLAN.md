@@ -1,6 +1,6 @@
 # RelGeo Website Visual Redesign — Audit & Change Plan
 
-**Status:** Final hardening — local verification complete; GitHub Actions verification pending
+**Status:** Final hardening — local and GitHub Actions verification complete; real-device pass pending
 **Date:** 2026-09-13
 **Scope:** `relgeo.github.io` website, including the shared shell, landing pages, documentation index, language-spec index, and supporting delivery quality.  
 **Baseline:** post-landing visual reset (`ede9c4c`)
@@ -116,6 +116,8 @@ This document is also the working status register for the redesign.
 - [x] Added a retrying public-site smoke test for the post-deployment job.
 - [x] Pinned the playground and spec checkout refs to reviewed commit SHAs for reproducible Pages builds.
 - [x] Split the playground workbench into lazy-loaded editor, preview, inspector, sidebar, and layer chunks; the production build no longer reports a >500 kB chunk advisory.
+- [x] GitHub Actions run #11 completed successfully with the pinned sibling refs, Pages artifact assertion, and post-deployment public smoke test.
+- [x] Public `/en/` and `/playground/` routes were opened after deployment; navigation, landing actions, editor, preview, and `READY` status were exposed correctly.
 
 ### Manual QA record — 2026-09-12
 
@@ -132,7 +134,7 @@ This document is also the working status register for the redesign.
 - [x] Added built-output guards for visible focus treatment and reduced-motion CSS, reading the extracted stylesheet assets correctly.
 - [x] Removed the sticky mobile navbar behavior so two-line navigation cannot cover reading content during long document scrolls.
 - [ ] True device emulation and full keyboard traversal still need a dedicated pass; the current narrow-window check is not a substitute for real mobile viewport emulation.
-- [ ] Run the new Pages artifact assertion and public smoke test in GitHub Actions after the next push.
+- [x] Run the new Pages artifact assertion and public smoke test in GitHub Actions after the next push.
 
 ### Still open
 
@@ -149,7 +151,7 @@ This document is also the working status register for the redesign.
 - [x] Move the Pages workflow to Node 24 and frozen playground installation; local lockfile/build verification passes on Node 22.
 - [ ] Confirm the Node 24 Pages run is green in GitHub Actions; local verification used Node 22 because Node 24 is not installed on this machine.
 - [x] Split the playground's Vite entry chunk; the production entry is now below the 500 kB warning threshold and the larger editor remains an intentional lazy chunk.
-- [ ] Confirm the pinned-ref Pages run and post-deployment smoke test are green in GitHub Actions.
+- [x] Confirm the pinned-ref Pages run and post-deployment smoke test are green in GitHub Actions.
 
 The Why RelGeo work is a first page slice, not a claim that Phase 2 is complete.
 
@@ -517,19 +519,19 @@ This order minimizes rework. Redesigning individual pages before fixing the shar
 
 The redesign is ready for review when all of the following are true:
 
-- [ ] the navbar has one coherent information architecture;
-- [ ] Why RelGeo, Docs, Language Spec, Playground, and all primary routes have correct active states;
-- [ ] the first viewport contains the page’s primary purpose and action at common desktop sizes;
-- [ ] technical surfaces are square or use only a deliberately small radius;
-- [ ] no ordinary content section is wrapped in a decorative rounded card without a clear reason;
-- [ ] sidebar, article, and footer alignment is consistent across localized pages;
-- [ ] Indonesian and English labels follow the terminology policy;
-- [ ] the landing page remains static-art-led and does not reintroduce the live hero demo;
-- [ ] dead landing implementation and CSS are removed or explicitly retained with a reason;
+- [x] the navbar has one coherent information architecture;
+- [x] Why RelGeo, Docs, Language Spec, Playground, and all primary routes have correct active states;
+- [x] the first viewport contains the page’s primary purpose and action at common desktop sizes;
+- [x] technical surfaces are square or use only a deliberately small radius;
+- [x] no ordinary content section is wrapped in a decorative rounded card without a clear reason;
+- [x] sidebar, article, and footer alignment is consistent across localized pages;
+- [x] Indonesian and English labels follow the terminology policy;
+- [x] the landing page remains static-art-led and does not reintroduce the live hero demo;
+- [x] dead landing implementation and CSS are removed or explicitly retained with a reason;
 - [ ] keyboard navigation, focus, skip link, contrast, 200% zoom, and reduced motion are checked;
 - [x] favicon, touch icon, and localized metadata are present and correct;
-- [ ] hero asset size and loading behavior are reviewed;
-- [ ] `pnpm build`, `pnpm check`, and `pnpm test` pass;
+- [x] hero asset size and loading behavior are reviewed;
+- [x] `pnpm build`, `pnpm check`, and `pnpm test` pass;
 - [x] the Pages workflow uses a reproducible dependency installation path and pinned sibling repository refs.
 
 ## 12. Non-goals
