@@ -24,6 +24,16 @@ function assertCommonMetadata(html, path, lang) {
   assert.match(html, /<meta property="og:type" content="website"/i, `${path}: og:type`);
   assert.match(html, /<meta name="twitter:card" content="summary"/i, `${path}: twitter card`);
   assert.match(html, new RegExp(`<meta property="og:locale" content="${lang === 'id' ? 'id_ID' : 'en_US'}"`), `${path}: locale`);
+  assert.match(html, /<link rel="icon" href="\/favicon\.svg" type="image\/svg\+xml">/, `${path}: favicon`);
+}
+
+function assertAccessibleShell(html, path, lang) {
+  assert.match(html, /<a class="skip-link" href="#main-content">/, `${path}: skip link`);
+  assert.match(
+    html,
+    new RegExp(`<nav class="lang-switcher"[^>]*>[\\s\\S]*<a href="\/${lang}\/[^\"]*" aria-current="page">\\s*${lang === 'id' ? 'ID' : 'EN'}\\s*<\\/a>`),
+    `${path}: active page language`
+  );
 }
 
 function assertMarkdownSurface(html, path) {
@@ -73,6 +83,8 @@ for (const lang of ['id', 'en']) {
   const landingPath = `${lang}/index.html`;
   const landing = await readPage(landingPath);
   assertCommonMetadata(landing, landingPath, lang);
+  assertAccessibleShell(landing, landingPath, lang);
+  assert.match(landing, /<source srcset="\/images\/relgeo-hero-v2\.webp" type="image\/webp">/, `${landingPath}: optimized hero artwork`);
   assert.match(landing, /src="\/images\/relgeo-hero-v2\.png"/, `${landingPath}: static hero artwork`);
   assert.doesNotMatch(landing, /data-landing-story-viewer|data-steps=|landing-source-code/, `${landingPath}: landing must not embed interactive demo`);
 
@@ -99,6 +111,7 @@ const navigationChecks = [
 
 for (const [path, href] of navigationChecks) {
   const html = await readPage(path);
+  assertAccessibleShell(html, path, path.startsWith('id/') ? 'id' : 'en');
   assertActiveNav(html, path, href);
 }
 

@@ -103,6 +103,7 @@ This document is also the working status register for the redesign.
 - [x] Added a WebP hero variant (with PNG fallback) and corrected the artwork's intrinsic 1774×887 dimensions to reduce transfer size and layout-shift risk.
 - [x] Added a minimal geometric SVG favicon.
 - [x] Updated the Pages workflow to Node 24 and switched playground installation to `--frozen-lockfile`; added the standalone playground lockfile in the sibling `playground` repository.
+- [x] Extended built-output assertions to protect the favicon, optimized hero source, skip link, and active page-language state.
 
 ### Manual QA record — 2026-09-12
 
