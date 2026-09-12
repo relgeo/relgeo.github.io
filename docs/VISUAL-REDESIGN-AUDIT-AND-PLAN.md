@@ -86,13 +86,14 @@ This document is also the working status register for the redesign.
 - [x] Removed the unused large top offset above the navbar.
 - [x] Reduced the shared radius baseline from large rounded containers to small functional corners.
 - [x] Introduced the first editorial Why RelGeo layout: compact masthead, contents rail, and reading column.
+- [x] Redesigned the Documentation index around a compact group map, one reading path, and dense reference rows instead of repeated card sections.
 - [x] Rebuilt and validated the site after these changes: 138 pages, zero Astro diagnostics, and passing built-output assertions.
 
 ### Still open
 
 - [ ] Complete the shared layout refactor into explicit style layers.
 - [ ] Add automated assertions for all primary routes and active navigation states.
-- [ ] Redesign the Documentation index.
+- [x] Redesign the Documentation index.
 - [ ] Redesign the Language Spec index.
 - [ ] Simplify leaf pages and remove redundant card wrappers.
 - [ ] Centralize visible localized navigation and action labels.
