@@ -35,4 +35,10 @@ for (const reference of localReferences) {
 
 await assertFile('favicon.svg');
 await assertFile('apple-touch-icon.png');
+await assertFile('sitemap.xml');
+
+const sitemap = await readFile(join(dist, 'sitemap.xml'), 'utf8');
+assert.match(sitemap, /<urlset/i, 'sitemap root');
+assert.match(sitemap, /\/en\//, 'sitemap English route');
+assert.match(sitemap, /\/id\//, 'sitemap Indonesian route');
 console.log(`Pages artifact assertions passed (${localReferences.length} playground assets checked).`);

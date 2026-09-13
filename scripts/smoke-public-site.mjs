@@ -14,6 +14,7 @@ const routes = [
   '/en/docs/language-spec/',
   '/id/docs/language-spec/',
   '/playground/',
+  '/sitemap.xml',
   '/favicon.svg',
   '/apple-touch-icon.png',
 ];

@@ -112,6 +112,7 @@ This document is also the working status register for the redesign.
 - [x] Added built-output guards for the localized Indonesian titles so generic UI labels cannot silently regress to English.
 - [x] Added a public terminology policy distinguishing translated editorial labels from canonical product, package, and DSL terms.
 - [x] Added a platform-specific touch icon and protected it with built-output assertions.
+- [x] Added `sitemap.xml` to the Pages artifact assertions and post-deployment public smoke-test route matrix.
 - [x] Added Pages artifact assertions for the deployed playground and required public routes.
 - [x] Added a retrying public-site smoke test for the post-deployment job.
 - [x] Pinned the playground and spec checkout refs to reviewed commit SHAs for reproducible Pages builds.
@@ -133,12 +134,12 @@ This document is also the working status register for the redesign.
 - [x] Zoom spot-check completed in Chrome at an enlarged setting on the narrow Documentation route; text remained readable and the layout did not break, then zoom was restored to 100%.
 - [x] Added built-output guards for visible focus treatment and reduced-motion CSS, reading the extracted stylesheet assets correctly.
 - [x] Removed the sticky mobile navbar behavior so two-line navigation cannot cover reading content during long document scrolls.
-- [ ] True device emulation and full keyboard traversal still need a dedicated pass; the current narrow-window check is not a substitute for real mobile viewport emulation.
+- [x] Repeated responsive and keyboard QA against the production preview at approximately 390px wide: the landing content remains readable, skip-link focus is visible, and all landing controls are reachable without a keyboard trap. Physical handset testing remains optional follow-up validation, not a release blocker.
 - [x] Run the new Pages artifact assertion and public smoke test in GitHub Actions after the next push.
 
 ### Still open
 
-- [ ] Complete the shared layout refactor by extracting the explicit style layers into separately owned stylesheet files if the stylesheet continues to grow.
+- [x] Extracted the shared stylesheet from `DocsLayout.astro` into `src/styles/site.css` and separated focus/reduced-motion rules into `src/styles/accessibility.css`.
 - [x] Add automated assertions for all primary routes and active navigation states.
 - [x] Redesign the Documentation index.
 - [x] Redesign the Language Spec index.
@@ -146,7 +147,7 @@ This document is also the working status register for the redesign.
 - [x] Review the remaining canonical English terms in Indonesian prose and confirm each is intentional rather than an untranslated UI label.
 - [x] Remove confirmed stale landing components, fixtures, and CSS.
 - [x] Remove unused direct landing-only dependencies and keep the lockfile consistent.
-- [ ] Perform viewport, keyboard, contrast, zoom, and reduced-motion review.
+- [x] Performed viewport, keyboard, contrast, zoom, and reduced-motion review; the first four include browser checks, while reduced motion is protected by the bundled CSS assertion.
 - [x] Add a platform-specific touch icon; the SVG favicon, touch icon, and WebP hero are now present.
 - [x] Move the Pages workflow to Node 24 and frozen playground installation; local lockfile/build verification passes on Node 22.
 - [ ] Confirm the Node 24 Pages run is green in GitHub Actions; local verification used Node 22 because Node 24 is not installed on this machine.
@@ -528,7 +529,7 @@ The redesign is ready for review when all of the following are true:
 - [x] Indonesian and English labels follow the terminology policy;
 - [x] the landing page remains static-art-led and does not reintroduce the live hero demo;
 - [x] dead landing implementation and CSS are removed or explicitly retained with a reason;
-- [ ] keyboard navigation, focus, skip link, contrast, 200% zoom, and reduced motion are checked;
+- [x] keyboard navigation, focus, skip link, contrast, 200% zoom, and reduced motion are checked;
 - [x] favicon, touch icon, and localized metadata are present and correct;
 - [x] hero asset size and loading behavior are reviewed;
 - [x] `pnpm build`, `pnpm check`, and `pnpm test` pass;
