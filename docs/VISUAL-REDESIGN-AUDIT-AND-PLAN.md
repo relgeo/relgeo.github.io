@@ -159,7 +159,8 @@ This document is also the working status register for the redesign.
 ### External validation still recommended
 
 - [ ] Test on at least one physical iOS or Android device; the 390×844 CDP pass is a real browser emulation, not a handset test.
-- [ ] Perform a manual keyboard and assistive-technology sweep of every interactive playground control; the canonical website routes have automated Tab coverage, while playground interaction remains its own application surface.
+- [x] Run an automated keyboard and accessibility-tree sweep of every visible playground control at 390×844; all 37 controls have accessible names and all 37 are reachable by Tab after the editor focus-trap fix.
+- [ ] Perform a manual physical-keyboard and assistive-technology sweep with VoiceOver or TalkBack; this remains external validation beyond the current environment.
 
 The Why RelGeo work is a first page slice, not a claim that Phase 2 is complete.
 
