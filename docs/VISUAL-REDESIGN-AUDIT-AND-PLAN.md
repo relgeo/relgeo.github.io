@@ -135,7 +135,7 @@ This document is also the working status register for the redesign.
 - [x] Added built-output guards for visible focus treatment and reduced-motion CSS, reading the extracted stylesheet assets correctly.
 - [x] Removed the sticky mobile navbar behavior so two-line navigation cannot cover reading content during long document scrolls.
 - [x] Repeated responsive and keyboard QA against the production preview at approximately 390px wide: the landing content remains readable, skip-link focus is visible, and all landing controls are reachable without a keyboard trap. Physical handset testing remains optional follow-up validation, not a release blocker.
-- [x] Run the new Pages artifact assertion and public smoke test in GitHub Actions after the next push.
+- [x] Run the Pages artifact assertion and public smoke test in GitHub Actions after the hardening push; workflow run #13 passed.
 
 ### Still open
 
@@ -150,7 +150,7 @@ This document is also the working status register for the redesign.
 - [x] Performed viewport, keyboard, contrast, zoom, and reduced-motion review; the first four include browser checks, while reduced motion is protected by the bundled CSS assertion.
 - [x] Add a platform-specific touch icon; the SVG favicon, touch icon, and WebP hero are now present.
 - [x] Move the Pages workflow to Node 24 and frozen playground installation; local lockfile/build verification passes on Node 22.
-- [ ] Confirm the Node 24 Pages run is green in GitHub Actions; local verification used Node 22 because Node 24 is not installed on this machine.
+- [x] Confirmed the Node 24 Pages run is green in GitHub Actions (workflow run #13); local verification used Node 22 because Node 24 is not installed on this machine.
 - [x] Split the playground's Vite entry chunk; the production entry is now below the 500 kB warning threshold and the larger editor remains an intentional lazy chunk.
 - [x] Confirm the pinned-ref Pages run and post-deployment smoke test are green in GitHub Actions.
 
