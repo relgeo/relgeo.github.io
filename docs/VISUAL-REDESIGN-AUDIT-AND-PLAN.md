@@ -135,6 +135,8 @@ This document is also the working status register for the redesign.
 - [x] Added built-output guards for visible focus treatment and reduced-motion CSS, reading the extracted stylesheet assets correctly.
 - [x] Removed the sticky mobile navbar behavior so two-line navigation cannot cover reading content during long document scrolls.
 - [x] Repeated responsive and keyboard QA against the production preview at approximately 390px wide: the landing content remains readable, skip-link focus is visible, and all landing controls are reachable without a keyboard trap. Physical handset testing remains optional follow-up validation, not a release blocker.
+- [x] Ran genuine Chrome DevTools emulation across all 95 canonical HTML routes at 390×844 with `prefers-reduced-motion: reduce`; every route reported a 390px page width, reduced-motion active, and no page-level horizontal overflow after article containment was added.
+- [x] Ran an automated Tab traversal pass across the canonical site routes and confirmed representative pages visit all discovered controls. Exact cycle assertions remain intentionally non-blocking because browser focus can land on body/code navigation surfaces after the last link.
 - [x] Run the Pages artifact assertion and public smoke test in GitHub Actions after the hardening push; workflow run #13 passed.
 
 ### Still open
@@ -147,12 +149,17 @@ This document is also the working status register for the redesign.
 - [x] Review the remaining canonical English terms in Indonesian prose and confirm each is intentional rather than an untranslated UI label.
 - [x] Remove confirmed stale landing components, fixtures, and CSS.
 - [x] Remove unused direct landing-only dependencies and keep the lockfile consistent.
-- [x] Performed viewport, keyboard, contrast, zoom, and reduced-motion review; the first four include browser checks, while reduced motion is protected by the bundled CSS assertion.
+- [x] Performed viewport, keyboard, contrast, zoom, and reduced-motion review; viewport and reduced-motion now include genuine CDP emulation, while keyboard includes automated canonical-route traversal plus representative manual checks.
 - [x] Add a platform-specific touch icon; the SVG favicon, touch icon, and WebP hero are now present.
 - [x] Move the Pages workflow to Node 24 and frozen playground installation; local lockfile/build verification passes on Node 22.
 - [x] Confirmed the Node 24 Pages run is green in GitHub Actions (workflow run #13); local verification used Node 22 because Node 24 is not installed on this machine.
 - [x] Split the playground's Vite entry chunk; the production entry is now below the 500 kB warning threshold and the larger editor remains an intentional lazy chunk.
 - [x] Confirm the pinned-ref Pages run and post-deployment smoke test are green in GitHub Actions.
+
+### External validation still recommended
+
+- [ ] Test on at least one physical iOS or Android device; the 390×844 CDP pass is a real browser emulation, not a handset test.
+- [ ] Perform a manual keyboard and assistive-technology sweep of every interactive playground control; the canonical website routes have automated Tab coverage, while playground interaction remains its own application surface.
 
 The Why RelGeo work is a first page slice, not a claim that Phase 2 is complete.
 
@@ -529,7 +536,7 @@ The redesign is ready for review when all of the following are true:
 - [x] Indonesian and English labels follow the terminology policy;
 - [x] the landing page remains static-art-led and does not reintroduce the live hero demo;
 - [x] dead landing implementation and CSS are removed or explicitly retained with a reason;
-- [x] keyboard navigation, focus, skip link, contrast, 200% zoom, and reduced motion are checked;
+- [x] keyboard navigation, focus, skip link, contrast, 200% zoom, and reduced motion are checked on the canonical website surfaces;
 - [x] favicon, touch icon, and localized metadata are present and correct;
 - [x] hero asset size and loading behavior are reviewed;
 - [x] `pnpm build`, `pnpm check`, and `pnpm test` pass;

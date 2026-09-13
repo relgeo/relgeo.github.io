@@ -409,6 +409,9 @@ h3 {
 
 /* Layer: reading — editorial prose, docs columns, and spec columns. */
 .article {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
   line-height: 1.78;
 }
 
@@ -476,6 +479,8 @@ h3 {
 }
 
 .article-page--editorial {
+  min-width: 0;
+  width: 100%;
   max-width: 720px;
   padding: 0;
   border: 0;
@@ -499,6 +504,7 @@ h3 {
 }
 
 .article pre {
+  max-width: 100%;
   overflow-x: auto;
   padding: 16px;
   border: 1px solid var(--code-line);
@@ -542,6 +548,8 @@ h3 {
 }
 
 .spec-reading {
+  min-width: 0;
+  width: 100%;
   max-width: 800px;
   padding: 0;
   border: 0;
@@ -642,6 +650,8 @@ h3 {
 }
 
 .docs-reading--leaf {
+  min-width: 0;
+  width: 100%;
   max-width: 800px;
   padding: 0;
   border: 0;
