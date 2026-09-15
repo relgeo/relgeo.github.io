@@ -32,7 +32,7 @@ Lalu gunakan urutan berikut di Playground:
 4. baca hasilnya di live preview
 5. buka `Inspector` atau `Layers` untuk memeriksa geometry dan dependency
 
-Playground adalah browser IDE lokal; repository ini belum mengklaim URL hosted Playground publik.
+Playground adalah browser IDE lokal dan juga tersedia sebagai surface publik di [relgeo.github.io/playground](https://relgeo.github.io/playground/). Gunakan workspace lokal untuk pengembangan dan surface hosted untuk mencoba dengan cepat tanpa menginstal repository.
 
 Jika Anda hanya membutuhkan workflow terminal, gunakan:
 

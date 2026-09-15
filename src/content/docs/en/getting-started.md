@@ -32,7 +32,7 @@ Then use this sequence in the Playground:
 4. read the result in the live preview
 5. open `Inspector` or `Layers` to inspect geometry and dependencies
 
-The Playground is a local browser IDE; this repository does not claim a hosted public Playground URL yet.
+The Playground is a local browser IDE and is also available as a hosted public surface at [relgeo.github.io/playground](https://relgeo.github.io/playground/). Use the local workspace for development and the hosted surface for a quick try without installing the repository.
 
 If you only need a terminal workflow, use:
 

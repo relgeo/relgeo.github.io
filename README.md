@@ -28,6 +28,12 @@ The intended direction is:
 3. local workspace builds use `../spec/id/`
 4. GitHub Pages builds checkout `relgeo/spec` into `.ci/spec/`
 
+## Reproducible Pages Inputs
+
+The Pages workflow checks out the Playground and language spec at explicit commit SHAs rather than tracking moving branches. Update those pins only after the source repository has passed its own checks and the website build plus Pages artifact assertions have passed locally.
+
+The current Playground pin is the reviewed baseline `09ac1cb2773fd9a7046b703b72c8494ade8e315b`.
+
 ## Stack
 
 1. Astro

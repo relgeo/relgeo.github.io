@@ -26,7 +26,7 @@ jobs:
           repository: relgeo/playground
           path: .ci/playground
           # Update deliberately after validating a new playground baseline.
-          ref: 381b29a97b79dbedbc02b5f810803a37b9075207
+          ref: 09ac1cb2773fd9a7046b703b72c8494ade8e315b
 
       - name: Checkout spec
         uses: actions/checkout@v4
