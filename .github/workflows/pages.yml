@@ -18,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout website
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Checkout playground
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: relgeo/playground
           path: .ci/playground
@@ -29,7 +29,7 @@ jobs:
           ref: 09ac1cb2773fd9a7046b703b72c8494ade8e315b
 
       - name: Checkout spec
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: relgeo/spec
           path: .ci/spec
@@ -37,15 +37,15 @@ jobs:
           ref: b96ba3b23de202227eade06614635ef6717df516
 
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 10.33.3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
@@ -75,7 +75,7 @@ jobs:
         run: pnpm run test:pages-artifact
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
@@ -92,13 +92,13 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
       - name: Checkout website smoke-test script
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           sparse-checkout: scripts/smoke-public-site.mjs
-          sparse-checkout-cone: false
+          sparse-checkout-cone-mode: false
 
       - name: Smoke-test deployed site
         run: node scripts/smoke-public-site.mjs
