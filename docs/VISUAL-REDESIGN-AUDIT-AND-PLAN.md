@@ -1,7 +1,7 @@
 # RelGeo Website Visual Redesign — Audit & Change Plan
 
-**Status:** Final hardening — local and GitHub Actions verification complete; real-device pass pending
-**Date:** 2026-09-13
+**Status:** Release baseline complete — local, GitHub Actions, deployment, and public smoke verification complete; physical-device and assistive-technology validation remain external
+**Date:** 2026-09-15
 **Scope:** `relgeo.github.io` website, including the shared shell, landing pages, documentation index, language-spec index, and supporting delivery quality.  
 **Baseline:** post-landing visual reset (`ede9c4c`)
 
@@ -137,7 +137,7 @@ This document is also the working status register for the redesign.
 - [x] Repeated responsive and keyboard QA against the production preview at approximately 390px wide: the landing content remains readable, skip-link focus is visible, and all landing controls are reachable without a keyboard trap. Physical handset testing remains optional follow-up validation, not a release blocker.
 - [x] Ran genuine Chrome DevTools emulation across all 95 canonical HTML routes at 390×844 with `prefers-reduced-motion: reduce`; every route reported a 390px page width, reduced-motion active, and no page-level horizontal overflow after article containment was added.
 - [x] Ran an automated Tab traversal pass across the canonical site routes and confirmed representative pages visit all discovered controls. Exact cycle assertions remain intentionally non-blocking because browser focus can land on body/code navigation surfaces after the last link.
-- [x] Run the Pages artifact assertion and public smoke test in GitHub Actions after the hardening push; workflow run #13 passed.
+- [x] Run the Pages artifact assertion and public smoke test in GitHub Actions after the hardening push; final workflow run #18 passed.
 
 ### Still open
 
@@ -152,11 +152,11 @@ This document is also the working status register for the redesign.
 - [x] Performed viewport, keyboard, contrast, zoom, and reduced-motion review; viewport and reduced-motion now include genuine CDP emulation, while keyboard includes automated canonical-route traversal plus representative manual checks.
 - [x] Add a platform-specific touch icon; the SVG favicon, touch icon, and WebP hero are now present.
 - [x] Move the Pages workflow to Node 24 and frozen playground installation; local lockfile/build verification passes on Node 22.
-- [x] Confirmed the Node 24 Pages run is green in GitHub Actions (workflow run #13); local verification used Node 22 because Node 24 is not installed on this machine.
+- [x] Confirmed the Node 24 Pages run is green in GitHub Actions (final workflow run #18); local verification used the available local Node runtime where applicable.
 - [x] Split the playground's Vite entry chunk; the production entry is now below the 500 kB warning threshold and the larger editor remains an intentional lazy chunk.
 - [x] Confirm the pinned-ref Pages run and post-deployment smoke test are green in GitHub Actions.
 
-### External validation still recommended
+### Remaining external validation (non-blocking)
 
 - [ ] Test on at least one physical iOS or Android device; the 390×844 CDP pass is a real browser emulation, not a handset test.
 - [x] Run an automated keyboard and accessibility-tree sweep of every visible playground control at 390×844; all 37 controls have accessible names and all 37 are reachable by Tab after the editor focus-trap fix.
