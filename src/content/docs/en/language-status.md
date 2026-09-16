@@ -21,6 +21,12 @@ RelGeo itself is already moving with the active `v0.5` contract. What this page 
 
 Package or release numbers such as `0.4.0` or `0.5.0` are distribution metadata for individual packages. They are not the same as the `RelGeo DSL v0.5` language-contract version. Packages may follow their own release cadence while continuing to implement the active DSL contract.
 
+## Version Support Policy
+
+The current public contract is `RelGeo DSL v0.5`. The runtime accepts `v0.4` as supported legacy coverage, while `v0.1`–`v0.3` remain regression-only history rather than a current support promise. An undeclared future or unknown version, such as `v0.6`, is rejected with an explicit unsupported-version diagnostic until that contract is declared and implemented.
+
+Documents without a top-level `version` use the active `v0.5` default. Package versions and DSL version are still separate: a package patch release does not by itself change the language contract.
+
 ## Why `id` Is Still the Normative Home
 
 The reason is simple:

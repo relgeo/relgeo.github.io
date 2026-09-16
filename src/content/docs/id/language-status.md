@@ -21,6 +21,12 @@ RelGeo sendiri sudah bergerak dengan kontrak aktif `v0.5`. Yang sedang dibedakan
 
 Angka versi package atau release, misalnya `0.4.0` atau `0.5.0`, adalah metadata distribusi masing-masing package. Angka tersebut tidak sama dengan versi kontrak bahasa `RelGeo DSL v0.5`. Package dapat memiliki ritme rilis sendiri selama tetap mengikuti kontrak DSL yang berlaku.
 
+## Kebijakan Dukungan Versi
+
+Kontrak publik saat ini adalah `RelGeo DSL v0.5`. Runtime menerima `v0.4` sebagai coverage legacy yang masih didukung, sedangkan `v0.1`–`v0.3` dipertahankan sebagai sejarah regression dan bukan janji dukungan aktif. Versi future atau unknown yang belum dideklarasikan, misalnya `v0.6`, ditolak dengan diagnostic unsupported-version yang eksplisit sampai kontrak tersebut dideklarasikan dan diimplementasikan.
+
+Dokumen tanpa field tingkat atas `version` memakai default aktif `v0.5`. Versi package dan versi DSL tetap terpisah: patch release package tidak dengan sendirinya mengubah kontrak bahasa.
+
 ## Mengapa `id` Masih Menjadi Rumah Normatif
 
 Alasannya sederhana:
