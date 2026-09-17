@@ -5,6 +5,11 @@
   "type": "module",
   "license": "MIT",
   "description": "Official Astro-based documentation site for RelGeo",
+  "author": {
+    "name": "Agus Made",
+    "email": "krisnaparta@gmail.com",
+    "url": "https://github.com/agusmade"
+  },
   "homepage": "https://relgeo.github.io/",
   "repository": {
     "type": "git",
