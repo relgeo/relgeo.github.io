@@ -51,9 +51,17 @@ Optional environment variables:
 
 1. `RELGEO_DOCS_SITE_URL`
 2. `RELGEO_DOCS_BASE`
+3. `RELGEO_DOCS_REQUIRE_PUBLIC_URL`
 
 These map to Astro `site` and `base` so the package can be configured later for
-GitHub Pages or a custom domain.
+GitHub Pages or a custom domain. Set `RELGEO_DOCS_REQUIRE_PUBLIC_URL=1` in the
+canonical Pages build to reject placeholder/non-canonical public URLs.
+
+The local provenance report is generated with `pnpm provenance:report` and
+writes `dist/relgeo-provenance.json`. Use `pnpm provenance:check` only after an
+approved Playground/spec revision set has been synchronized across the root
+gitlinks, integration baseline, and Pages workflow; it intentionally fails on
+known revision drift rather than selecting a revision implicitly.
 
 ## Local Workspace Build Flow
 

@@ -19,8 +19,15 @@ function count(source, fragment) {
   return source.split(fragment).length - 1;
 }
 
+const compatibility = JSON.parse(
+  await readFile(join(process.cwd(), '..', 'docs', 'compatibility-matrix.json'), 'utf8'),
+);
+const expectedDslVersion = compatibility.compatibilityLine;
+const expectedPackageLine = compatibility.policy.publicPackageVersion;
+
 function assertCommonMetadata(html, path, lang) {
   assert.match(html, /<meta name="description" content="[^"]+"/i, `${path}: description`);
+  assert.doesNotMatch(html, /https:\/\/example\.com\/?/, `${path}: placeholder site URL`);
   assert.match(html, /<meta property="og:type" content="website"/i, `${path}: og:type`);
   assert.match(html, /<meta name="twitter:card" content="summary"/i, `${path}: twitter card`);
   assert.match(html, new RegExp(`<meta property="og:locale" content="${lang === 'id' ? 'id_ID' : 'en_US'}"`), `${path}: locale`);
@@ -42,11 +49,16 @@ function assertMarkdownSurface(html, path) {
   assert.equal(count(html, 'data-relgeo-fence="rg"'), 1, `${path}: rg fence marker`);
   assert.match(html, /class="language-rg relgeo-hl__code"/, `${path}: rg code element`);
   assert.match(html, /relgeo-hl__token--/, `${path}: semantic tokens`);
+  assert.match(html, new RegExp(`data-relgeo-dsl-version="${expectedDslVersion}"`), `${path}: DSL provenance`);
+  assert.match(html, new RegExp(`data-relgeo-package-line="${expectedPackageLine}"`), `${path}: package-line provenance`);
+  assert.match(html, /data-relgeo-plugin="remark-relgeo-hl"/, `${path}: highlighter provenance`);
 
   assert.equal(count(html, 'data-relgeo-kind="preview"'), 1, `${path}: one relgeo surface`);
   assert.equal(count(html, 'data-relgeo-fence="relgeo"'), 1, `${path}: relgeo fence marker`);
   assert.match(html, /class="relgeo-preview__canvas"/, `${path}: preview canvas`);
   assert.match(html, /class="relgeo-preview__image"/, `${path}: preview image`);
+  assert.match(html, /data-relgeo-plugin="remark-relgeo"/, `${path}: preview provenance`);
+  assert.doesNotMatch(html, /<pre[^>]*>\s*<div class="relgeo-preview__canvas"/, `${path}: preview wrapper must not be nested under pre`);
   assert.doesNotMatch(html, /language-relgeo|relgeo-preview__code/, `${path}: preview must not expose source code`);
 }
 
@@ -58,6 +70,25 @@ function assertGettingStarted(html, path, lang) {
   assert.match(html, /data-relgeo-kind="highlight"/, `${path}: rg onboarding surface`);
   assert.match(html, /data-relgeo-kind="preview"/, `${path}: relgeo onboarding surface`);
   assert.match(html, /playground/i, `${path}: Playground route`);
+}
+
+function assertDocsSearch(html, path) {
+  assert.match(html, /data-docs-search/, `${path}: deterministic search surface`);
+  assert.match(html, /role="search"/, `${path}: search landmark`);
+  assert.match(html, /data-docs-search-input/, `${path}: search input`);
+  assert.match(html, /data-docs-search-status/, `${path}: live search status`);
+  assert.match(html, /data-docs-search-empty/, `${path}: no-result affordance`);
+  assert.match(html, /data-search-item/, `${path}: indexed topics`);
+  assert.match(html, /No topics match this search|Tidak ada topik yang cocok/, `${path}: localized no-result copy`);
+  assert.match(html, /addEventListener\('input', update\)/, `${path}: live filtering handler`);
+  assert.match(html, /toggleAttribute\('hidden', !matches\)/, `${path}: filtered item state`);
+  assert.match(html, /toggleAttribute\('hidden', visible !== 0\)/, `${path}: no-result state update`);
+}
+
+function assertEnglishMirrorDisclosure(html, path) {
+  assert.match(html, /data-language-spec-status="english-mirror"/, `${path}: English mirror disclosure`);
+  assert.match(html, /English presentation status/, `${path}: English status heading`);
+  assert.match(html, /Indonesian language spec/, `${path}: normative-language link`);
 }
 
 function assertActiveNav(html, path, href) {
@@ -101,7 +132,30 @@ for (const lang of ['id', 'en']) {
   const gettingStartedPath = `${lang}/docs/getting-started/index.html`;
   const gettingStarted = await readPage(gettingStartedPath);
   assertGettingStarted(gettingStarted, gettingStartedPath, lang);
+
+  const docsIndexPath = `${lang}/docs/index.html`;
+  assertDocsSearch(await readPage(docsIndexPath), docsIndexPath);
 }
+
+for (const lang of ['id', 'en']) {
+  for (const slug of [
+    'getting-started',
+    'current-capabilities',
+    'markdown-surfaces',
+    'cli',
+    'playground',
+    'desktop-app',
+    'language-status',
+  ]) {
+    await readPage(`${lang}/docs/${slug}/index.html`);
+  }
+}
+
+assertEnglishMirrorDisclosure(await readPage('en/docs/language-spec/index.html'), 'en/docs/language-spec/index.html');
+assertEnglishMirrorDisclosure(
+  await readPage('en/docs/language-spec/core/01-overview/index.html'),
+  'en/docs/language-spec/core/01-overview/index.html'
+);
 
 const navigationChecks = [
   ['en/why-relgeo/index.html', '/en/why-relgeo/'],

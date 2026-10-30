@@ -67,6 +67,7 @@ jobs:
           RELGEO_DOCS_SITE_URL: https://relgeo.github.io
           RELGEO_DOCS_BASE: /
           RELGEO_SPEC_PATH: .ci/spec/id
+          RELGEO_DOCS_REQUIRE_PUBLIC_URL: '1'
 
       - name: Add playground artifact
         run: mkdir -p dist/playground && cp -R .ci/playground/dist/. dist/playground/

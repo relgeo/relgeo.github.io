@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import DocsLayout from '../../../../layouts/DocsLayout.astro';
+import LanguageStatusNotice from '../../../../components/LanguageStatusNotice.astro';
 import {
   type LanguageSpecEntry,
   type LanguageSpecSectionGroup,
@@ -90,6 +91,7 @@ const currentGroup = groups.find((group: LanguageSpecSectionGroup) => group.sect
     </aside>
 
     <div class="spec-index-column">
+      <LanguageStatusNotice lang={lang} />
       <article class="article spec-reading spec-reading--leaf">
         {currentGroup && (
           <p>

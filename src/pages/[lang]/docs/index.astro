@@ -182,6 +182,29 @@ const docsGroups = [
     })),
   },
 ];
+
+const searchItems = Array.from(
+  new Map(
+    [
+      ...docsNavItems.map((item) => ({
+        href: item.href,
+        title: item.label,
+        description: item.description,
+      })),
+      ...sectionEntries.map((entry) => ({
+        href: localizedLanguageSpecHref(entry, lang),
+        title: entryTitle(entry, languageSpecSection(entry)),
+        description: copy(
+          {
+            id: 'Section dari source normatif aktif.',
+            en: 'A section from the active normative source.',
+          },
+          lang
+        ),
+      })),
+    ].map((item) => [item.href, item] as const)
+  ).values()
+);
 ---
 
 <DocsLayout
@@ -263,6 +286,63 @@ const docsGroups = [
         </div>
       </section>
 
+      <section
+        class="docs-search"
+        data-docs-search
+        data-search-all-label={copy({ id: 'topik tersedia', en: 'topics available' }, lang)}
+        data-search-results-label={copy({ id: 'hasil ditemukan', en: 'results found' }, lang)}
+        data-search-no-results={copy({ id: 'Tidak ada topik yang cocok dengan pencarian ini.', en: 'No topics match this search.' }, lang)}
+        aria-labelledby={`docs-search-title-${lang}`}
+      >
+        <div class="docs-search-copy">
+          <p class="kicker">{copy({ id: 'Wayfinding', en: 'Wayfinding' }, lang)}</p>
+          <h2 id={`docs-search-title-${lang}`}>{copy({ id: 'Cari topik docs dan spec', en: 'Find a docs or spec topic' }, lang)}</h2>
+          <p>
+            {copy(
+              {
+                id: 'Ketik kata kunci untuk memfilter indeks deterministik. Hasil kosong akan dijelaskan secara langsung.',
+                en: 'Type a keyword to filter the deterministic index. Empty results are explained directly.',
+              },
+              lang
+            )}
+          </p>
+        </div>
+        <form class="docs-search-form" role="search" data-docs-search-form>
+          <label for={`docs-search-input-${lang}`}>
+            {copy({ id: 'Cari docs atau spec', en: 'Search docs or spec' }, lang)}
+          </label>
+          <div class="docs-search-controls">
+            <input
+              id={`docs-search-input-${lang}`}
+              type="search"
+              name="q"
+              autocomplete="off"
+              data-docs-search-input
+              placeholder={copy({ id: 'Contoh: Playground, parameter, geometry', en: 'Example: Playground, parameter, geometry' }, lang)}
+            />
+            <button class="button" type="reset" data-docs-search-clear>
+              {copy({ id: 'Bersihkan', en: 'Clear' }, lang)}
+            </button>
+          </div>
+        </form>
+        <p class="docs-search-status" aria-live="polite" data-docs-search-status>
+          {searchItems.length} {copy({ id: 'topik tersedia', en: 'topics available' }, lang)}
+        </p>
+        <ul class="docs-search-results" data-docs-search-results>
+          {searchItems.map((item) => (
+            <li data-search-item data-search-text={`${item.title} ${item.description}`}>
+              <a href={item.href}>
+                <strong>{item.title}</strong>
+                <span>{item.description}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="docs-search-empty" data-docs-search-empty role="status" hidden>
+          {copy({ id: 'Tidak ada topik yang cocok dengan pencarian ini.', en: 'No topics match this search.' }, lang)}
+        </p>
+      </section>
+
       {docsGroups.map((group) => (
         <section id={group.id} class="docs-index-group">
           <header>
@@ -284,3 +364,35 @@ const docsGroups = [
     </div>
   </div>
 </DocsLayout>
+
+<script is:inline>
+  document.querySelectorAll('[data-docs-search]').forEach((root) => {
+    const input = root.querySelector('[data-docs-search-input]');
+    const clear = root.querySelector('[data-docs-search-clear]');
+    const status = root.querySelector('[data-docs-search-status]');
+    const empty = root.querySelector('[data-docs-search-empty]');
+    const items = Array.from(root.querySelectorAll('[data-search-item]'));
+    if (!(input instanceof HTMLInputElement) || !(status instanceof HTMLElement) || !(empty instanceof HTMLElement)) return;
+
+    const update = () => {
+      const query = input.value.trim().toLocaleLowerCase();
+      let visible = 0;
+      items.forEach((item) => {
+        const text = item.getAttribute('data-search-text')?.toLocaleLowerCase() ?? '';
+        const matches = query.length === 0 || text.includes(query);
+        item.toggleAttribute('hidden', !matches);
+        if (matches) visible += 1;
+      });
+      const label = query.length === 0
+        ? root.dataset.searchAllLabel ?? 'topics available'
+        : root.dataset.searchResultsLabel ?? 'results found';
+      status.textContent = `${visible} ${label}`;
+      empty.toggleAttribute('hidden', visible !== 0);
+    };
+
+    input.addEventListener('input', update);
+    clear?.addEventListener('click', () => requestAnimationFrame(update));
+    root.querySelector('[data-docs-search-form]')?.addEventListener('submit', (event) => event.preventDefault());
+    update();
+  });
+</script>

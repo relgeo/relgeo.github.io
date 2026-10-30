@@ -21,6 +21,8 @@
     "preview": "astro preview",
     "test": "node scripts/assert-built-output.mjs",
     "test:pages-artifact": "node scripts/assert-pages-artifact.mjs",
+    "provenance:report": "node scripts/assert-input-provenance.mjs --write",
+    "provenance:check": "node scripts/assert-input-provenance.mjs --write --strict",
     "check": "astro check"
   },
   "dependencies": {

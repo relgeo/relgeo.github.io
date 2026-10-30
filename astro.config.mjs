@@ -4,10 +4,27 @@ import remarkRelgeoHl from '@relgeo/remark-relgeo-hl';
 
 const site = process.env.RELGEO_DOCS_SITE_URL ?? 'https://example.com';
 const base = process.env.RELGEO_DOCS_BASE ?? '/';
+const requirePublicSiteUrl = process.env.RELGEO_DOCS_REQUIRE_PUBLIC_URL === '1';
+
+if (requirePublicSiteUrl) {
+  const siteUrl = new URL(site);
+  if (siteUrl.protocol !== 'https:' || siteUrl.hostname !== 'relgeo.github.io' || siteUrl.pathname !== '/') {
+    throw new Error(
+      `RELGEO_DOCS_SITE_URL must be https://relgeo.github.io/ when RELGEO_DOCS_REQUIRE_PUBLIC_URL=1; received ${site}`
+    );
+  }
+}
 
 function getClassNames(node) {
   const value = node?.properties?.className;
   return Array.isArray(value) ? value : [];
+}
+
+function isPreviewWrapper(node) {
+  if (node?.type !== 'element' || node.tagName !== 'div') return false;
+  const classNames = getClassNames(node);
+  return classNames.includes('relgeo-preview__canvas')
+    || classNames.includes('relgeo-preview__placeholder');
 }
 
 function shouldUnwrapPreview(node) {
@@ -15,10 +32,7 @@ function shouldUnwrapPreview(node) {
   if (!Array.isArray(node.children) || node.children.length !== 1) return false;
 
   const [child] = node.children;
-  if (child?.type !== 'element') return false;
-
-  const classNames = getClassNames(child);
-  return classNames.includes('relgeo-preview') || classNames.includes('relgeo-hl');
+  return isPreviewWrapper(child);
 }
 
 function unwrapCustomCodeBlocks() {
