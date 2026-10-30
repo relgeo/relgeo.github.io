@@ -21,6 +21,11 @@ This package is the website and presentation layer.
 
 It should not become an independent rewrite of the active language spec.
 
+The global RelGeo mark and its usage boundary are documented in
+[`docs/brand/identity.md`](docs/brand/identity.md). The mark master lives at
+`public/brand/relgeo-mark.png`; platform-specific outputs belong to their
+consumer repositories.
+
 The intended direction is:
 
 1. the website hosts documentation as one section of the broader RelGeo site
