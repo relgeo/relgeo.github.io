@@ -8,6 +8,7 @@ const baselinePath = process.env.RELGEO_INTEGRATION_BASELINE ?? join(workspaceRo
 const workflowPath = process.env.RELGEO_PAGES_WORKFLOW ?? join(websiteRoot, '.github/workflows/pages.yml');
 const shouldWrite = process.argv.includes('--write');
 const strict = process.argv.includes('--strict');
+const pagesMode = process.argv.includes('--pages');
 
 function revisionAt(path) {
   return execFileSync('git', ['-C', path, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
@@ -18,9 +19,9 @@ function workflowPin(workflow, checkoutName) {
   return match?.[1] ?? null;
 }
 
-const baseline = JSON.parse(await readFile(baselinePath, 'utf8'));
 const workflow = await readFile(workflowPath, 'utf8');
-const baselineByPath = new Map((baseline.submodules ?? []).map((entry) => [entry.path, entry.revision]));
+const baseline = pagesMode ? null : JSON.parse(await readFile(baselinePath, 'utf8'));
+const baselineByPath = new Map((baseline?.submodules ?? []).map((entry) => [entry.path, entry.revision]));
 const observed = {
   website: revisionAt(websiteRoot),
   playground: revisionAt(process.env.RELGEO_PLAYGROUND_ROOT ?? join(workspaceRoot, 'playground')),
@@ -54,23 +55,35 @@ const comparisons = [
 
 const mismatches = comparisons.flatMap((entry) => {
   const issues = [];
-  if (entry.baseline && entry.observed !== entry.baseline) {
+  if (!/^[0-9a-f]{40}$/.test(entry.observed)) {
+    issues.push(`${entry.path}: working-tree revision is missing or invalid`);
+  }
+  if (!pagesMode && entry.baseline && entry.observed !== entry.baseline) {
     issues.push(`${entry.path}: working-tree revision ${entry.observed} differs from baseline ${entry.baseline}`);
   }
-  if (entry.workflow && entry.observed !== entry.workflow) {
+  if (!pagesMode && entry.workflow && entry.observed !== entry.workflow) {
     issues.push(`${entry.path}: working-tree revision ${entry.observed} differs from Pages pin ${entry.workflow}`);
   }
-  if (entry.baseline && entry.workflow && entry.baseline !== entry.workflow) {
+  if (!pagesMode && entry.baseline && entry.workflow && entry.baseline !== entry.workflow) {
     issues.push(`${entry.path}: integration baseline ${entry.baseline} differs from Pages pin ${entry.workflow}`);
+  }
+  if (pagesMode && ['playground', 'spec'].includes(entry.path)) {
+    if (!entry.workflow) {
+      issues.push(`${entry.path}: Pages workflow pin is missing`);
+    } else if (entry.observed !== entry.workflow) {
+      issues.push(`${entry.path}: checked-out revision ${entry.observed} differs from Pages pin ${entry.workflow}`);
+    }
   }
   return issues;
 });
 
 const report = {
-  schemaVersion: 1,
+  schemaVersion: 2,
+  mode: pagesMode ? 'pages-inputs' : 'workspace-baseline',
   synchronized: mismatches.length === 0,
-  baselinePath: 'docs/integration-baseline.json',
+  baselinePath: pagesMode ? null : 'docs/integration-baseline.json',
   workflowPath: '.github/workflows/pages.yml',
+  workflowPins,
   revisions: comparisons,
   mismatches,
 };

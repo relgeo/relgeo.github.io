@@ -10,7 +10,7 @@ Halaman ini menjelaskan status bahasa publik untuk dokumentasi RelGeo saat ini.
 Saat ini:
 
 1. source normatif aktif berada di repository `relgeo/spec` pada folder `id/`
-2. surface publik bahasa Inggris sedang disiapkan di repository `relgeo/spec` pada folder `en/`
+2. route `/en/docs/language-spec/` adalah editorial mirror dari source normatif tersebut
 3. docs-site memakai route publik yang stabil, walau source internal aktif tetap berada di pohon `id/`
 
 Artinya, implementasi repo, audit, dan kontrak bahasa aktif masih merujuk ke dokumen Indonesia.
@@ -39,22 +39,24 @@ Keputusan ini bukan berarti bahasa Inggris kurang penting. Ini hanya urutan pema
 
 ## Apa Status `en` Saat Ini
 
-Folder source `en/` dan surface `/en/...` disiapkan untuk:
+Surface `/en/...` tersedia untuk:
 
 1. akses publik yang lebih luas
 2. docs-site bilingual
 3. persiapan repo spec terpisah di masa depan
 
-Namun untuk saat ini, `en/` belum mengambil alih status normatif dari `id/`.
+Untuk language spec, `en/` adalah editorial mirror. `en/` belum mengambil
+alih status normatif dari `id/` dan bukan terjemahan normatif bahasa Inggris
+yang sudah selesai.
 
 Jika ada perbedaan sementara:
 
 1. `id/` tetap dianggap benar untuk kontrak aktif
-2. `en/` harus dibaca sebagai surface publik yang sedang didekatkan ke kontrak aktif
+2. `en/` harus dibaca sebagai surface editorial publik dan mirror yang sedang didekatkan ke kontrak aktif
 
 Prinsip praktisnya:
 
-1. jangan menebak aturan bahasa aktif dari `en/` jika ada detail yang belum sinkron
+1. jangan menebak aturan bahasa aktif dari `en/` jika ada detail yang belum sinkron; full English normative parity belum diklaim
 2. gunakan `en/` untuk akses publik, orientasi awal, dan docs-site bilingual
 3. gunakan `id/` bila Anda sedang memeriksa detail kontrak implementasi, audit, atau keputusan semantics terbaru
 

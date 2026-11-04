@@ -72,6 +72,15 @@ jobs:
       - name: Add playground artifact
         run: mkdir -p dist/playground && cp -R .ci/playground/dist/. dist/playground/
 
+      - name: Verify deployment-aware website output
+        run: pnpm test
+
+      - name: Verify Pages input provenance
+        run: pnpm run provenance:pages
+        env:
+          RELGEO_PLAYGROUND_ROOT: .ci/playground
+          RELGEO_SPEC_ROOT: .ci/spec
+
       - name: Verify Pages artifact
         run: pnpm run test:pages-artifact
 

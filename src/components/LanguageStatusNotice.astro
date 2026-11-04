@@ -5,12 +5,17 @@ const { lang } = Astro.props as { lang: SupportedLang };
 ---
 
 {lang === 'en' && (
-  <aside class="language-status-notice" role="note" data-language-spec-status="english-mirror">
+  <aside
+    class="language-status-notice"
+    role="note"
+    data-language-spec-status="english-mirror"
+    data-language-spec-translation="not-available"
+  >
     <p class="kicker">Language status</p>
     <h2>English presentation status</h2>
     <p>
       This public English route is an editorial mirror of the active Indonesian normative source.
-      It is not a translated normative contract yet.
+      It is not a translated normative contract yet, and full English normative parity is not claimed.
     </p>
     <p>
       Use the <a href="/id/docs/language-spec/">Indonesian language spec</a> for the active

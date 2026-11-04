@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { readdir, readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { join, relative } from 'node:path';
 
 const dist = join(process.cwd(), 'dist');
 
@@ -26,8 +26,17 @@ const expectedDslVersion = compatibility.compatibilityLine;
 const expectedPackageLine = compatibility.policy.publicPackageVersion;
 
 function assertCommonMetadata(html, path, lang) {
+  const routePath = `/${path.replace(/\\/g, '/').replace(/index\.html$/, '')}`;
+  const localizedPath = routePath.replace(new RegExp(`^/${lang}(?=/|$)`), '') || '/';
+  const canonical = `https://relgeo.github.io${routePath}`;
+  const alternateId = `https://relgeo.github.io/id${lang === 'id' ? localizedPath : localizedPath}`;
+  const alternateEn = `https://relgeo.github.io/en${lang === 'en' ? localizedPath : localizedPath}`;
   assert.match(html, /<meta name="description" content="[^"]+"/i, `${path}: description`);
   assert.doesNotMatch(html, /https:\/\/example\.com\/?/, `${path}: placeholder site URL`);
+  assert.match(html, new RegExp(`<link rel="canonical" href="${canonical.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}">`), `${path}: canonical URL`);
+  assert.match(html, new RegExp(`<link rel="alternate" hreflang="id" href="${alternateId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}">`), `${path}: Indonesian alternate`);
+  assert.match(html, new RegExp(`<link rel="alternate" hreflang="en" href="${alternateEn.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}">`), `${path}: English alternate`);
+  assert.match(html, /<link rel="alternate" hreflang="x-default" href="https:\/\/relgeo\.github\.io\/">/, `${path}: x-default alternate`);
   assert.match(html, /<meta property="og:type" content="website"/i, `${path}: og:type`);
   assert.match(html, /<meta name="twitter:card" content="summary"/i, `${path}: twitter card`);
   assert.match(html, new RegExp(`<meta property="og:locale" content="${lang === 'id' ? 'id_ID' : 'en_US'}"`), `${path}: locale`);
@@ -37,6 +46,9 @@ function assertCommonMetadata(html, path, lang) {
 
 function assertAccessibleShell(html, path, lang) {
   assert.match(html, /<a class="skip-link" href="#main-content">/, `${path}: skip link`);
+  assert.match(html, /<main id="main-content"/, `${path}: main landmark`);
+  assert.match(html, /<nav[^>]+aria-label="[^"]+"/, `${path}: labelled navigation landmark`);
+  assert.match(html, /<footer class="site-footer">/, `${path}: footer landmark`);
   assert.match(
     html,
     new RegExp(`<nav class="lang-switcher"[^>]*>[\\s\\S]*<a href="\/${lang}\/[^\"]*" aria-current="page">\\s*${lang === 'id' ? 'ID' : 'EN'}\\s*<\\/a>`),
@@ -72,11 +84,12 @@ function assertGettingStarted(html, path, lang) {
   assert.match(html, /playground/i, `${path}: Playground route`);
 }
 
-function assertDocsSearch(html, path) {
+function assertDocsSearch(html, path, lang) {
   assert.match(html, /data-docs-search/, `${path}: deterministic search surface`);
   assert.match(html, /role="search"/, `${path}: search landmark`);
-  assert.match(html, /data-docs-search-input/, `${path}: search input`);
-  assert.match(html, /data-docs-search-status/, `${path}: live search status`);
+  assert.match(html, new RegExp(`<label for="docs-search-input-${lang}">`), `${path}: search input label`);
+  assert.match(html, new RegExp(`<input[^>]+id="docs-search-input-${lang}"[^>]+data-docs-search-input`), `${path}: search input`);
+  assert.match(html, /<p class="docs-search-status"[^>]*aria-live="polite"/, `${path}: live search status`);
   assert.match(html, /data-docs-search-empty/, `${path}: no-result affordance`);
   assert.match(html, /data-search-item/, `${path}: indexed topics`);
   assert.match(html, /No topics match this search|Tidak ada topik yang cocok/, `${path}: localized no-result copy`);
@@ -87,8 +100,10 @@ function assertDocsSearch(html, path) {
 
 function assertEnglishMirrorDisclosure(html, path) {
   assert.match(html, /data-language-spec-status="english-mirror"/, `${path}: English mirror disclosure`);
+  assert.match(html, /data-language-spec-translation="not-available"/, `${path}: English translation status`);
   assert.match(html, /English presentation status/, `${path}: English status heading`);
   assert.match(html, /Indonesian language spec/, `${path}: normative-language link`);
+  assert.match(html, /full English normative parity is not claimed/i, `${path}: no full English parity claim`);
 }
 
 function assertActiveNav(html, path, href) {
@@ -134,7 +149,12 @@ for (const lang of ['id', 'en']) {
   assertGettingStarted(gettingStarted, gettingStartedPath, lang);
 
   const docsIndexPath = `${lang}/docs/index.html`;
-  assertDocsSearch(await readPage(docsIndexPath), docsIndexPath);
+  assertDocsSearch(await readPage(docsIndexPath), docsIndexPath, lang);
+
+  for (const absolutePath of await listFiles(join(dist, lang), '.html')) {
+    const outputPath = relative(dist, absolutePath).replace(/\\/g, '/');
+    assertCommonMetadata(await readFile(absolutePath, 'utf8'), outputPath, lang);
+  }
 }
 
 for (const lang of ['id', 'en']) {
@@ -156,6 +176,9 @@ assertEnglishMirrorDisclosure(
   await readPage('en/docs/language-spec/core/01-overview/index.html'),
   'en/docs/language-spec/core/01-overview/index.html'
 );
+for (const pagePath of await listFiles(join(dist, 'en/docs/language-spec'), '.html')) {
+  assertEnglishMirrorDisclosure(await readFile(pagePath, 'utf8'), pagePath);
+}
 
 const navigationChecks = [
   ['en/why-relgeo/index.html', '/en/why-relgeo/'],
@@ -206,12 +229,22 @@ for (const path of [
 const gateway = await readPage('index.html');
 assert.match(gateway, /<meta name="robots" content="noindex,follow"/, 'root gateway: noindex');
 
+const sitemap = await readPage('sitemap.xml');
+assert.doesNotMatch(sitemap, /https:\/\/example\.com\/?/, 'sitemap: placeholder site URL');
+assert.match(sitemap, /https:\/\/relgeo\.github\.io\/en\//, 'sitemap: English URLs');
+assert.match(sitemap, /https:\/\/relgeo\.github\.io\/id\//, 'sitemap: Indonesian URLs');
+
 const stylesheetPaths = await listFiles(join(dist, '_astro'), '.css');
 assert.ok(stylesheetPaths.length > 0, 'built output: stylesheet assets');
 const stylesheets = await Promise.all(stylesheetPaths.map((path) => readFile(path, 'utf8')));
 const styles = stylesheets.join('\n');
 assert.match(styles, /:focus-visible/, 'built styles: visible focus treatment');
 assert.match(styles, /prefers-reduced-motion:\s*reduce/, 'built styles: reduced-motion treatment');
+assert.match(styles, /@media\s*\(max-width:\s*640px\)/, 'built styles: narrow viewport breakpoint');
+assert.match(styles, /@media\s*\(max-width:\s*899px\)/, 'built styles: tablet viewport breakpoint');
+assert.match(styles, /@media\s*\(min-width:\s*900px\)/, 'built styles: wide viewport breakpoint');
+assert.match(styles, /\.nav[^{}]*\{[\s\S]*?overflow-x:\s*auto/, 'built styles: narrow navigation remains scrollable');
+assert.match(styles, /\.article[^{}]*\{[\s\S]*?min-width:\s*0/, 'built styles: article column can shrink without page overflow');
 
 for (const htmlPath of await listFiles(dist, '.html')) {
   const html = await readFile(htmlPath, 'utf8');

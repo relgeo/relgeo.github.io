@@ -10,7 +10,7 @@ This page explains the current public language status of RelGeo documentation.
 Right now:
 
 1. the active normative source lives in the `relgeo/spec` repository under `id/`
-2. the English public surface is being prepared in the `relgeo/spec` repository under `en/`
+2. the `/en/docs/language-spec/` route family is an editorial mirror of that source
 3. the docs site uses stable public routes even though the active internal source still lives under `id/`
 
 This means the implementation, audits, and active language contract still point to the Indonesian tree.
@@ -39,22 +39,24 @@ This does not mean English is less important. It is only a sequencing decision.
 
 ## What `en` Means Right Now
 
-The `en/` source folder and the `/en/...` surface are being prepared for:
+The `/en/...` surface is available for:
 
 1. broader public access
 2. a bilingual docs site
 3. a future split into a separate spec repository
 
-For now, however, `en/` has not taken over the normative role from `id/`.
+For the language-spec route, `en/` is an editorial mirror. It has not taken
+over the normative role from `id/`, and it is not a completed English
+translation of the normative contract.
 
 If temporary differences exist:
 
 1. `id/` still wins for the active contract
-2. `en/` should be read as a public surface that is being brought closer to the active contract
+2. `en/` should be read as a public editorial surface and mirror that is being brought closer to the active contract
 
 The practical rule is:
 
-1. do not infer the final active rule from `en/` when a detail is not fully aligned yet
+1. do not infer the final active rule from `en/` when a detail is not fully aligned yet; full English normative parity is not claimed
 2. use `en/` for public access, initial orientation, and the bilingual docs-site surface
 3. use `id/` when you are checking implementation-level contract details, audits, or the latest semantic decisions
 
