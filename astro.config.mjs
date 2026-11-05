@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import remarkRelgeo from '@relgeo/remark-relgeo';
 import remarkRelgeoHl from '@relgeo/remark-relgeo-hl';
 
-const site = process.env.RELGEO_DOCS_SITE_URL ?? 'https://example.com';
+const site = process.env.RELGEO_DOCS_SITE_URL ?? 'https://relgeo.github.io';
 const base = process.env.RELGEO_DOCS_BASE ?? '/';
 const requirePublicSiteUrl = process.env.RELGEO_DOCS_REQUIRE_PUBLIC_URL === '1';
 
