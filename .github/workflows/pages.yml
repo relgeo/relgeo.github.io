@@ -26,7 +26,7 @@ jobs:
           repository: relgeo/playground
           path: .ci/playground
           # Update deliberately after validating a new playground baseline.
-          ref: c7cec4b505f290beccac911ef97786c8f6b0a534
+          ref: efb7396c852bacf6b756021f7b7ad61b72d9f3ce
 
       - name: Checkout spec
         uses: actions/checkout@v7
@@ -34,7 +34,7 @@ jobs:
           repository: relgeo/spec
           path: .ci/spec
           # Update deliberately after validating a new normative spec baseline.
-          ref: b96ba3b23de202227eade06614635ef6717df516
+          ref: 26ff53278d77d916b0e0e6c26ca9ab496232fbc0
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6

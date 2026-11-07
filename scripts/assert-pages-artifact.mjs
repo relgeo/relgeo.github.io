@@ -46,6 +46,10 @@ assert.match(playgroundHtml, /<script[^>]+type="module"[^>]+src=/, 'playground e
 
 const localReferences = [...playgroundHtml.matchAll(/(?:src|href)="(\/playground\/[^"#?]+)"/g)]
   .map(([, reference]) => reference.replace(/^\/playground\//, 'playground/'));
+const localAssetManifest = localReferences
+  .filter((reference) => reference.startsWith('playground/assets/'))
+  .map((reference) => reference.replace(/^playground\//, ''))
+  .sort();
 
 for (const reference of localReferences) {
   await assertFile(reference);
@@ -59,6 +63,9 @@ assert.equal(playgroundProvenance.artifact, 'relgeo-playground', 'playground pro
 assert.equal(playgroundProvenance.sourcePath, 'playground', 'playground provenance source');
 assert.match(playgroundProvenance.sourceRevision, /^[0-9a-f]{40}$/, 'playground source revision');
 assert.equal(playgroundProvenance.entrypoint, 'index.html', 'playground provenance entrypoint');
+assert.equal(playgroundProvenance.basePath, '/playground/', 'playground base path');
+assert.equal(playgroundProvenance.title, 'RelGeo Playground', 'playground title provenance');
+assert.deepEqual(playgroundProvenance.assetManifest, localAssetManifest, 'playground asset manifest');
 assert.ok(Object.keys(playgroundProvenance.assetDigests ?? {}).length > 0, 'playground asset digests');
 
 for (const [asset, expectedDigest] of Object.entries(playgroundProvenance.assetDigests)) {
