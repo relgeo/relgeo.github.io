@@ -69,8 +69,10 @@ function assertMarkdownSurface(html, path) {
   assert.equal(count(html, 'data-relgeo-fence="relgeo"'), 1, `${path}: relgeo fence marker`);
   assert.match(html, /class="relgeo-preview__canvas"/, `${path}: preview canvas`);
   assert.match(html, /class="relgeo-preview__image"/, `${path}: preview image`);
+  assert.match(html, /<(?:div|figure)[^>]+class="relgeo-preview__canvas"/, `${path}: preview wrapper`);
+  assert.match(html, /alt="Rendered RelGeo preview"/, `${path}: preview image alternative`);
   assert.match(html, /data-relgeo-plugin="remark-relgeo"/, `${path}: preview provenance`);
-  assert.doesNotMatch(html, /<pre[^>]*>\s*<div class="relgeo-preview__canvas"/, `${path}: preview wrapper must not be nested under pre`);
+  assert.doesNotMatch(html, /<pre[^>]*>\s*<(?:div|figure) class="relgeo-preview__canvas"/, `${path}: preview wrapper must not be nested under pre`);
   assert.doesNotMatch(html, /language-relgeo|relgeo-preview__code/, `${path}: preview must not expose source code`);
 }
 

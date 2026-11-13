@@ -21,7 +21,7 @@ function getClassNames(node) {
 }
 
 function isPreviewWrapper(node) {
-  if (node?.type !== 'element' || node.tagName !== 'div') return false;
+  if (node?.type !== 'element' || !['div', 'figure'].includes(node.tagName)) return false;
   const classNames = getClassNames(node);
   return classNames.includes('relgeo-preview__canvas')
     || classNames.includes('relgeo-preview__placeholder');
@@ -35,13 +35,30 @@ function shouldUnwrapPreview(node) {
   return isPreviewWrapper(child);
 }
 
+function applyPreviewAccessibility(node) {
+  if (!isPreviewWrapper(node)) return;
+  if (node.properties?.['data-relgeo-kind'] !== 'preview') return;
+
+  node.tagName = 'figure';
+  node.properties = {
+    ...(node.properties ?? {}),
+    'data-relgeo-asset-strategy': 'inline-data-uri',
+    role: 'figure',
+    ariaLabel: node.properties['aria-label'] ?? 'Rendered RelGeo preview',
+  };
+}
+
 function unwrapCustomCodeBlocks() {
   function walk(node) {
     if (!node || !Array.isArray(node.children)) return;
 
     node.children = node.children.map((child) => {
       walk(child);
-      return shouldUnwrapPreview(child) ? child.children[0] : child;
+      if (shouldUnwrapPreview(child)) {
+        applyPreviewAccessibility(child.children[0]);
+        return child.children[0];
+      }
+      return child;
     });
   }
 
