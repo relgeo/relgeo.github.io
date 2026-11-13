@@ -1,12 +1,9 @@
 import { getCollection } from 'astro:content';
 import { entryLang, localizedDocsHref, localizedLanguageSpecHref, normalizeEntryId, stripLangPrefix } from '../lib/content';
+import { absoluteSiteUrl } from '../lib/site';
 import type { SupportedLang } from '../lib/i18n';
 
 const langs: SupportedLang[] = ['id', 'en'];
-
-function absolute(site: URL, path: string): string {
-  return new URL(path, site).toString();
-}
 
 function urlEntry(loc: string): string {
   return `<url><loc>${loc}</loc></url>`;
@@ -19,26 +16,27 @@ export async function GET({ site }: { site: URL | undefined }) {
 
   const docsEntries = await getCollection('docsPages');
   const specEntries = await getCollection('languageSpec');
+  const base = import.meta.env.BASE_URL;
 
   const urls = new Set<string>();
 
-  urls.add(absolute(site, '/id/'));
-  urls.add(absolute(site, '/en/'));
+  urls.add(absoluteSiteUrl(site, '/id/', base));
+  urls.add(absoluteSiteUrl(site, '/en/', base));
 
   for (const entry of docsEntries) {
     const lang = entryLang(entry.id);
     if (!lang) continue;
     const normalized = stripLangPrefix(entry.id, lang);
     const path = normalized ? localizedDocsHref(entry, lang) : `/${lang}/docs/`;
-    urls.add(absolute(site, path));
+    urls.add(absoluteSiteUrl(site, path, base));
   }
 
   for (const lang of langs) {
-    urls.add(absolute(site, `/${lang}/docs/language-spec/`));
+    urls.add(absoluteSiteUrl(site, `/${lang}/docs/language-spec/`, base));
     for (const entry of specEntries) {
       const normalized = normalizeEntryId(entry.id);
       if (!normalized) continue;
-      urls.add(absolute(site, localizedLanguageSpecHref(entry, lang)));
+      urls.add(absoluteSiteUrl(site, localizedLanguageSpecHref(entry, lang), base));
     }
   }
 

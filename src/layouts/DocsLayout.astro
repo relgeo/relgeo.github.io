@@ -1,5 +1,6 @@
 ---
 import { copy, uiCopy, type SupportedLang } from '../lib/i18n';
+import { absoluteSiteUrl, stripBasePath, withBasePath } from '../lib/site';
 import '../styles/site.css';
 import '../styles/accessibility.css';
 
@@ -17,6 +18,8 @@ const {
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
+const basePath = import.meta.env.BASE_URL;
+const routePathname = stripBasePath(pathname, basePath);
 const resolvedDescription =
   typeof description === 'string' && description.trim().length > 0 ? description : lead;
 const normalizedLocalizedSlug =
@@ -31,7 +34,7 @@ const resolvedCanonicalPath =
         : `/${activeLang}/`
       : pathname;
 const absoluteCanonical =
-  Astro.site instanceof URL ? new URL(resolvedCanonicalPath, Astro.site).toString() : null;
+  Astro.site instanceof URL ? absoluteSiteUrl(Astro.site, resolvedCanonicalPath, basePath) : null;
 const alternateLinks =
   activeLang && seoMode === 'localized'
     ? [
@@ -39,24 +42,24 @@ const alternateLinks =
           lang: 'id',
           href:
             Astro.site instanceof URL
-              ? new URL(normalizedLocalizedSlug ? `/id/${normalizedLocalizedSlug}/` : '/id/', Astro.site).toString()
+              ? absoluteSiteUrl(Astro.site, normalizedLocalizedSlug ? `/id/${normalizedLocalizedSlug}/` : '/id/', basePath)
               : normalizedLocalizedSlug
-                ? `/id/${normalizedLocalizedSlug}/`
-                : '/id/',
+                ? withBasePath(`/id/${normalizedLocalizedSlug}/`, basePath)
+                : withBasePath('/id/', basePath),
         },
         {
           lang: 'en',
           href:
             Astro.site instanceof URL
-              ? new URL(normalizedLocalizedSlug ? `/en/${normalizedLocalizedSlug}/` : '/en/', Astro.site).toString()
+              ? absoluteSiteUrl(Astro.site, normalizedLocalizedSlug ? `/en/${normalizedLocalizedSlug}/` : '/en/', basePath)
               : normalizedLocalizedSlug
-                ? `/en/${normalizedLocalizedSlug}/`
-                : '/en/',
+                ? withBasePath(`/en/${normalizedLocalizedSlug}/`, basePath)
+                : withBasePath('/en/', basePath),
         },
       ]
     : [];
 const defaultLanguageGateway =
-  Astro.site instanceof URL ? new URL('/', Astro.site).toString() : '/';
+  Astro.site instanceof URL ? absoluteSiteUrl(Astro.site, '/', basePath) : withBasePath('/', basePath);
 const shouldNoIndex = seoMode === 'gateway' || seoMode === 'legacy';
 const socialLocale = activeLang === 'id' ? 'id_ID' : 'en_US';
 const isIndonesian = activeLang === 'id';
@@ -84,31 +87,31 @@ const navigationLabels = isIndonesian
       playground: copy(uiCopy.navPlayground, 'en'),
     };
 const navItems = [
-  { href: activeLang ? `/${activeLang}/` : '/', label: navigationLabels.home },
-  { href: activeLang ? `/${activeLang}/why-relgeo/` : '/why-relgeo/', label: copy(uiCopy.navWhyRelGeo, activeLang ?? 'en') },
-  { href: activeLang ? `/${activeLang}/current-capabilities/` : '/current-capabilities/', label: navigationLabels.capabilities },
-  { href: activeLang ? `/${activeLang}/use-cases/` : '/use-cases/', label: navigationLabels.useCases },
-  { href: activeLang ? `/${activeLang}/docs/` : '/docs/', label: navigationLabels.docs },
-  { href: activeLang ? `/${activeLang}/docs/language-spec/` : '/docs/language-spec/', label: navigationLabels.languageSpec },
-  { href: '/playground/', label: navigationLabels.playground },
-];
+  { path: activeLang ? `/${activeLang}/` : '/', label: navigationLabels.home },
+  { path: activeLang ? `/${activeLang}/why-relgeo/` : '/why-relgeo/', label: copy(uiCopy.navWhyRelGeo, activeLang ?? 'en') },
+  { path: activeLang ? `/${activeLang}/current-capabilities/` : '/current-capabilities/', label: navigationLabels.capabilities },
+  { path: activeLang ? `/${activeLang}/use-cases/` : '/use-cases/', label: navigationLabels.useCases },
+  { path: activeLang ? `/${activeLang}/docs/` : '/docs/', label: navigationLabels.docs },
+  { path: activeLang ? `/${activeLang}/docs/language-spec/` : '/docs/language-spec/', label: navigationLabels.languageSpec },
+  { path: '/playground/', label: navigationLabels.playground },
+].map((item) => ({ ...item, href: withBasePath(item.path, basePath) }));
 
-const exactActiveNav = navItems.find((item) => pathname === item.href)?.href;
+const exactActiveNav = navItems.find((item) => routePathname === item.path)?.href;
 const activeNavHref =
   exactActiveNav ??
   [...navItems]
-    .sort((a, b) => b.href.length - a.href.length)
-    .find((item) => item.href !== '/' && pathname.startsWith(item.href))?.href;
+    .sort((a, b) => b.path.length - a.path.length)
+    .find((item) => item.path !== '/' && routePathname.startsWith(item.path))?.href;
 
 const languageLinks = activeLang
   ? [
       {
-        href: normalizedLocalizedSlug ? `/id/${normalizedLocalizedSlug}/` : '/id/',
+        href: withBasePath(normalizedLocalizedSlug ? `/id/${normalizedLocalizedSlug}/` : '/id/', basePath),
         label: 'ID',
         active: activeLang === 'id',
       },
       {
-        href: normalizedLocalizedSlug ? `/en/${normalizedLocalizedSlug}/` : '/en/',
+        href: withBasePath(normalizedLocalizedSlug ? `/en/${normalizedLocalizedSlug}/` : '/en/', basePath),
         label: 'EN',
         active: activeLang === 'en',
       },
@@ -125,8 +128,8 @@ const contentClass = `content content--${variant}`;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" href={withBasePath('/favicon.svg', basePath)} type="image/svg+xml" />
+    <link rel="apple-touch-icon" sizes="180x180" href={withBasePath('/apple-touch-icon.png', basePath)} />
     <title>{title}</title>
     <meta name="description" content={resolvedDescription} />
     <meta name="theme-color" content="#f3ecdd" />
@@ -150,7 +153,7 @@ const contentClass = `content content--${variant}`;
     <a class="skip-link" href="#main-content">{navigationLabels.skip}</a>
     <div class={shellClass}>
       <div class="topbar">
-        <a class="brand" href={activeLang ? `/${activeLang}/` : '/'}>RelGeo</a>
+        <a class="brand" href={withBasePath(activeLang ? `/${activeLang}/` : '/', basePath)}>RelGeo</a>
         <div class="topbar-meta">
               <nav class="nav" aria-label={navigationLabels.primary}>
                 {navItems.map((item) => {

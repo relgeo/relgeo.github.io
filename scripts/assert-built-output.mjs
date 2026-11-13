@@ -3,6 +3,21 @@ import { readdir, readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 
 const dist = join(process.cwd(), 'dist');
+const expectedSite = process.env.RELGEO_DOCS_SITE_URL ?? 'http://localhost:4321';
+const expectedBase = process.env.RELGEO_DOCS_BASE ?? '/';
+
+function withBasePath(path) {
+  const normalizedBase = expectedBase === '/'
+    ? ''
+    : `/${expectedBase.replace(/^\/+|\/+$/g, '')}`;
+  const normalizedPath = path === '/' ? '/' : `/${path.replace(/^\/+/, '')}`;
+  if (!normalizedBase) return normalizedPath;
+  return normalizedPath === '/' ? `${normalizedBase}/` : `${normalizedBase}${normalizedPath}`;
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 async function readPage(path) {
   try {
@@ -28,20 +43,20 @@ const expectedPackageLine = compatibility.policy.publicPackageVersion;
 function assertCommonMetadata(html, path, lang) {
   const routePath = `/${path.replace(/\\/g, '/').replace(/index\.html$/, '')}`;
   const localizedPath = routePath.replace(new RegExp(`^/${lang}(?=/|$)`), '') || '/';
-  const canonical = `https://relgeo.github.io${routePath}`;
-  const alternateId = `https://relgeo.github.io/id${lang === 'id' ? localizedPath : localizedPath}`;
-  const alternateEn = `https://relgeo.github.io/en${lang === 'en' ? localizedPath : localizedPath}`;
+  const canonical = new URL(withBasePath(routePath), expectedSite).toString();
+  const alternateId = new URL(withBasePath(`/id${localizedPath}`), expectedSite).toString();
+  const alternateEn = new URL(withBasePath(`/en${localizedPath}`), expectedSite).toString();
   assert.match(html, /<meta name="description" content="[^"]+"/i, `${path}: description`);
   assert.doesNotMatch(html, /https:\/\/example\.com\/?/, `${path}: placeholder site URL`);
-  assert.match(html, new RegExp(`<link rel="canonical" href="${canonical.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}">`), `${path}: canonical URL`);
-  assert.match(html, new RegExp(`<link rel="alternate" hreflang="id" href="${alternateId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}">`), `${path}: Indonesian alternate`);
-  assert.match(html, new RegExp(`<link rel="alternate" hreflang="en" href="${alternateEn.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}">`), `${path}: English alternate`);
-  assert.match(html, /<link rel="alternate" hreflang="x-default" href="https:\/\/relgeo\.github\.io\/">/, `${path}: x-default alternate`);
+  assert.match(html, new RegExp(`<link rel="canonical" href="${escapeRegExp(canonical)}">`), `${path}: canonical URL`);
+  assert.match(html, new RegExp(`<link rel="alternate" hreflang="id" href="${escapeRegExp(alternateId)}">`), `${path}: Indonesian alternate`);
+  assert.match(html, new RegExp(`<link rel="alternate" hreflang="en" href="${escapeRegExp(alternateEn)}">`), `${path}: English alternate`);
+  assert.match(html, new RegExp(`<link rel="alternate" hreflang="x-default" href="${escapeRegExp(new URL(withBasePath('/'), expectedSite).toString())}">`), `${path}: x-default alternate`);
   assert.match(html, /<meta property="og:type" content="website"/i, `${path}: og:type`);
   assert.match(html, /<meta name="twitter:card" content="summary"/i, `${path}: twitter card`);
   assert.match(html, new RegExp(`<meta property="og:locale" content="${lang === 'id' ? 'id_ID' : 'en_US'}"`), `${path}: locale`);
-  assert.match(html, /<link rel="icon" href="\/favicon\.svg" type="image\/svg\+xml">/, `${path}: favicon`);
-  assert.match(html, /<link rel="apple-touch-icon" sizes="180x180" href="\/apple-touch-icon\.png">/, `${path}: touch icon`);
+  assert.match(html, new RegExp(`<link rel="icon" href="${escapeRegExp(withBasePath('/favicon.svg'))}" type="image/svg\\+xml">`), `${path}: favicon`);
+  assert.match(html, new RegExp(`<link rel="apple-touch-icon" sizes="180x180" href="${escapeRegExp(withBasePath('/apple-touch-icon.png'))}">`), `${path}: touch icon`);
 }
 
 function assertAccessibleShell(html, path, lang) {
@@ -51,7 +66,7 @@ function assertAccessibleShell(html, path, lang) {
   assert.match(html, /<footer class="site-footer">/, `${path}: footer landmark`);
   assert.match(
     html,
-    new RegExp(`<nav class="lang-switcher"[^>]*>[\\s\\S]*<a href="\/${lang}\/[^\"]*" aria-current="page">\\s*${lang === 'id' ? 'ID' : 'EN'}\\s*<\\/a>`),
+    new RegExp(`<nav class="lang-switcher"[^>]*>[\\s\\S]*<a href="${escapeRegExp(withBasePath(`/${lang}/`))}[^\"]*" aria-current="page">\\s*${lang === 'id' ? 'ID' : 'EN'}\\s*<\\/a>`),
     `${path}: active page language`
   );
 }
@@ -64,6 +79,8 @@ function assertMarkdownSurface(html, path) {
   assert.match(html, new RegExp(`data-relgeo-dsl-version="${expectedDslVersion}"`), `${path}: DSL provenance`);
   assert.match(html, new RegExp(`data-relgeo-package-line="${expectedPackageLine}"`), `${path}: package-line provenance`);
   assert.match(html, /data-relgeo-plugin="remark-relgeo-hl"/, `${path}: highlighter provenance`);
+  assert.doesNotMatch(html, /<pre>\s*<pre[^>]+data-relgeo-kind="highlight"/, `${path}: highlight must not be nested under pre`);
+  assert.match(html, /<pre[^>]+data-relgeo-kind="highlight"[^>]+tabindex="0"[^>]+role="region"[^>]+aria-label="Scrollable code example"/, `${path}: highlight keyboard scroll semantics`);
 
   assert.equal(count(html, 'data-relgeo-kind="preview"'), 1, `${path}: one relgeo surface`);
   assert.equal(count(html, 'data-relgeo-fence="relgeo"'), 1, `${path}: relgeo fence marker`);
@@ -109,7 +126,8 @@ function assertEnglishMirrorDisclosure(html, path) {
 }
 
 function assertActiveNav(html, path, href) {
-  assert.ok(html.includes(`<a href="${href}" aria-current="page">`), `${path}: active navigation for ${href}`);
+  const basedHref = withBasePath(href);
+  assert.ok(html.includes(`<a href="${basedHref}" aria-current="page">`), `${path}: active navigation for ${basedHref}`);
 }
 
 function assertLocalizedTitle(html, path, title) {
@@ -233,8 +251,8 @@ assert.match(gateway, /<meta name="robots" content="noindex,follow"/, 'root gate
 
 const sitemap = await readPage('sitemap.xml');
 assert.doesNotMatch(sitemap, /https:\/\/example\.com\/?/, 'sitemap: placeholder site URL');
-assert.match(sitemap, /https:\/\/relgeo\.github\.io\/en\//, 'sitemap: English URLs');
-assert.match(sitemap, /https:\/\/relgeo\.github\.io\/id\//, 'sitemap: Indonesian URLs');
+assert.match(sitemap, new RegExp(escapeRegExp(new URL(withBasePath('/en/'), expectedSite).toString())), 'sitemap: English URLs');
+assert.match(sitemap, new RegExp(escapeRegExp(new URL(withBasePath('/id/'), expectedSite).toString())), 'sitemap: Indonesian URLs');
 
 const stylesheetPaths = await listFiles(join(dist, '_astro'), '.css');
 assert.ok(stylesheetPaths.length > 0, 'built output: stylesheet assets');

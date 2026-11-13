@@ -31,6 +31,11 @@ const workflowPins = {
   playground: workflowPin(workflow, 'playground'),
   spec: workflowPin(workflow, 'spec'),
 };
+const deployment = {
+  siteUrl: process.env.RELGEO_DOCS_SITE_URL ?? 'http://localhost:4321',
+  basePath: process.env.RELGEO_DOCS_BASE ?? '/',
+  environment: process.env.RELGEO_DOCS_REQUIRE_PUBLIC_URL === '1' ? 'pages-public' : 'local-or-unverified',
+};
 
 const comparisons = [
   {
@@ -83,6 +88,7 @@ const report = {
   synchronized: mismatches.length === 0,
   baselinePath: pagesMode ? null : 'docs/integration-baseline.json',
   workflowPath: '.github/workflows/pages.yml',
+  deployment,
   workflowPins,
   revisions: comparisons,
   mismatches,

@@ -81,12 +81,11 @@ async function assertCollection(collection) {
     const locale = localeFromKey(key);
     const localizedKey = key.slice(locale.length + 1);
     assert.ok(!entries.has(`${locale}/${localizedKey}`), `${collection}: duplicate entry ${key}`);
-    entries.set(`${locale}/${localizedKey}`, { filePath, body });
-
     const slug = localizedKey.replace(/\/__index__$/i, '').replace(/^__index__$/, '');
     const route = collection === 'docs'
       ? `/${locale}/docs/${slug ? `${slug}/` : ''}`
       : `/${locale}/${slug ? `${slug}/` : ''}`;
+    entries.set(`${locale}/${localizedKey}`, { filePath, body, route });
     await assertRouteExists(route, filePath);
 
     const internalLinks = [...body.matchAll(/\]\((\/[^)\s]+)(?:#[^)\s]*)?\)/g)].map(([, href]) => href);
@@ -99,13 +98,30 @@ async function assertCollection(collection) {
       .map((key) => key.slice(locale.length + 1)),
   ));
   assert.deepEqual([...locales[0]].sort(), [...locales[1]].sort(), `${collection}: id/en entry parity`);
+  return entries;
 }
 
-await assertCollection('docs');
+const docsEntries = await assertCollection('docs');
 await assertCollection('site');
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+for (const locale of ['id', 'en']) {
+  const index = await readFile(join(distRoot, locale, 'docs', 'index.html'), 'utf8');
+  for (const [key, entry] of docsEntries) {
+    if (!key.startsWith(`${locale}/`)) continue;
+    assert.match(
+      index,
+      new RegExp(`href="${escapeRegExp(entry.route)}"`),
+      `docs index ${locale}: content entry is included in wayfinding (${entry.route})`
+    );
+  }
+}
 
 const englishLanguageStatus = await readFile(join(contentRoot, 'docs', 'en', 'language-status.md'), 'utf8');
 assert.match(englishLanguageStatus, /editorial mirror/i, 'English language status must preserve mirror disclosure');
 assert.match(englishLanguageStatus, /not a completed English\s+translation/i, 'English language status must reject translation parity claims');
 
-console.log('Content integrity assertions passed (locale parity, frontmatter, generated routes, and internal links).');
+console.log('Content integrity assertions passed (locale parity, frontmatter, generated routes, internal links, and docs-index coverage).');

@@ -85,8 +85,11 @@ Optional environment variables:
 3. `RELGEO_DOCS_REQUIRE_PUBLIC_URL`
 
 These map to Astro `site` and `base` so the package can be configured later for
-GitHub Pages or a custom domain. Set `RELGEO_DOCS_REQUIRE_PUBLIC_URL=1` in the
-canonical Pages build to reject placeholder/non-canonical public URLs.
+GitHub Pages or a custom domain. Local builds default to
+`http://localhost:4321/` and are therefore not public-production claims. Set
+`RELGEO_DOCS_SITE_URL=https://relgeo.github.io`, `RELGEO_DOCS_BASE=/`, and
+`RELGEO_DOCS_REQUIRE_PUBLIC_URL=1` in the canonical Pages build to reject
+placeholder/non-canonical public URLs.
 
 The local provenance report is generated with `pnpm provenance:report` and
 writes `dist/relgeo-provenance.json`. Use `pnpm provenance:check` only after an

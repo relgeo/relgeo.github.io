@@ -3,9 +3,12 @@ import { getCollection } from 'astro:content';
 import DocsLayout from '../../../layouts/DocsLayout.astro';
 import {
   entryTitle,
+  entryLang,
   languageSpecSection,
   normalizeEntryId,
+  localizedDocsHref,
   localizedLanguageSpecHref,
+  stripLangPrefix,
 } from '../../../lib/content';
 import { copy, isSupportedLang, uiCopy, type SupportedLang } from '../../../lib/i18n';
 
@@ -19,97 +22,42 @@ if (!isSupportedLang(rawLang)) {
 }
 
 const lang = rawLang as SupportedLang;
+const docsEntries = (await getCollection('docsPages'))
+  .filter((entry) => entryLang(entry.id) === lang && stripLangPrefix(entry.id, lang) !== '')
+  .sort((a, b) => localizedDocsHref(a, lang).localeCompare(localizedDocsHref(b, lang)));
 const specEntries = await getCollection('languageSpec');
 const rootSpec = specEntries.find((entry) => normalizeEntryId(entry.id) === '');
 const sectionEntries = specEntries
   .filter((entry) => normalizeEntryId(entry.id).split('/').length === 1 && normalizeEntryId(entry.id) !== '')
   .sort((a, b) => localizedLanguageSpecHref(a, lang).localeCompare(localizedLanguageSpecHref(b, lang)));
 
+const docsBySlug = new Map(
+  docsEntries.map((entry) => [stripLangPrefix(entry.id, lang), entry] as const)
+);
+const orderedDocSlugs = [
+  'getting-started',
+  'current-capabilities',
+  'markdown-surfaces',
+  'cli',
+  'playground',
+  'desktop-app',
+  'language-status',
+];
 const docsNavItems = [
-  {
-    href: `/${lang}/docs/getting-started/`,
-    title: 'Getting Started',
-    label: copy(uiCopy.gettingStarted, lang),
-    description: copy(
-      {
-        id: 'Jalur baca tercepat untuk memahami bentuk dasar dan cara membaca RelGeo.',
-        en: 'The fastest reading path to understand RelGeo’s shape and how to read it.',
-      },
-      lang
-    ),
-  },
-  {
-    href: `/${lang}/docs/current-capabilities/`,
-    title: 'Current Capabilities',
-    label: copy(uiCopy.currentCapabilities, lang),
-    description: copy(
-      {
-        id: 'Ringkasan jujur tentang kapabilitas yang sudah siap dilihat dan dicoba hari ini.',
-        en: 'An honest summary of the capabilities that are already ready to be seen and tried today.',
-      },
-      lang
-    ),
-  },
-  {
-    href: `/${lang}/docs/markdown-surfaces/`,
-    title: 'Markdown Surfaces',
-    label: copy(uiCopy.markdownSurfaces, lang),
-    description: copy(
-      {
-        id: 'Pahami dua fence publik: `rg` untuk source dan `relgeo` untuk preview atau embed.',
-        en: 'Understand the two public fences: `rg` for source and `relgeo` for preview or embed.',
-      },
-      lang
-    ),
-  },
-  {
-    href: `/${lang}/docs/cli/`,
-    title: 'CLI',
-    label: 'CLI',
-    description: copy(
-      {
-        id: 'Surface terminal untuk validasi, compile, dan workflow shell atau CI ringan.',
-        en: 'The terminal surface for validation, compilation, and lightweight shell or CI workflows.',
-      },
-      lang
-    ),
-  },
-  {
-    href: `/${lang}/docs/playground/`,
-    title: 'Playground',
-    label: 'Playground',
-    description: copy(
-      {
-        id: 'IDE browser ringan untuk authoring, preview, dan inspection cepat.',
-        en: 'The lightweight browser IDE for quick authoring, preview, and inspection.',
-      },
-      lang
-    ),
-  },
-  {
-    href: `/${lang}/docs/desktop-app/`,
-    title: 'Desktop App',
-    label: copy({ id: 'Aplikasi desktop', en: 'Desktop App' }, lang),
-    description: copy(
-      {
-        id: 'Workbench lokal yang lebih kaya daripada playground browser.',
-        en: 'The richer local workbench beyond the browser playground.',
-      },
-      lang
-    ),
-  },
-  {
-    href: `/${lang}/docs/language-status/`,
-    title: 'Language Status',
-    label: copy(uiCopy.languageStatus, lang),
-    description: copy(
-      {
-        id: 'Pahami boundary antara rumah normatif aktif, surface Inggris, dan route publik.',
-        en: 'Understand the boundary between the active normative home, the English surface, and the public routes.',
-      },
-      lang
-    ),
-  },
+  ...orderedDocSlugs.map((slug) => docsBySlug.get(slug) ?? null),
+  ...docsEntries.filter((entry) => !orderedDocSlugs.includes(stripLangPrefix(entry.id, lang))),
+].filter((entry): entry is (typeof docsEntries)[number] => entry !== null).map((entry) => ({
+  slug: stripLangPrefix(entry.id, lang),
+  href: localizedDocsHref(entry, lang),
+  title: entryTitle(entry, 'Docs Page'),
+  label: entryTitle(entry, 'Docs Page'),
+  description: entry.data.description ?? copy(
+    { id: 'Guide non-normatif yang dimiliki oleh website ini.', en: 'A non-normative guide owned by this website.' },
+    lang
+  ),
+}));
+
+const siteNavItems = [
   {
     href: `/${lang}/why-relgeo/`,
     title: 'Why RelGeo',
@@ -135,9 +83,11 @@ const docsNavItems = [
     ),
   },
 ];
+const docsIndexItems = [...docsNavItems, ...siteNavItems];
 
-const docsOrientationItems = docsNavItems.filter((item) => ['Getting Started', 'Current Capabilities', 'Markdown Surfaces', 'Language Status'].includes(item.title));
-const docsSurfaceItems = docsNavItems.filter((item) => ['CLI', 'Playground', 'Desktop App'].includes(item.title));
+const docsOrientationItems = docsNavItems.filter((item) => ['getting-started', 'current-capabilities', 'markdown-surfaces', 'language-status'].includes(item.slug));
+const docsSurfaceItems = docsNavItems.filter((item) => ['cli', 'playground', 'desktop-app'].includes(item.slug));
+const docsAdditionalItems = docsNavItems.filter((item) => !docsOrientationItems.includes(item) && !docsSurfaceItems.includes(item));
 
 const docsGroups = [
   {
@@ -181,12 +131,26 @@ const docsGroups = [
       description: copy({ id: 'Section dari source normatif aktif.', en: 'A section from the active normative source.' }, lang),
     })),
   },
+  ...(docsAdditionalItems.length > 0
+    ? [{
+        id: 'additional-guides',
+        title: copy({ id: 'Guide lainnya', en: 'Additional guides' }, lang),
+        description: copy(
+          {
+            id: 'Halaman docs tambahan yang berasal langsung dari content collection locale ini.',
+            en: 'Additional docs pages sourced directly from this locale’s content collection.',
+          },
+          lang
+        ),
+        items: docsAdditionalItems,
+      }]
+    : []),
 ];
 
 const searchItems = Array.from(
   new Map(
     [
-      ...docsNavItems.map((item) => ({
+      ...docsIndexItems.map((item) => ({
         href: item.href,
         title: item.label,
         description: item.description,
