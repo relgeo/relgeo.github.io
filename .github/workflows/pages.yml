@@ -26,7 +26,7 @@ jobs:
           repository: relgeo/playground
           path: .ci/playground
           # Update deliberately after validating a new playground baseline.
-          ref: 23fd02c0ba99e40d3973c0482a6177d065f8fa3e
+          ref: 33631d930adc01efbdf25caccdd95e1af55e2526
 
       - name: Checkout spec
         uses: actions/checkout@v7
@@ -47,7 +47,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 24.21.0
           cache: pnpm
 
       - name: Install website dependencies

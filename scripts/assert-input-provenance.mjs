@@ -1,4 +1,4 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { join, resolve } from 'node:path';
 
@@ -95,6 +95,7 @@ const report = {
 };
 
 if (shouldWrite) {
+  await mkdir(join(websiteRoot, 'dist'), { recursive: true });
   await writeFile(join(websiteRoot, 'dist/relgeo-provenance.json'), `${JSON.stringify(report, null, 2)}\n`);
 }
 
