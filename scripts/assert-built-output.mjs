@@ -34,9 +34,9 @@ function count(source, fragment) {
   return source.split(fragment).length - 1;
 }
 
-const compatibility = JSON.parse(
-  await readFile(join(process.cwd(), '..', 'docs', 'compatibility-matrix.json'), 'utf8'),
-);
+const compatibilityPath = process.env.RELGEO_COMPATIBILITY_MATRIX
+  ?? join(process.cwd(), '..', 'docs', 'compatibility-matrix.json');
+const compatibility = JSON.parse(await readFile(compatibilityPath, 'utf8'));
 const expectedDslVersion = compatibility.compatibilityLine;
 const expectedPackageLine = compatibility.policy.publicPackageVersion;
 

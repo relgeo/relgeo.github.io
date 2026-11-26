@@ -10,7 +10,9 @@ const shouldWrite = process.argv.includes('--write');
 const strict = process.argv.includes('--strict');
 const pagesMode = process.argv.includes('--pages');
 
-function revisionAt(path) {
+function revisionAt(path, environmentVariable) {
+  const providedRevision = process.env[environmentVariable];
+  if (providedRevision) return providedRevision;
   return execFileSync('git', ['-C', path, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
 }
 
@@ -23,9 +25,9 @@ const workflow = await readFile(workflowPath, 'utf8');
 const baseline = pagesMode ? null : JSON.parse(await readFile(baselinePath, 'utf8'));
 const baselineByPath = new Map((baseline?.submodules ?? []).map((entry) => [entry.path, entry.revision]));
 const observed = {
-  website: revisionAt(websiteRoot),
-  playground: revisionAt(process.env.RELGEO_PLAYGROUND_ROOT ?? join(workspaceRoot, 'playground')),
-  spec: revisionAt(process.env.RELGEO_SPEC_ROOT ?? join(workspaceRoot, 'spec')),
+  website: revisionAt(websiteRoot, 'RELGEO_WEBSITE_REVISION'),
+  playground: revisionAt(process.env.RELGEO_PLAYGROUND_ROOT ?? join(workspaceRoot, 'playground'), 'RELGEO_PLAYGROUND_REVISION'),
+  spec: revisionAt(process.env.RELGEO_SPEC_ROOT ?? join(workspaceRoot, 'spec'), 'RELGEO_SPEC_REVISION'),
 };
 const workflowPins = {
   playground: workflowPin(workflow, 'playground'),
